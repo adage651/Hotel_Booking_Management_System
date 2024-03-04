@@ -16,9 +16,7 @@ import AuthWrapper from './AuthWrapper';
 const Login = () => {
     const [password, setPassword] = useState('');
     const [checked, setChecked] = useState(false);
-    const redirect=useNavigate();
-  
-    const resData=useLoaderData();
+
  
     // useEffect(()=>{
 
@@ -120,16 +118,16 @@ const resData=await response.json();
  if(resData.valid){
     
     if(resData.user.user_type==='manager'){
-        redirect('/manager')
+        return redirect('/manager')
     }else if(resData.user.user_type==='guest'){
-        redirect('/guest')
+        return redirect('/guest')
     }else if(resData.user.user_type==='receptionist'){
-        redirect('/receptionist')
+        return redirect('/receptionist')
     }else if(resData.user.user_type==='staff'){
-        redirect('/staff_member')
+        return redirect('/staff_member')
     }else if(resData.user.user_type==='maintenance'){
-        redirect('/maintenance_team')
+        return redirect('/maintenance_team')
     }
  }
-return resData
+return null
 }
