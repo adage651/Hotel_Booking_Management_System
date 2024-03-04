@@ -1,4 +1,4 @@
-import { useEffect } from 'react';
+import {useContext, useEffect } from 'react';
 import PropTypes from 'prop-types';
 
 import Box from '@mui/material/Box';
@@ -21,13 +21,18 @@ import Logo from '../../components/logo';
 import Scrollbar from '../../components/scrollbar';
 
 import { NAV } from './config-layout';
-import navConfig from './config-navigation';
+//import navConfig from './config-navigation';
+
+import SvgColor from '../../components/svg-color';
+import {ReactComponent as ReservationIcon} from '../../icons/reservation1.svg'
+import 'primeicons/primeicons.css';
+import UserContext from '../../context/userContext';
 
 // ----------------------------------------------------------------------
 
 export default function Nav({ openNav, onCloseNav }) {
   const pathname = usePathname();
-
+  const ctx=useContext(UserContext);
   const upLg = useResponsive('up', 'lg');
 
   useEffect(() => {
@@ -37,6 +42,7 @@ export default function Nav({ openNav, onCloseNav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
+  console.log(ctx.navConfig)
   const renderAccount = (
     <Box
       sx={{
@@ -50,17 +56,71 @@ export default function Nav({ openNav, onCloseNav }) {
         bgcolor: (theme) => alpha(theme.palette.grey[500], 0.12),
       }}
     >
-      <Avatar src={account.photoURL} alt="photoURL" />
+      <Avatar src={ctx.profilePicture} alt="photoURL" />
 
       <Box sx={{ ml: 2 }}>
-        <Typography variant="subtitle2">{account.displayName}</Typography>
+        <Typography variant="subtitle2">{ctx.firstName}</Typography>
 
         <Typography variant="body2" sx={{ color: 'text.secondary' }}>
-          {account.role}
+          {ctx.user_type}
         </Typography>
       </Box>
     </Box>
   );
+
+
+
+// const navConfig = [
+//   {
+//     title: 'dashboard',
+//     path: '/',
+//     icon: icon('ic_analytics'),
+//   },
+//   {
+//     title: 'Reservation',
+//     path: '/user',
+//     icon:icon('reservation1')//<ReservationIcon style={{ width: '20px', height: '20px' }}/>,
+//   },
+//   {
+//     title: 'Manage rooms',
+//     path: '/products',
+//     icon: icon('ic_cart'),
+//   },
+//   {
+//     title: 'Analytics',
+//     path: '/blog',
+//     icon: icon('ic_blog'),
+//   },
+//   {
+//     title: 'Reports',
+//     path: '/login',
+//     icon: icon('ic_lock'),
+//   },
+//   {
+//     title: 'Guest review',
+//     path: '/404',
+//     icon: icon('ic_disabled'),
+//   },
+//    {
+//     title: 'Notification',
+//     path: '/404',
+//     icon: icon('ic_disabled'),
+//   },
+//   {
+//     title: 'Compliments',
+//     path: '/404',
+//     icon: icon('ic_disabled'),
+//   }
+// ];
+
+const icon = (name) => (
+  <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
+);
+
+
+const navConfig=ctx.navConfig.map((item)=>{ return {...item,icon:icon(item.icon)} })
+
+
 
   const renderMenu = (
     <Stack component="nav" spacing={0.5} sx={{ px: 2 }}>
@@ -70,34 +130,6 @@ export default function Nav({ openNav, onCloseNav }) {
     </Stack>
   );
 
-  // const renderUpgrade = (
-  //   <Box sx={{ px: 2.5, pb: 3, mt: 10 }}>
-  //     <Stack alignItems="center" spacing={3} sx={{ pt: 5, borderRadius: 2, position: 'relative' }}>
-  //       <Box
-  //         component="img"
-  //         src="/assets/illustrations/illustration_avatar.png"
-  //         sx={{ width: 100, position: 'absolute', top: -50 }}
-  //       />
-
-  //       <Box sx={{ textAlign: 'center' }}>
-  //         <Typography variant="h6">Get more?</Typography>
-
-  //         <Typography variant="body2" sx={{ color: 'text.secondary', mt: 1 }}>
-  //           From only $69
-  //         </Typography>
-  //       </Box>
-
-  //       <Button
-  //         href="https://material-ui.com/store/items/minimal-dashboard/"
-  //         target="_blank"
-  //         variant="contained"
-  //         color="inherit"
-  //       >
-  //         Upgrade to Pro
-  //       </Button>
-  //     </Stack>
-  //   </Box>
-  // );
 
   const renderContent = (
     <Scrollbar
@@ -118,7 +150,6 @@ export default function Nav({ openNav, onCloseNav }) {
 
       <Box sx={{ flexGrow: 1 }} />
 
-      {/* {renderUpgrade} */}
     </Scrollbar>
   );
 
@@ -172,7 +203,7 @@ function NavItem({ item }) {
   return (
     <ListItemButton
       component={RouterLink}
-      href={item.path}
+      to={item.path}
       sx={{
         minHeight: 44,
         borderRadius: 0.75,

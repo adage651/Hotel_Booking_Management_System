@@ -1,9 +1,9 @@
 import express from 'express'
-import {guestPage} from '../controller/pagesController.js'
+import {user} from '../controller/pagesController.js'
 
 const router =express.Router();
 
-router.get('/guesthome',guestPage)
+router.get('/',user)
 
 
 export default router;

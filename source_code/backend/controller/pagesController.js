@@ -1,6 +1,6 @@
 import db from '../database/db.js'
-export const guestPage=(req,res)=>{
-    const id=req.session.userId
+export const user=(req,res)=>{
+    const id=req.session.user.id
     console.log(id)
     db.query(`SELECT
   account.id,

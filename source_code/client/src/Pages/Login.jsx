@@ -16,15 +16,13 @@ import AuthWrapper from './AuthWrapper';
 const Login = () => {
     const [password, setPassword] = useState('');
     const [checked, setChecked] = useState(false);
-    const navigate=useNavigate();
+    const redirect=useNavigate();
   
-    const loginHist=useLoaderData();
-  
-    useEffect(()=>{
- if(loginHist.valid){
-        navigate('/')
-    }
-    },[])
+    const resData=useLoaderData();
+ 
+    // useEffect(()=>{
+
+    // },[])
    
     return (        
         <Form method='post'>
@@ -93,17 +91,45 @@ export const action = async({request,parms}) => {
     credentials: 'include'
     })
     const resData=await response.json();
-    
-    
-    if(resData.isLogin && resData.user_type==='guest'){
-       return redirect('/', Route)
-    }else if(resData.user_type==='manager'){
-    return redirect('/manger')
+    if(resData.isLogin){
+    if(resData.user.user_type==='guest'){
+     return redirect('/guest')
+    }else if(resData.user.user_type==='receptionist'){
+     return redirect('/receptionist')
+    }else if(resData.user.user_type==='staff'){
+     return redirect('/staff_member')
+    }else if(resData.user.user_type==='manager'){
+     return redirect('/manager')
+    }else if(resData.user.user_type==='maintenance'){
+     return redirect('/maintenance_team')
     }
-    //console.log(resData)
+} else{
+    return redirect('/loginError')
 }
+
+return resData
+    
+}
+
+
 export const loader = async( )=>{
 const response=await fetch('http://localhost:8000/auth/legal',{method:'GET',   credentials: 'include'})
+
 const resData=await response.json();
+
+ if(resData.valid){
+    
+    if(resData.user.user_type==='manager'){
+        redirect('/manager')
+    }else if(resData.user.user_type==='guest'){
+        redirect('/guest')
+    }else if(resData.user.user_type==='receptionist'){
+        redirect('/receptionist')
+    }else if(resData.user.user_type==='staff'){
+        redirect('/staff_member')
+    }else if(resData.user.user_type==='maintenance'){
+        redirect('/maintenance_team')
+    }
+ }
 return resData
 }

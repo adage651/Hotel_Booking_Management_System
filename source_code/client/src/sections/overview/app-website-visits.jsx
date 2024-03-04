@@ -5,10 +5,19 @@ import Card from '@mui/material/Card';
 import CardHeader from '@mui/material/CardHeader';
 
 import Chart, { useChart } from '../../components/chart';
+import Grid2 from '@mui/material/Unstable_Grid2/Grid2';
+import EventAvailableTwoToneIcon from '@mui/icons-material/EventAvailableTwoTone';
+import SvgColor from '../../components/svg-color';
+import { ReactComponent as ReservationIcon } from '../../icons/reservation.svg';
+
+import 'primeicons/primeicons.css';
 
 // ----------------------------------------------------------------------
 
 export default function AppWebsiteVisits({ title, subheader, chart, ...other }) {
+  const icon = (name) => (
+  <SvgColor src={`/assets/icons/navbar/${name}.svg`} sx={{ width: 1, height: 1 }} />
+);
   const { labels, colors, series, options } = chart;
 
   const chartOptions = useChart({

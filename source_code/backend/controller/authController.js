@@ -45,8 +45,10 @@ if (results.length === 0) {
 
 
 
-req.session.userId = user.id
-return res.status(200).json({isLogin:true,user_type:user.user_type})
+req.session.user = user
+console.log(req.session.user.user_type)
+return res.status(200).json({isLogin:true,user:req.session.user})
+
   //res.status(200).json({path:'/'})
 })
 
@@ -61,7 +63,7 @@ return res.status(200).json({isLogin:true,user_type:user.user_type})
 export const register =(req,res)=>{
 const user=req.body;
 //res.status(200).json({message:req.body})
-db.query('select * from guest where userName=?',[user.userName],(error,results)=>{
+db.query('select * from account where userName=?',[user.userName],(error,results)=>{
     if (error){
         console.log('error while quering the database'+error)
       return  res.status(500).json({error:'Internal server Error'})
@@ -103,9 +105,12 @@ db.query('insert into guest(account_id,userName,firstName,lastName,emailAddress)
    })
 })
 }
+
+
 export const legal =(req,res) =>{
-  if(req.session.userId)
-  return res.status(200).json({valid:true,id:req.session.userId})
-else 
-return res.json({valid:false})
+  if(req.session.user){
+  console.log(req.session.user)
+  return res.status(200).json({valid:true,user:req.session.user})}
+else
+return res.json({valid:false, user:null})
 }

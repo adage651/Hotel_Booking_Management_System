@@ -15,7 +15,7 @@ import AppWidgetSummary from '../app-widget-summary';
 import AppTrafficBySite from '../app-traffic-by-site';
 import AppCurrentSubject from '../app-current-subject';
 import AppConversionRates from '../app-conversion-rates';
-
+import AppDetail from '../app-detail'
 // ----------------------------------------------------------------------
 
 export default function AppView() {
@@ -25,17 +25,12 @@ export default function AppView() {
         Hi, Welcome back 👋
       </Typography>
 
-      <Grid container spacing={3}>
-        <Grid xs={12} sm={6} md={3}>
-          <AppWidgetSummary
-            title="Weekly Sales"
-            total={714000}
-            color="success"
-            icon={<img alt="icon" src="/assets/icons/glass/ic_glass_bag.png" />}
-          />
+      <Grid container columnSpacing={3} spacing={2} >
+        <Grid xs={12} sm={6} md={6}>
+          <AppDetail title='Reservation Detail' />
         </Grid>
 
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} md={6}>
           <AppWidgetSummary
             title="New Users"
             total={1352831}
@@ -44,28 +39,29 @@ export default function AppView() {
           />
         </Grid>
 
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} lg={8}>
           <AppWidgetSummary
-            title="Item Orders"
+            title="Food Orders"
             total={1723315}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_buy.png" />}
           />
         </Grid>
 
-        <Grid xs={12} sm={6} md={3}>
+        <Grid xs={12} sm={6} lg={4}>
           <AppWidgetSummary
             title="Bug Reports"
             total={234}
             color="error"
             icon={<img alt="icon" src="/assets/icons/glass/ic_glass_message.png" />}
           />
+          
         </Grid>
 
         <Grid xs={12} md={6} lg={8}>
           <AppWebsiteVisits
-            title="Website Visits"
-            subheader="(+43%) than last year"
+            title="Reservation Details"
+            subheader="(+43%) than last week"
             chart={{
               labels: [
                 '01/01/2003',

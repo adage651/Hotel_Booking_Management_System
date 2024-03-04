@@ -11,8 +11,14 @@ import TableCell from '@mui/material/TableCell';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
 
-import Label from 'src/components/label';
-import Iconify from 'src/components/iconify';
+import Label from '../../components/label';
+import Iconify from '../../components/iconify';
+import { PropertySafetyOutlined } from '@ant-design/icons';
+import {useRef} from 'react'
+
+
+
+
 
 // ----------------------------------------------------------------------
 
@@ -20,11 +26,13 @@ export default function UserTableRow({
   selected,
   name,
   avatarUrl,
-  company,
+  nationality,
   role,
-  isVerified,
+  emailAddress,
   status,
   handleClick,
+  deleteConfirm,
+  id
 }) {
   const [open, setOpen] = useState(null);
 
@@ -35,9 +43,19 @@ export default function UserTableRow({
   const handleCloseMenu = () => {
     setOpen(null);
   };
+      const showError = () => {
+
+    }
+ const handleDelete=()=>{
+deleteConfirm(id)
+      setOpen(null);
+    };
+
+
 
   return (
     <>
+
       <TableRow hover tabIndex={-1} role="checkbox" selected={selected}>
         <TableCell padding="checkbox">
           <Checkbox disableRipple checked={selected} onChange={handleClick} />
@@ -51,13 +69,9 @@ export default function UserTableRow({
             </Typography>
           </Stack>
         </TableCell>
-
-        <TableCell>{company}</TableCell>
-
+        <TableCell>{emailAddress}</TableCell>
         <TableCell>{role}</TableCell>
-
-        <TableCell align="center">{isVerified ? 'Yes' : 'No'}</TableCell>
-
+        <TableCell>{nationality}</TableCell>
         <TableCell>
           <Label color={(status === 'banned' && 'error') || 'success'}>{status}</Label>
         </TableCell>
@@ -84,7 +98,7 @@ export default function UserTableRow({
           Edit
         </MenuItem>
 
-        <MenuItem onClick={handleCloseMenu} sx={{ color: 'error.main' }}>
+        <MenuItem onClick={handleDelete} sx={{ color: 'error.main' }}>
           <Iconify icon="eva:trash-2-outline" sx={{ mr: 2 }} />
           Delete
         </MenuItem>
@@ -95,11 +109,13 @@ export default function UserTableRow({
 
 UserTableRow.propTypes = {
   avatarUrl: PropTypes.any,
-  company: PropTypes.any,
   handleClick: PropTypes.func,
-  isVerified: PropTypes.any,
   name: PropTypes.any,
   role: PropTypes.any,
+  nationality: PropTypes.any,
   selected: PropTypes.any,
   status: PropTypes.string,
+  emailAddress:PropTypes.string,
+  deleteConfirm:PropTypes.func,
+  id:PropTypes.any
 };

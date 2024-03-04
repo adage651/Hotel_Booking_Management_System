@@ -23,7 +23,7 @@ import { Formik } from 'formik';
 
 // project import
 import FirebaseSocial from './FirebaseSocial';
-import AnimateButton from './AnimateButton';
+import AnimateButton from '../components/AnimateButton';
 import { strengthColor, strengthIndicator } from '../utils/password-strength';
 
 // assets

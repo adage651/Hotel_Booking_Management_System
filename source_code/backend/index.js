@@ -7,7 +7,7 @@ import session from 'express-session'
 
 const app=express()
 app.use(cors({
-  origin: ['http://localhost:3000'],
+  origin: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
   allowedHeaders: 'Content-Type,Authorization',
   credentials: true,
@@ -16,7 +16,7 @@ app.use(
   session({
     key:'userID',
     secret: 'amanualaddisujumasenessa',
-    resave: false,
+    resave: true,
     saveUninitialized: false,
     cookie: {
       maxAge:1000*60*60,
@@ -33,9 +33,11 @@ app.use(bodyParser.urlencoded({extended:true}))
 import auth from './routes/auth.js'
 import landing from './routes/landing.js'
 import pages from './routes/pages.js'
+import users from './routes/users.js'
 
 app.use('/pages',pages)
 app.use('/auth',auth)
+app.use('/users',users)
 
 
 app.listen(8000,(req,res)=>{
