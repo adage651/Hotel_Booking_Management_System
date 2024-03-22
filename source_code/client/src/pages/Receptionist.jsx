@@ -1,6 +1,6 @@
 import { Outlet, Route, Routes, useLoaderData } from "react-router-dom";
 import DashboardLayout from "../layout/dashboard/index.jsx";
-import UserPage ,{ loader as userFetchAll } from '../Pages/userTabel/view/user-view.jsx';
+// import UserPage ,{ loader as userFetchAll } from './userTabel/view/user-view.js';
 import UserContext from "../context/userContext.js";
 import { ControlOutlined } from "@ant-design/icons";
 
