@@ -42,7 +42,7 @@ export default function Nav({ openNav, onCloseNav }) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pathname]);
 
-  console.log(ctx.navConfig)
+
   const renderAccount = (
     <Box
       sx={{
