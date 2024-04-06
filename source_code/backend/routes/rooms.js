@@ -1,5 +1,5 @@
 import express from 'express'
-import {saveRoom,fetchAll,deleteRoom ,fetchRoomData} from '../controller/roomController.js'
+import {saveRoom,fetchAll,deleteRoom ,fetchRoomData,searchRoom,reservedRoom} from '../controller/roomController.js'
 import multer from 'multer'
 import path from 'path'
 import upload from '../middleware/multerMidlware.js'
@@ -10,8 +10,10 @@ router.post('/save',upload.fields([
   { name: 'image2', maxCount: 3 },
   { name: 'image3', maxCount: 4 }
 ]), saveRoom)
+router.post('/searchroom',searchRoom)
 router.get('/fetchall',fetchAll)
 router.delete('/deleteroom:id',deleteRoom)
 router.get('/userdata',fetchRoomData)
+router.get('/searchreservedroom',reservedRoom)
 
 export default router;

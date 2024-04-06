@@ -79,14 +79,14 @@ db.query('select * from account where userName=?',[user.userName],(error,results
       }
 
       // Insert the new user into the database
-      db.query('insert into account (userName,emailAddress,password,user_type) values(?,?,?,?)',[user.userName,user.emailAddress,hashedPassword,'guest'],(error,results)=>{
+      db.query('insert into account (userName,emailAddress,password,user_type,status) values(?,?,?,?,?)',[user.userName,user.emailAddress,hashedPassword,'guest','Active'],(error,results)=>{
          if (error) {
           console.error('Error while inserting user into account database:', error);
         return   res.status(500).json({ error: 'Internal server error while inserting the registerd user in the database' });
         }else {
           const account_id=results.insertId
           console.log(account_id)
-db.query('insert into guest(account_id,userName,firstName,lastName,emailAddress) values(?,?,?,?,?)',[account_id,user.userName,user.firstName,user.lastName,user.emailAddress], (insertError) => {
+db.query('insert into guest (account_id,userName,firstName,lastName,emailAddress) values(?,?,?,?,?)',[account_id,user.userName,user.firstName,user.lastName,user.emailAddress], (insertError) => {
         if (insertError) {
           console.error('Error while inserting user into the database:', insertError);
         return   res.status(500).json({ error: 'Internal server error while inserting the registerd user in the database' });

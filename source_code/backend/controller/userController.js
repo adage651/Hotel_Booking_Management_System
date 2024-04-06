@@ -205,7 +205,7 @@ export const fetchUserData = async (req, res) => {
         return res.status(500).json({ error: 'Internal Server Error: No user found', user: null });
       }
       const user = { ...result[0], status: userAccount.status };
-      return res.status(200).json({ message: 'The user was fetched successfully', user });
+      return res.status(200).json({ error:false,message: 'The user was fetched successfully', user });
     }
   );
 };

@@ -1,4 +1,9 @@
+import {io} from "socket.io-client"
 const Practice =()=>{
+const socket=io();
+socket.on('connet',()=>{
+    console.log("connected sucess")
+})
     return(
          <div class="flex flex-column md:flex-row gap-5" style={{minHeight: "81vh;"}}>
         <div class="md:w-25rem card p-0">
@@ -86,6 +91,9 @@ const Practice =()=>{
                 </div>
             </div>
         </div>
+
+
+
         <div class="flex-1 card p-0">
             <div class="flex flex-column h-full">
                 <div class="flex align-items-center border-bottom-1 surface-border p-3 lg:p-6">
@@ -114,7 +122,7 @@ const Practice =()=>{
                 <div class="p-3 md:px-4 lg:px-6 lg:py-4 mt-2 overflow-y-auto" style={{maxHeight: "53vh;"}}>
                     <div>
                         <div class="grid grid-nogutter mb-4">
-                            <div class="mr-3 mt-1"><img src="/assets/images/avatars/avatar_7.jpg" alt="Ioni Bowcher"
+                            <div class="mr-3 mt-1"><img src="/assets/images/avatars/avatar_8.jpg" alt="Ioni Bowcher"
                                     class="w-3rem h-3rem border-circle shadow-4" /></div>
                             <div class="col mt-3">
                                 <p class="text-900 font-semibold mb-3">Ioni Bowcher</p><span
@@ -127,7 +135,7 @@ const Practice =()=>{
                     </div>
                     <div>
                         <div class="grid grid-nogutter mb-4">
-                            <div class="mr-3 mt-1"><img src="/assets/images/avatars/avatar_5.jpg" alt="Ioni Bowcher"
+                            <div class="mr-3 mt-1"><img src="/assets/images/avatars/avatar_8.jpg" alt="Ioni Bowcher"
                                     class="w-3rem h-3rem border-circle shadow-4" /></div>
                             <div class="col mt-3">
                                 <p class="text-900 font-semibold mb-3">Ioni Bowcher</p><span

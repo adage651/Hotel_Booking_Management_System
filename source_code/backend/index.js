@@ -5,12 +5,16 @@ import cors from 'cors'
 import cookieParser from 'cookie-parser'
 import session from 'express-session'
 import { fileURLToPath } from 'url';
+import {createServer} from 'http'
+import { Server } from 'socket.io';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
 
 const app=express()
+const server=createServer(app)
+
 app.use(cors({
   origin: true,
   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
@@ -47,13 +51,22 @@ import users from './routes/users.js'
 import rooms from './routes/rooms.js'
 import images from './routes/images.js'
 import upload from './middleware/multerMidlware.js'
+import foods from './routes/foods.js';
+import processPayment from './routes/processPayment.js';
+
 app.use('/public/uploads',images)
 app.use('/pages',pages)
 app.use('/auth',auth)
 app.use('/users',users)
 app.use('/rooms',rooms)
+app.use('/foods',foods)
+app.use('/payment',processPayment)
 
+const io = new Server(server)
+io.on('connection',(socket)=>{
+  console.log("new user is add")
+})
 
-app.listen(8000,(req,res)=>{
+server.listen(8000,(req,res)=>{
     console.log('server is up on port 8000')
 })

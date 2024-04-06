@@ -9,11 +9,12 @@ import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
 import "primereact/resources/primereact.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
 import "primeflex/primeflex.css";
-import {Redirect, Route, useLoaderData, useNavigate} from 'react-router-dom'
+import {Redirect, Route, useLoaderData, useNavigate,useLocation} from 'react-router-dom'
 import { Form, redirect, useSubmit } from "react-router-dom"
 import AuthWrapper from './AuthWrapper';
 
 const Login = () => {
+      
     const [password, setPassword] = useState('');
     const [checked, setChecked] = useState(false);
 
@@ -37,14 +38,14 @@ const Login = () => {
                 >
                     <div className="w-full surface-card py-8 px-5 sm:px-8" style={{ borderRadius: '53px' }}>
                         <div className="text-center mb-5">
-                            <img src="https://sakai.primereact.org/demo/images/login/avatar.png" alt="Image" height="50" className="mb-3" />
-                            <div className="text-900 text-3xl font-medium mb-3">Welcome, Isabel!</div>
+                            <img src="/assets/icons/profile.png" alt="Image" height="50" className="mb-3" />
+                            <div className="text-900 text-3xl font-medium mb-3">Welcome, User!</div>
                             <span className="text-600 font-medium">Sign in to continue</span>
                         </div>
 
                         <div>
                             <label htmlFor="email1" className="block text-900 text-xl font-medium mb-2">
-                                Email
+                                UserName
                             </label>
                             <InputText required name='userName' id="email1" type="text" placeholder="Email address" className="w-full md:w-30rem mb-5" style={{ padding: '1rem' }} />
 

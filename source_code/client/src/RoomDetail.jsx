@@ -1,4 +1,4 @@
-
+//https://www.youtube.com/watch?v=xTwUQJZEWQ8
 import React, { useState, useEffect, useRef } from 'react';
 import { classNames } from 'primereact/utils';
 import { DataTable } from 'primereact/datatable';
@@ -22,6 +22,7 @@ import PictureUpload from './PictureUpload';
 import MultiChoose from './MultiChoose';
 import { MultiSelect } from 'primereact/multiselect';
 import { ProgressBar } from 'primereact/progressbar';
+import TemplateDemo from './pages/TemplateDemo';
 
 export default function RoomDatail() {
     let emptyRoom = {
@@ -34,7 +35,10 @@ export default function RoomDatail() {
                     price: 0,
                     features: 0,
                     floor: 0,
-                    rating:0
+                    rating:0,
+                    adult:0,
+                    children:0,
+                    area:0
                 };
 
                 const resData=useLoaderData()
@@ -51,6 +55,7 @@ export default function RoomDatail() {
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
     const [room, setRoom] = useState(emptyRoom);
+
     const [selectedProducts, setSelectedProducts] = useState(null);
     const [submitted, setSubmitted] = useState(false);
     const [globalFilter, setGlobalFilter] = useState(null);
@@ -60,6 +65,9 @@ export default function RoomDatail() {
     const toast = useRef(null);
     const dt = useRef(null);
     const submit =useSubmit();
+    const [adult,setAdult]=useState(0);
+    const [children, setChildren]=useState(0)
+    const [area,setArea]=useState(0)
 
     useEffect(() => {
     //    ProductService.getProducts().then((data) => setRooms(data)); 
@@ -153,18 +161,18 @@ export default function RoomDatail() {
     setRoom((prevRoom) => ({ ...prevRoom, [fieldName]: value }));
   };
 
-  const onTemplateUpload = (event) => {
-            let _totalSize = 0;
+//   const onTemplateUpload = (event) => {
+//             let _totalSize = 0;
 
-        event.files.forEach((file) => {
-            _totalSize += file.size || 0;
-        });
-        setTotalSize(_totalSize);
+//         event.files.forEach((file) => {
+//             _totalSize += file.size || 0;
+//         });
+//         setTotalSize(_totalSize);
         
-          setRoom((prevRoom) => ({ ...prevRoom, roomImage: event.files }));
+//           setRoom((prevRoom) => ({ ...prevRoom, roomImage: event.files }));
  
-          toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
-  };
+//           toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
+//   };
 
 
     const leftToolbarTemplate = () => {
@@ -263,6 +271,9 @@ e.preventDefault();
     formData.append('occupacy', room.occupacy);
     formData.append('description', room.description);
     formData.append('price', room.price);
+    formData.append('adult', room.adult);
+    formData.append('children', room.children);
+    formData.append('area', room.area);
 room.roomImage.forEach((roomimg,index)=>{
 formData.append(`image${index}`, roomimg);
 })
@@ -300,27 +311,27 @@ const typeOpetion=[
     const [totalSize, setTotalSize] = useState(0);
     const fileUploadRef = useRef(null);
     
-    const onTemplateSelect = (e) => {
-        let _totalSize = totalSize;
-        let files = e.files;
+    // const onTemplateSelect = (e) => {
+    //     let _totalSize = totalSize;
+    //     let files = e.files;
 
-        Object.keys(files).forEach((key) => {
-            _totalSize += files[key].size || 0;
-        });
+    //     Object.keys(files).forEach((key) => {
+    //         _totalSize += files[key].size || 0;
+    //     });
 
-        setTotalSize(_totalSize);
-    };
+    //     setTotalSize(_totalSize);
+    // };
 
 
 
-    const onTemplateRemove = (file, callback) => {
-        setTotalSize(totalSize - file.size);
-        callback();
-    };
+    // const onTemplateRemove = (file, callback) => {
+    //     setTotalSize(totalSize - file.size);
+    //     callback();
+    // };
 
-    const onTemplateClear = () => {
-        setTotalSize(0);
-    };
+    // const onTemplateClear = () => {
+    //     setTotalSize(0);
+    // };
 
     const headerTemplate = (options) => {
         const { className, chooseButton, uploadButton, cancelButton } = options;
@@ -371,7 +382,10 @@ const typeOpetion=[
     const chooseOptions = { icon: 'pi pi-fw pi-images', iconOnly: true, className: 'custom-choose-btn p-button-rounded p-button-outlined' };
     const uploadOptions = { icon: 'pi pi-fw pi-cloud-upload', iconOnly: true, className: 'custom-upload-btn p-button-success p-button-rounded p-button-outlined' };
     const cancelOptions = { icon: 'pi pi-fw pi-times', iconOnly: true, className: 'custom-cancel-btn p-button-danger p-button-rounded p-button-outlined' };
-
+const uploads=(imageFile)=>{
+   setRoom((prevRoom) => ({ ...prevRoom, roomImage: imageFile })); 
+   toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
+}
 
 
     return (
@@ -430,7 +444,7 @@ const typeOpetion=[
 
                 <div className="formgrid grid">
                                         <div className="field col">
-                        <label htmlFor="quantity" className="font-bold">
+                        <label htmlFor="occupacy" className="font-bold">
                         Max occupacy
                         </label>
             <div className="flex-auto">
@@ -439,10 +453,28 @@ const typeOpetion=[
             
                     </div>
                     <div className="field col">
-                        <label htmlFor="roomNum" className="font-bold">
+                        <label htmlFor="roomNumber" className="font-bold">
                             Room No
                         </label>
                         <InputNumber name='roomNumber' id="roomNumber" value={room.roomNumber} onValueChange={(e) => onInputNumberChange(e, 'roomNumber')}  />
+                    </div>
+
+                </div>  
+                  <div className="formgrid grid">
+                    <div className="field col">
+                        <label htmlFor="Adult" className="font-bold">
+                        Adult
+                        </label>
+            <div className="flex-auto">
+                <InputNumber name='Adult' inputId="minmax-buttons" value={room.adult} onValueChange={(e) => {onInputNumberChange(e,'adult');setAdult(e.value)}} mode="decimal" showButtons min={0} max={6} />
+            </div>
+            
+                    </div>
+                    <div className="field col">
+                        <label htmlFor="children" className="font-bold">
+                            Children
+                        </label>
+                        <InputNumber name='children' id="children" value={room.children} onValueChange={(e) => onInputNumberChange(e, 'children')}  />
                     </div>
 
                 </div>  
@@ -459,12 +491,19 @@ const typeOpetion=[
                         </label>
                         <InputNumber name='price' id="price" value={room.price} onValueChange={(e) => onInputNumberChange(e, 'price')} mode="currency" currency="USD" locale="en-US" />
                     </div>
+                     <div className="field col">
+                        <label htmlFor="roomNum" className="font-bold">
+                            area
+                        </label>
+                        <InputNumber name='roomNumber' id="roomNumber" value={room.area} onValueChange={(e) => onInputNumberChange(e, 'roomNumber')}  />
+                    </div>
                 </div>  
                  <label htmlFor="photo" className="font-bold">
                             Room photo
                         </label>
 
-                <div>
+<TemplateDemo uploads={uploads} message='Drag and Drop Room Picture here!!!' multiple="image/*"/>
+         {/* <div>
             <Tooltip target=".custom-choose-btn" content="Choose" position="bottom" />
             <Tooltip target=".custom-upload-btn" content="Upload" position="bottom" />
             <Tooltip target=".custom-cancel-btn" content="Clear" position="bottom" />
@@ -475,16 +514,16 @@ const typeOpetion=[
                 headerTemplate={headerTemplate} itemTemplate={itemTemplate} emptyTemplate={emptyTemplate}
                 chooseOptions={chooseOptions} uploadOptions={uploadOptions} cancelOptions={cancelOptions} />
                
-        </div>
+        </div> */}
 
 
                 <Grid container  rowSpacing={2} marginTop={'1rem'}> 
-                <Grid xs={6}>  
-            <Button style={{marginLeft:'-0.75rem'}} type='reset' label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
-         </Grid> 
-         <Grid xs={6}>
-            <Button label="Save" icon="pi pi-check" type='submit'  />
-            </Grid>
+                   <Grid xs={6}>  
+                        <Button style={{marginLeft:'-0.75rem'}} type='reset' label="Cancel" icon="pi pi-times" outlined onClick={hideDialog} />
+                   </Grid> 
+                    <Grid xs={6}>
+                        <Button label="Save" icon="pi pi-check" type='submit'  />
+                    </Grid>
             
               </Grid>      
                            

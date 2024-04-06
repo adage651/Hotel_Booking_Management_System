@@ -32,26 +32,30 @@ import UserPage ,{ loader as userFetchAll } from './pages/userTabel/view/user-vi
 import RoomDetail,{action as actionRoom,loader as roomLoader} from './RoomDetail.jsx';
 import LoginErrorPage from './pages/LoginErrorPage.jsx';
 import LoginError from './pages/LoginError.jsx'
-import LandingPage from './pages/LandingPage.jsx';
+import LandingPage, {loader as userLoader} from './pages/LandingPage.jsx';
 import Receptionist ,{loader as receptionstLoader} from './pages/Receptionist.jsx';
 import Staff,{loader as staffLoader} from './pages/Staff.jsx';
 import Maintenance from './pages/Maintenance.jsx';
 import Practice from './Practice.jsx';
+import FoodDetail,{loader as foodLoader,action as actionFood} from './FoodDetail.jsx';
 
 
         
 
 const router=createBrowserRouter(
-  [{path:'/manager', element:<Manager />,loader:fetchUserData,
+  [
+    {path:'/', element:<LandingPage />, loader:userLoader },
+    
+    {path:'/manager', element:<Manager />,loader:fetchUserData,
     children:[
       // {path:'view-account', element:<UserPage /> ,loader:userFetchAll},
       {path:'rooms', element:<RoomDetail />, loader:roomLoader,action:actionRoom},
-            {path:'view-account', element:<Practice />},
+      {path:'view-account', element:<UserPage />,loader:userFetchAll },
       {path:'', element:<DashbordData />},
-
         ],
       // errorElement:<LoginError />
     },
+    
     
 
     {path:'/receptionist', element:<Receptionist />,loader:receptionstLoader
@@ -64,26 +68,21 @@ const router=createBrowserRouter(
       {path:'rooms', element:<RoomDetail />}
     ] 
   ,errorElement:<LoginError /> },
-    {path:'/maintenace_team', element:<Maintenance />,
+    { path:'/maintenace_team', element:<Maintenance />,
     children:[
       {path:'user', element:<UserPage /> ,loader:userFetchAll},
       {path:'rooms', element:<RoomDetail />}
       
     ]  
   ,errorElement:<LoginError />},
-     {path:'/guest', element:<LandingPage />,
-    children:[
-      {path:'user', element:<UserPage /> ,loader:userFetchAll},
-      {path:'rooms', element:<RoomDetail />}
-      
-    ],errorElement:<LoginError />
+     {path:'/guest', element:<LandingPage /> ,loader:userLoader,errorElement:<LoginError />
     },
 
-  {path:'/' ,element:<Login />,action:loginAction ,loader:loginLoader },
+  {path:'/login' ,element:<Login />,action:loginAction ,loader:loginLoader },
   {path:'/loginError' ,element:<LoginError />},
   {path:'/register' ,element:<Register /> ,loader:loginLoader,children:[
   {index:true ,element:<AuthRegister /> ,action:authAction}
-],errorElement:<LoginError /> 
+  ],errorElement:<LoginError /> 
 }
 
 ]

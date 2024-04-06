@@ -9,3 +9,4 @@ router.delete('/deleteuser:id',deleteUser)
 router.get('/userdata',fetchUserData)
 
 export default router;
+
