@@ -13,7 +13,7 @@ import { Card } from 'primereact/card';
 import { Carousel } from 'primereact/carousel';
 import { InputNumber } from 'primereact/inputnumber'
 import { MultiSelect } from 'primereact/multiselect'
-import { useNavigate, redirect, useLoaderData } from 'react-router-dom';
+import { useNavigate, redirect, useLoaderData, Outlet } from 'react-router-dom';
 import { Divider } from 'primereact/divider';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import MaterialButton from '@mui/material/Button';
@@ -25,7 +25,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers-pro';
 import { AdapterDayjs } from '@mui/x-date-pickers-pro/AdapterDayjs';
 import { DateRangePicker } from '@mui/x-date-pickers-pro/DateRangePicker';
 import dayjs from 'dayjs';
-import { TextField, InputAdornment, Grid } from '@mui/material';
+import { TextField, InputAdornment, Grid, ButtonBase } from '@mui/material';
 import CalendarTodayIcon from '@mui/icons-material/CalendarToday';
 import { Typography } from '@mui/material';
 import Stepper from '@mui/material/Stepper';
@@ -37,11 +37,19 @@ import { SingleInputDateRangeField } from '@mui/x-date-pickers-pro/SingleInputDa
 import { Message } from 'primereact/message';
 import {Chips} from 'primereact/chips'
 import {InputMask} from 'primereact/inputmask'
-import { FileUpload } from 'primereact/fileupload';
+import GallariaAdvanced from './GallariaAdvanced.jsx'
+
 import TemplateDemo from './TemplateDemo';
 import { Toast } from 'primereact/toast';
+import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
+import { loadStripe } from '@stripe/stripe-js';
+import { BugTwoTone } from '@ant-design/icons';
+import { Checkbox } from 'primereact/checkbox';
+const stripePromise = loadStripe('pk_test_51Ojz3qKilyE0iH1nwO0Vh8H9rf7CIb2TRqCJniXrrn2MgdhOVP8MUd6AX42YCEc4MD8SOFFxXlzR5RHfzLWj7S4Z00vzuRkWC5');
 const LandingPage = () => {
-
+  const [activeItem, setActiveItem] = useState('Home');
+    const [activeStep, setActiveStep] = React.useState(0);
+  const [skipped, setSkipped] = React.useState(new Set());
 const navigate=useNavigate();
     const toast = useRef(null);
   const steps = ['Rooms', 'Gust Details', 'Payment', 'Confirmation'];
@@ -50,7 +58,15 @@ const secondDate=currentDate.add(2,'day').format('YYYY-MM-DD');
   const [roomType, setRoomType] = useState(null)
   const [login, setLogin] = useState(false);
   const resData = useLoaderData();
-  const disabledDates =resData.reservedData;
+const [selectRoom,setSelectRoom]=useState()
+
+  
+  const [startDate, setStartDate] = useState(null);
+const [endDate, setEndDate] = useState(null);
+const[calendarError,setCalendarError]=useState(false);
+const [errorMesage,setErrorMessage]=useState('');
+const [amount, setAmount] = useState(30);
+const [paymentStat, setPaymentStatus] = useState('tekeflual');
 
   const [userData, setUserData] = useState({firstName:'',lastName:''});
     const [values, setValues] = useState([]);
@@ -61,25 +77,143 @@ const [guestData,setGuestData]=useState({firstName:'',lastName:'',emailAddress:'
     dayjs(currentDate),
     dayjs(secondDate),
   ]);
+  console.log(resData.reservedData)
+  const disabledRanges=resData.reservedData.map(range => ({
+      checkinDate: dayjs(range.checkinDate),
+      checkoutDate: dayjs(range.checkoutDate)
+    }));
+console.log(disabledRanges)
+const [failedStep,setStepFailed]=useState([]);
 
-  const [activeStep, setActiveStep] = React.useState(0);
-  const [skipped, setSkipped] = React.useState(new Set());
 
-  const isStepOptional = (step) => {
-    return step === 1;
-  };
 
   const isStepSkipped = (step) => {
     return skipped.has(step);
   };
+const [acceptTheRoom,setAcceptTheRoom]=useState(false)
 
-  const gotoNext=(selectedRoom=null,withSpaAndFood=false)=>{
-if(userData){
- return  navigate('/login',selectedRoom)
+  const accept = () => {
+          setActiveStep(1);
+    setActiveItem('search');
+        toast.current.show({ severity: 'info', summary: 'Confirmed', detail: 'You have accepted', life: 3000 });
+    }
+
+    const reject = () => {
+      setAcceptTheRoom(false)
+      localStorage.removeItem('selectedRoom')
+        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+    }
+
+    const confirm1 = (message) => {
+        confirmDialog({
+            message,
+            header: 'Confirmation',
+            icon: 'pi pi-exclamation-triangle',
+            defaultFocus: 'accept',
+            accept,
+            reject
+        });
+    }; 
+
+
+useEffect(() => {
+  //handleCheckStatus()
+  const roomIsSet=localStorage.getItem('selectedRoom')
+  console.log(paymentStat)
+if(roomIsSet&&paymentStat==='paid'){
+  successPaid();
+  return;
+} else if(roomIsSet&& (paymentStat==='unpaid'||paymentStat==='unknown')){
+  paymentFaild()
+   return;
+}else if(roomIsSet){
+    const selecByUserRoom=JSON.parse(roomIsSet)
+  confirm1(`Do you want to continue booking the selected room :" ${selecByUserRoom.roomName} " room number ${selecByUserRoom.roomNumber}`)
 }
-    handleNext(true)
-    console.log(selectedRoom)
+
+}, [login, paymentStat]);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+const successPaid = async () => {
+const selectedRoom=JSON.parse( localStorage.getItem('selectedRoom'))
+  const userDataFinal = JSON.parse(localStorage.getItem('guestData'));
+  //  localStorage.removeItem('selectedRoom');
+  setSelectRoom(selectedRoom)
+  localStorage.removeItem('sessionId');
+  const [checkin,checkout]=date;
+const checkinDate=checkin.format('YYYY-MM-DD');
+const checkoutDate=checkout.format('YYYY-MM-DD');
+  const reservationData = {
+    guestId: userData.id,
+    roomId: selectedRoom.id,
+    checkinDate,
+    checkoutDate,
+    withBreackFast: selectedRoom.withSpaAndFood,
+  };
+
+  const formData = new FormData();
+  formData.append('guestId', userData.id);
+  formData.append('roomId', selectedRoom.id);
+  formData.append('checkinDate', checkinDate);
+  formData.append('checkoutDate', checkoutDate);
+  formData.append('price',selectedRoom.price)
+  formData.append('withBreackFast', selectedRoom.withSpaAndFood);
+
+  const fileUploadresponse=await fetch(userDataFinal.idCardPic[0].objectURL)
+    const blob = await fileUploadresponse.blob();
+    const file = new File([blob], 'image.jpg', { type: blob.type });
+  formData.append('identificationCardPic',file)
+  try {
+    const response = await fetch('http://localhost:8000/reservation/create', {
+  method: 'POST',
+  body: formData,
+});
+
+    if (response.ok) {
+const res=await response.json();
+console.log(res)
+      setActiveItem('search');
+      setStepFailed([]);
+      setActiveStep(3);
+      setPaymentStatus(null);
+    } else {
+      console.log('Failed to create reservation.');
+    }
+  } catch (error) {
+    console.error('Error in POST request:', error);
   }
+};
+
+const paymentFaild=()=>{
+  setActiveStep(2)
+     setStepFailed([2])
+  setActiveItem('search')
+}
+
+const gotoNext=(selectedRoom=null,withSpaAndFood=false)=>{
+if(resData.error){
+ localStorage.setItem('selectedRoom', JSON.stringify({...selectedRoom,withSpaAndFood}));
+console.log(localStorage.getItem('selectedRoom'))
+  return  navigate('/login',selectedRoom)
+}
+ localStorage.setItem('selectedRoom', JSON.stringify(selectedRoom));
+
+    handleNext(true)
+  
+ }
   const handleNext = (wheatherToNext=false) => {
     let newSkipped = skipped;
     if(wheatherToNext){
@@ -114,66 +248,58 @@ if(userData){
     });
   };
 
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  // const handleReset = () => {
+  //   setActiveStep(0);
+  // };
 
-const disableDates = (day) => {
-    const date = dayjs(day);
-    if(disabledDates==null){
-      return null;
-    }
-    return disabledDates.some(disabledDate => date.isSame(disabledDate, 'day'));
-  };
-const [startDate, setStartDate] = useState(null);
-const [endDate, setEndDate] = useState(null);
-const[calendarError,setCalendarError]=useState(false);
-const [errorMesage,setErrorMesage]=useState('');
+const handleDateChange = (newValue) => {
+  const startDate = newValue[0];
+  const endDate = newValue[1];
 
-const handleDateChange = (newDate) => {
-    const startDate = newDate[0];
-    const endDate = newDate[1];
+  // Check if both start and end dates are selected
+  if (startDate && endDate) {
+    // Convert disabledRanges to dayjs objects
 
 
-    // Check if the selected range includes any disabled dates
-    console.log(disabledDates);
-    if(disabledDates===undefined){
-      setCalendarError(false);
-      setErrorMesage('');
-      if(startDate!==null && endDate!==null){
-      setDate([startDate.add(1, 'day'),endDate.add(1, 'day')]);}
-      
-      return
-    }
-    const includesDisabledDate = disabledDates.some(disabledDate =>
-      (startDate.isSame(disabledDate, 'day') || startDate.isBefore(disabledDate, 'day')) &&
-      (endDate.isSame(disabledDate, 'day') || endDate.isAfter(disabledDate, 'day'))
+    // Check if any date within the selected range is disabled
+    const includesDisabledRange = disabledRanges.some(disabledRange =>
+      (startDate.isBefore(disabledRange.checkinDate, 'day') && endDate.isAfter(disabledRange.checkoutDate, 'day'))
     );
 
-    if (includesDisabledDate) {
+    if (includesDisabledRange) {
       setCalendarError(true);
-      setErrorMessage(`${includesDisabledDate[0]} are not available`);
+      setErrorMessage('One or more selected date ranges are reserved.');
     } else {
-      setDate(newValue);
       setCalendarError(false);
       setErrorMessage('');
     }
-  };
+  } else {
+    setCalendarError(false);
+    setErrorMessage('');
+  }
 
+  setDate(newValue);
+};
+
+const shouldDisableDate = (day) => {
+  return disabledRanges.some(disabledRange =>
+    day.isSame(disabledRange.checkinDate, 'day') ||
+    day.isSame(disabledRange.checkoutDate, 'day') ||
+    (day.isAfter(disabledRange.checkinDate, 'day') && day.isBefore(disabledRange.checkoutDate, 'day'))
+  );
+};
 
 
   if (!resData.error) {
-    if(userData.firstName!==''){
+
+    if(userData.firstName===''){
     setUserData({
-      profilePicture: resData.user.profilePicture,
-      firstName: resData.user.firstName,
-      lastName: resData.user.lastName,
-      emailAddress: resData.user.emailAddress,
-    })
-    setGuestData({firstName:resData.user.firstName,lastName:resData.user.lastName,emailAddress:resData.user.emailAddress})
-    if (!login){ setLogin(true)
-    console.log(login)
-  }
+  ...resData.user
+    }
+  
+    )
+  setGuestData({firstName:resData.user.firstName,lastName:resData.user.lastName,emailAddress:resData.user.emailAddress})
+   setLogin(true)
 }
 }
 
@@ -256,7 +382,7 @@ const handleDateChange = (newDate) => {
 
 const submitCurrentUserData=(e)=>{
 e.preventDefault()
-console.log(guestData)
+handleNext(true)
 }
 
   const signupHandle = () => {
@@ -347,11 +473,11 @@ setFeatchedRoom((prvValue)=>{
   };
   const carouselRef = useRef(null);
   const op = useRef(null);
+let optionalStep=[];
 
 
 
 
-  const [activeItem, setActiveItem] = useState('Home');
 
   const searchHandler = () => {
     setActiveItem('search')
@@ -378,34 +504,59 @@ setFeatchedRoom((prvValue)=>{
     setSelectedRange(range);
   };
 
-  const handleClick = async (amount) => {
-    try {
-      const response = await fetch(
-        "http://localhost:8000/payment/create-checkout-session",
-        {
-          method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            items: [{ id: 1, quantity: 1 }],
-            amount: parseInt(amount),
-          }),
-        }
-      );
 
-      if (response.ok) {
-        const { url } = await response.json();
-        window.location = url;
-        console.log(url);
-      } else {
-        const error = await response.json();
-        throw new Error(error.error);
+
+
+
+
+const [sessionIds,setSessionId]=useState()
+ const handlePayment = async () => {
+    try {
+      const stripe = await stripePromise;
+      const response = await fetch('http://localhost:8000/payment/create-checkout-session', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ amount,userId:userData.id }),
+      });
+      const { sessionId } = await response.json();
+localStorage.setItem('sessionId',sessionId)
+console.log(sessionId)
+      const { error } = await stripe.redirectToCheckout({ sessionId });
+
+      if (error) {
+        console.error('Error redirecting to checkout:', error);
       }
     } catch (error) {
-      console.error(error);
+      console.error('Error creating payment:', error);
     }
   };
+
+  const handleCheckStatus = async () => {
+  try {
+    const userSession = localStorage.getItem('sessionId');
+    if(userSession){
+    const response = await fetch('http://localhost:8000/payment/status', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ sessionId: userSession }), // Corrected line
+      credentials: 'include',
+    });
+    const { paymentStatus } = await response.json();
+setPaymentStatus(paymentStatus);
+ }
+ } catch (error) {
+    console.error('Error checking payment status:', error);
+  }
+};
+  const isStepFailed = (step) => {
+   return failedStep.includes(step);
+  };
+const isStepOptional=(step)=>{
+return optionalStep.includes(step)
+}
+
+
+
 
 
   // Function to check if a date should be disabled
@@ -444,7 +595,7 @@ const uploads=(imageFile)=>{
                     onChange={handleDateChange}
                     localeText={{ start: 'Check-in', end: 'Check-out' }}       
                      slots={{ field: SingleInputDateRangeField }}
-                       shouldDisableDate={disableDates}
+                       shouldDisableDate={shouldDisableDate}
                         allowSameDateSelection
                   />
                   {calendarError&&<Message severity="error" style={{marginTop:'5px'}} text={errorMesage}></Message>}
@@ -505,7 +656,7 @@ const uploads=(imageFile)=>{
                     onChange={handleDateChange}
                     localeText={{ start: 'Check-in', end: 'Check-out' }}       
                      slots={{ field: SingleInputDateRangeField }}
-                       shouldDisableDate={disableDates}
+                       shouldDisableDate={shouldDisableDate}
                         allowSameDateSelection
                   />
                   {calendarError&&<Message severity="error" style={{marginTop:'5px'}} text={errorMesage}></Message>}
@@ -554,7 +705,7 @@ const uploads=(imageFile)=>{
             </div>
             </form>
             <Box sx={{ width: '100%' }}>
-              <Stepper activeStep={activeStep}>
+              <Stepper activeStep={activeStep} sx={{padding: '30px 0px'}}>
                 {steps.map((label, index) => {
                   const stepProps = {};
                   const labelProps = {};
@@ -566,6 +717,16 @@ const uploads=(imageFile)=>{
                   if (isStepSkipped(index)) {
                     stepProps.completed = false;
                   }
+               
+          if (isStepFailed(index)) {
+            labelProps.optional = (
+              <Typography variant="caption" color="error">
+                Not Successfull
+              </Typography>
+            );
+
+            labelProps.error = true;
+          }
                   return (
                     <Step key={label} {...stepProps}>
                       <StepLabel {...labelProps}>{label}</StepLabel>
@@ -668,7 +829,7 @@ const uploads=(imageFile)=>{
                                               </div>
                                           </div>
                                           <div className="thumb-cards_button">
-                                          {/* <MaterialButton
+                                          <MaterialButton
                                           onClick={()=>{
                                             gotoNext(element,false)
                                           }}
@@ -676,7 +837,7 @@ const uploads=(imageFile)=>{
                                                   className="button_btn button_primary button_sm"
                                                   datatest="Button">
                                                     <span>Book Now</span>
-                                              </MaterialButton > */}
+                                              </MaterialButton >
                                             </div>
                                       </div>
                                   </div>
@@ -705,8 +866,8 @@ const uploads=(imageFile)=>{
                                           </div>
                                           <div className="thumb-cards_button">
                                           <MaterialButton
-                                          onClick={(element)=>{
-                                              gotoNext(element);
+                                          onClick={(e)=>{
+                                              gotoNext(element,false);
                                           }}
                                             variant="contained"
                                                   className="button_btn button_primary button_sm"
@@ -767,44 +928,73 @@ const uploads=(imageFile)=>{
                      <TemplateDemo multiple='none' uploads={uploads} message='Drag and drop the id Card Picture here'/>
                      </div>
                      </div> 
-                  <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', paddingTop: '10px' }}>
+                  {/* <div style={{ display: 'flex', flexDirection: 'row', justifyContent: 'flex-end', alignItems: 'center', paddingTop: '10px' }}>
                     <Button style={{ paddingLeft: '13px' }} label='Cancel' outlined text />
-                    <Button label='Submit'  style={{ paddingLeft: '13px' }} type='submit' />
-                  </div>
-                   
-                  </form>
-                  </div>
-  </div>
-
-              )}
-               { activeStep === 2 && (
-                  <Button label="Procced to payment" onClick={() => handleClick(10)} severity="info" outlined />
-               )
-               
-               }
-
-              {activeStep === steps.length ? (
-                <React.Fragment>
-                  <Typography sx={{ mt: 2, mb: 1 }}>
-                    All steps completed - you&apos;re finished
-                  </Typography>
-                  <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                    <Box sx={{ flex: '1 1 auto' }} />
-                    <MaterialButton onClick={handleReset}>Reset</MaterialButton>
-                  </Box>
-                </React.Fragment>
-              ) : (
-                <React.Fragment>
-                  <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography>
-                  <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
-                    <MaterialButton
+                    <Button label='Submit'  style={{ paddingLeft: '13px' }} type='submit' onclick={()=>{
+                          handleNext(true)
+                    }} />
+                  </div> */}
+                                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                    <Button
                       color="inherit"
                       disabled={activeStep === 0}
                       onClick={handleBack}
                       sx={{ mr: 1 }}
-                    >
-                      Back
-                    </MaterialButton>
+                      label='Back'
+                   />
+                      
+                    
+                    <Box sx={{ flex: '1 1 auto' }} />
+                    <Button onClick={()=>{ 
+                    localStorage.setItem('guestData',JSON.stringify(guestData))  
+                      handleNext(true)
+                    }
+                    }
+                     label={activeStep === steps.length - 1 ? 'Finish' : 'Continue Booking'}
+                    type='submit'
+                    /> 
+                  </Box>
+                   
+                  </form>
+                  </div>
+
+  </div>
+
+              )}
+               { activeStep === 2 && (<div>
+ <section class="guest-policies_container" style={{paddingLeft:'10px'}}><h2 class="app_heading1"><span>Policies:</span></h2>
+ 
+ <div class="guest-policies_hotelDetails"><div class="guest-policies_checkIn"><b><span>Check-in</span></b><span>After 3:00 PM</span></div><div class="guest-policies_checkOut"><b><span>Check-out</span></b><span>Before 12:00 PM</span></div></div><div class="guest-policies_perRoom"><h3 class="app_subheading1"><span>Room 1 <span>{'Single Room'}</span></span></h3><div class="guest-policies_guaranteePolicy"><h4 class="app_subheading2"><span>Guarantee Policy</span></h4><span>The full amount of the stay will be charged to the Credit Card 48 hours prior to the arrival date.
+In the event of a no-show, the full stay will be charged.</span>&nbsp;</div>
+<div class="guest-policies_guaranteePolicy"><h4 class="app_subheading2"><span>Guarantee Policy</span></h4><span>Free cancellation is available up to 48 hours before the scheduled arrival date.
+In the event of a no-show, the full stay will be charged.
+The full amount of the stay will be charged to the Credit Card 48 hours prior to the arrival date.
+Cancellation before 48 hours to the arrival date is possible with a refund of 90% of the booking amount.
+Cancellation within 48 hours of the arrival date or in the case of a no-show, no refund will be provided (non-refundable).</span>&nbsp;</div>
+
+<div class="guest-policies_guaranteePolicy"><h4 class="app_subheading2"><span>Modification Policy</span></h4><span>
+Modifications to the reservation can be made up to 48 hours before the scheduled arrival date, subject to availability.
+Changes made within 48 hours of the arrival date may incur additional charges or penalties, depending on the hotel's policy.
+Any modifications to the reservation, including changes to the dates, room type, or guest names, are subject to confirmation by the hotel.
+Please note that any modifications may be subject to rate differences, and the guest will be responsible for any additional costs incurred due to the changes.</span>&nbsp;</div>
+
+
+
+
+
+</div></section>
+ <section class="policy-acknowledgement_container" style={{paddingLeft:'10px'}}>><h2 class="app_heading1"><span>Acknowledgement</span></h2><b class="policy-acknowledgement_acceptanceOfTermsAndConditions"><span>By completing this booking, I agree with the Booking Conditions.</span></b><div class="policy-acknowledgement_privacyCheckbox"><Checkbox aria-required="true" aria-labelledby="privacyPolicy_labelled-by" data-error="false" id="privacyPolicy" type="checkbox"  ></Checkbox><label for="privacyPolicy"><b><span class="policy-checkbox-description-link_required" aria-hidden="true">* </span><span>I agree with the Privacy Terms.</span></b></label><div role="alert"></div></div></section>
+
+                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                    <Button
+                      color="inherit"
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      sx={{ mr: 1 }}
+                      label='Back'
+                   />
+                      
+                    
                     <Box sx={{ flex: '1 1 auto' }} />
                     {isStepOptional(activeStep) && (
                       <MaterialButton color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
@@ -812,12 +1002,84 @@ const uploads=(imageFile)=>{
                       </MaterialButton>
                     )}
 
-                    <MaterialButton onClick={()=>{
-                      handleNext(false)
-                    }}>
-                      {activeStep === steps.length - 1 ? 'Finish' : 'Next'}
-                    </MaterialButton>
+                    <Button onClick={handlePayment}
+                     label={activeStep === steps.length - 1 ? 'Finish' : 'Procced to payment'}
+                     severity="info" outlined
+                    />
+                   
                   </Box>
+
+                
+                   
+               </div>
+                  
+                  )
+               
+               }
+
+
+               {activeStep ===3 &&(
+               <div>
+                                <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                    <Button
+                      color="inherit"
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      sx={{ mr: 1 }}
+                      label='Back'
+                   />
+                      
+                    
+                    <Box sx={{ flex: '1 1 auto' }} />
+                    {isStepOptional(activeStep) && (
+                      <MaterialButton color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                        Skip
+                      </MaterialButton>
+                    )}
+
+                    <Button disabled={true}
+                     label={activeStep === steps.length - 1 ? 'Finished' : 'Finished'}
+                     severity="info" outlined
+                    />
+                   
+                  </Box>
+               </div>
+               )}
+
+              {activeStep === steps.length ? (
+                <React.Fragment>
+                  <Typography sx={{ mt: 2, mb: 1 }}>
+                    All steps completed - you&apos;re finished
+                  </Typography>
+                  {/* <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                    <Box sx={{ flex: '1 1 auto' }} />
+                    <MaterialButton onClick={handleReset}>Reset</MaterialButton>
+                  </Box> */}
+                </React.Fragment>
+              ) : (
+                <React.Fragment>
+                  {/* <Typography sx={{ mt: 2, mb: 1 }}>Step {activeStep + 1}</Typography> */}
+                  {/* <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                    <Button
+                      color="inherit"
+                      disabled={activeStep === 0}
+                      onClick={handleBack}
+                      sx={{ mr: 1 }}
+                      label='Back'
+                   />
+                      
+                    
+                    <Box sx={{ flex: '1 1 auto' }} />
+                    {isStepOptional(activeStep) && (
+                      <MaterialButton color="inherit" onClick={handleSkip} sx={{ mr: 1 }}>
+                        Skip
+                      </MaterialButton>
+                    )}
+
+                    <Button onClick={()=>{ handleNext(true)}}
+                     label={activeStep === steps.length - 1 ? 'Finish' : 'Continue Booking'}
+                    />
+                  </Box> */}
                 </React.Fragment>
               )}
 
@@ -862,12 +1124,14 @@ const uploads=(imageFile)=>{
   return (
     <div>
 <Toast ref={toast} />
+<ConfirmDialog />
       <Menubar model={items} start={start} end={end} />
 
       <div>
         {renderContent()}
       </div>
-
+      <div className='card' style={{display:'flex', alignItems:'center',justifyContent:'center'}}><h2>Our Rooms</h2></div>
+<GallariaAdvanced />
     </div>
   )
 }
@@ -881,11 +1145,10 @@ export const loader = async () => {
   let resData = await response.json();
   const reservedRoom = await fetch('http://localhost:8000/rooms/searchreservedroom')
 const reservedData = await reservedRoom.json();
+//console.log(reservedData)
 const finalResult = {...resData,reservedData}
 
-  if (resData.error) {
-    return { error: true }
-  }
 
-  return resData;
+
+  return finalResult;
 }       

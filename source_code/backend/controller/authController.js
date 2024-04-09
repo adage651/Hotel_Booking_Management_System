@@ -60,51 +60,124 @@ return res.status(200).json({isLogin:true,user:req.session.user})
 
 
 
-export const register =(req,res)=>{
-const user=req.body;
-//res.status(200).json({message:req.body})
-db.query('select * from account where userName=?',[user.userName],(error,results)=>{
-    if (error){
-        console.log('error while quering the database'+error)
-      return  res.status(500).json({error:'Internal server Error'})
-    }
-    if (results.length > 0) {
-    return   res.status(409).json({ error: 'Username already exists' });
-    }
-//res.status(200).json({message:user})
-   bcrypt.hash(user.password, 10, (bcryptError, hashedPassword) => {
-      if (bcryptError) {
-        console.error('Error while hashing password:', bcryptError);
-       return  res.status(500).json({ error: 'Internal server error' });
-      }
+// export const register =(req,res)=>{
+// const user=req.body;
+// //res.status(200).json({message:req.body})
+// db.query('select * from account where userName=?',[user.userName],(error,results)=>{
+//     if (error){
+//         console.log('error while quering the database'+error)
+//       return  res.status(500).json({error:'Internal server Error'})
+//     }
+//     if (results.length > 0) {
+//     return   res.status(409).json({ error: 'Username already exists' });
+//     }
+// //res.status(200).json({message:user})
+//    bcrypt.hash(user.password, 10, (bcryptError, hashedPassword) => {
+//       if (bcryptError) {
+//         console.error('Error while hashing password:', bcryptError);
+//        return  res.status(500).json({ error: 'Internal server error' });
+//       }
 
-      // Insert the new user into the database
-      db.query('insert into account (userName,emailAddress,password,user_type,status) values(?,?,?,?,?)',[user.userName,user.emailAddress,hashedPassword,'guest','Active'],(error,results)=>{
-         if (error) {
-          console.error('Error while inserting user into account database:', error);
-        return   res.status(500).json({ error: 'Internal server error while inserting the registerd user in the database' });
-        }else {
-          const account_id=results.insertId
-          console.log(account_id)
-db.query('insert into guest (account_id,userName,firstName,lastName,emailAddress) values(?,?,?,?,?)',[account_id,user.userName,user.firstName,user.lastName,user.emailAddress], (insertError) => {
-        if (insertError) {
-          console.error('Error while inserting user into the database:', insertError);
-        return   res.status(500).json({ error: 'Internal server error while inserting the registerd user in the database' });
-        }
+//       // Insert the new user into the database
+//       db.query('insert into account (userName,emailAddress,password,user_type,status) values(?,?,?,?,?)',[user.userName,user.emailAddress,hashedPassword,'guest','Active'],(error,results)=>{
+//          if (error) {
+//           console.error('Error while inserting user into account database:', error);
+//         return   res.status(500).json({ error: 'Internal server error while inserting the registerd user in the database' });
+//         }else {
+//           const account_id=results.insertId
+//           console.log(account_id)
+// db.query('insert into guest (account_id,userName,firstName,lastName,emailAddress) values(?,?,?,?,?)',[account_id,user.userName,user.firstName,user.lastName,user.emailAddress], (insertError) => {
+//         if (insertError) {
+//           console.error('Error while inserting user into the database:', insertError);
+//         return   res.status(500).json({ error: 'Internal server error while inserting the registerd user in the database' });
+//         }
 
 
-        // Return a success message or redirect to a different route
-    return    res.json({ message: 'Registration successful' });
+//         // Return a success message or redirect to a different route
+//     return    res.json({ message: 'Registration successful' });
    
-})
-}
-})
+// })
+// }
+// })
      
 
 
-   })
-})
-}
+//    })
+// })
+// }
+export const register = (req, res) => {
+  const user = req.body;
+
+  db.beginTransaction((beginTransactionError) => {
+    if (beginTransactionError) {
+      console.error('Error while starting database transaction:', beginTransactionError);
+      return res.status(500).json({ error: 'Internal server error' });
+    }
+
+    db.query('SELECT * FROM account WHERE userName=?', [user.userName], (selectError, results) => {
+      if (selectError) {
+        console.error('Error while querying the database:', selectError);
+        db.rollback(() => {
+          res.status(500).json({ error: 'Internal server error' });
+        });
+      } else {
+        if (results.length > 0) {
+          db.rollback(() => {
+            res.status(409).json({ error: 'Username already exists' });
+          });
+        } else {
+          bcrypt.hash(user.password, 10, (bcryptError, hashedPassword) => {
+            if (bcryptError) {
+              console.error('Error while hashing password:', bcryptError);
+              db.rollback(() => {
+                res.status(500).json({ error: 'Internal server error' });
+              });
+            }
+
+            db.query(
+              'INSERT INTO account (userName,emailAddress,password,user_type,status) VALUES(?,?,?,?,?)',
+              [user.userName, user.emailAddress, hashedPassword, 'guest', 'Active'],
+              (insertError, accountResult) => {
+                if (insertError) {
+                  console.error('Error while inserting user into account database:', insertError);
+                  db.rollback(() => {
+                    res.status(500).json({ error: 'Internal server error while inserting the registered user in the database' });
+                  });
+                } else {
+                  const account_id = accountResult.insertId;
+
+                  db.query(
+                    'INSERT INTO guest (account_id,userName,firstName,lastName,emailAddress) VALUES(?,?,?,?,?)',
+                    [account_id, user.userName, user.firstName, user.lastName, user.emailAddress],
+                    (insertGuestError) => {
+                      if (insertGuestError) {
+                        console.error('Error while inserting user into the database:', insertGuestError);
+                        db.rollback(() => {
+                          res.status(500).json({ error: 'Internal server error while inserting the registered user in the database' });
+                        });
+                      }
+
+                      db.commit((commitError) => {
+                        if (commitError) {
+                          console.error('Error while committing database transaction:', commitError);
+                          db.rollback(() => {
+                            res.status(500).json({ error: 'Internal server error' });
+                          });
+                        } else {
+                          res.json({ message: 'Registration successful' });
+                        }
+                      });
+                    }
+                  );
+                }
+              }
+            );
+          });
+        }
+      }
+    });
+  });
+};
 
 
 export const legal =(req,res) =>{

@@ -1,10 +1,10 @@
-import {useRef,useState} from 'react'
+import {useRef,useState,useEffect} from 'react'
 import { Galleria } from 'primereact/galleria';
 import { classNames } from 'primereact/utils';
 import { PhotoService } from '../service/PhotoService';
 import MyGalleria from './MyGallaria'
-
-
+import {Button} from 'primereact/button'
+import './GalleriaAdvancedDemo.css';
 
  function GallariaAdvanced() {
     const [images, setImages] = useState(null);

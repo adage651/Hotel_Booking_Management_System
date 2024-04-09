@@ -195,7 +195,7 @@ export const fetchUserData = async (req, res) => {
 
   const userAccount = req.session.user;
   db.query(
-    `SELECT profilePicture, firstName, lastName, emailAddress, permissions FROM ${userAccount.user_type} WHERE userName = ?`,
+    `SELECT * FROM ${userAccount.user_type} WHERE userName = ?`,
     [userAccount.userName],
     (error, result) => {
       if (error) {

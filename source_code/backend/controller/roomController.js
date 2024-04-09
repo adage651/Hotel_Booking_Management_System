@@ -79,58 +79,66 @@ export const searchRoom=(req,res)=>{
   const {adult,children,date,userFloor,userRoomType} = search
  const [checkinDate,checkoutDate]=date
 
-const searchQuery=`SELECT *,
-       CASE
-           WHEN r.adult < ? THEN 'Insufficient adult count'
-           WHEN r.children < ? THEN 'Insufficient children count'
-       END AS failureReason
-FROM rooms r
-WHERE r.adult >= ?
-  AND r.children >= ?
-  AND NOT EXISTS (
-    SELECT 1
-    FROM reservation rv
-    WHERE rv.roomId = r.id
-      AND rv.checkinDate <= ? 
-      AND rv.checkoutDate >= ? 
-  );`
-  db.query(searchQuery,[adult,children,adult,children,checkinDate,checkoutDate],(error,result)=>{
-    if(error){
-      res.status(500).json({error:true,message:"Internal Server Error Occured"})
+  const searchQuery = `
+    SELECT *,
+      CASE
+        WHEN r.adult < ? THEN 'Insufficient adult count'
+        WHEN r.children < ? THEN 'Insufficient children count'
+      END AS failureReason
+    FROM rooms r
+    WHERE r.adult >= ?
+      AND r.children >= ?
+      AND r.id NOT IN (
+        SELECT rv.roomId
+        FROM reservation rv
+        WHERE rv.checkinDate <= ?
+          AND rv.checkoutDate >= ?
+      )
+  `;
+
+  db.query(searchQuery, [adult, children, adult, children, checkoutDate, checkinDate], (error, result) => {
+    if (error) {
+      res.status(500).json({ error: true, message: 'Internal Server Error Occurred' });
     }
- result.sort((a, b) => {
-//    fewer occupants first 
+
+    result.sort((a, b) => {
+      // Sort by fewer occupants first
       const aTotalOccupants = a.adult + a.children;
       const bTotalOccupants = b.adult + b.children;
       if (aTotalOccupants < bTotalOccupants) return -1;
       if (aTotalOccupants > bTotalOccupants) return 1;
-// and then room type Sort by roomType, placing user's desired roomType first
+
+      // Sort by roomType, placing user's desired roomType first
       if (a.roomType === userRoomType && b.roomType !== userRoomType) return -1;
       if (a.roomType !== userRoomType && b.roomType === userRoomType) return 1;
-//      and then floor
+
+      // Sort by floor
       if (a.floor === userFloor && b.floor !== userFloor) return -1;
       if (a.floor !== userFloor && b.floor === userFloor) return 1;
 
       return 0;
     });
 
-if (result.length ===0){
-  return res.status(200).json({rooms:null , noRoom:true})
+    if (result.length === 0) {
+      return res.status(200).json({ rooms: null, noRoom: true });
+    }
 
+    res.status(200).json({ rooms: result, noRoom: false });
+  });
 }
+export const reservedRoom = (req, res) => {
+  const reservedQuery = `
+    SELECT rv.checkinDate, rv.checkoutDate
+    FROM reservation rv
+    GROUP BY rv.checkinDate, rv.checkoutDate
+    HAVING COUNT(DISTINCT rv.roomId) = (SELECT COUNT(*) FROM rooms);
+  `;
 
- res.status(200).json({rooms:result,noRoom:false})
+  db.query(reservedQuery, (error, result) => {
+    if (error) {
+      res.status(500).json({ error: true, message: 'Internal Server Error Occurred' });
+    }
 
-  })
-}
-export const reservedRoom=(req,res)=>{
-  const reservedQuery=`SELECT rv.checkinDate, rv.checkoutDate
-FROM reservation rv
-GROUP BY rv.checkinDate, rv.checkoutDate
-HAVING COUNT(DISTINCT rv.roomId) = (SELECT COUNT(*) FROM rooms);`
-  db.query(reservedQuery,(err,result)=>{
-    res.status(200).json(result)
-  })
-
-
-}
+    res.status(200).json(result);
+  });
+};

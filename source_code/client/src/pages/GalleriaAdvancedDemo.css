@@ -6171,3 +6171,111 @@ html[dir=rtl] .price-summary_taxIncluded {
             }
         }
     }
+.guest-policies_container {
+    border: 1px solid #d7d7d7;
+    background: #fff;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem
+}
+
+.guest-policies_container h2 {
+    margin-bottom: 1rem
+}
+
+.guest-policies_hotelDetails {
+    display: block
+}
+
+.guest-policies_checkIn,
+.guest-policies_checkOut {
+    display: inline-block;
+    vertical-align: top;
+    margin-bottom: 1rem
+}
+
+.guest-policies_checkIn b,
+.guest-policies_checkOut b {
+    display: block
+}
+
+html[dir=ltr] .guest-policies_checkIn {
+    margin-right: 3rem
+}
+
+html[dir=rtl] .guest-policies_checkIn {
+    margin-left: 3rem
+}
+
+.guest-policies_perRoom {
+    margin-bottom: 1.5rem
+}
+
+.guest-policies_perRoom h3 {
+    margin-bottom: 0.5rem
+}
+
+.guest-policies_perRoom:last-child {
+    margin-bottom: 0
+}
+
+.guest-policies_additionalPolicy,
+.guest-policies_cancelPolicy,
+.guest-policies_childrenPolicy,
+.guest-policies_guaranteePolicy,
+.guest-policies_transactionFeeDisclaimer,
+.guest-policies_commissionPolicy {
+    margin-bottom: 0.5rem
+}
+
+.guest-policies_commissionRate {
+    display: block
+}
+
+.guest-policies_policiesModalHeading {
+    margin-bottom: 1rem
+}
+
+.guest-policies_fullPolicyLink {
+    margin-top: 1.5rem
+}
+
+.policy-acknowledgement_container {
+    border: 1px solid #d7d7d7;
+    background: #fff;
+    border-radius: 4px;
+    padding: 1rem;
+    margin-bottom: 1rem
+}
+
+.policy-acknowledgement_container h2 {
+    margin-bottom: 1rem
+}
+
+.policy-acknowledgement_policyCheckbox,
+.policy-acknowledgement_emailCheckBox,
+.policy-acknowledgement_privacyCheckbox,
+.policy-acknowledgement_proActiveEnrollmentCheckbox,
+.policy-acknowledgement_psdComplianceCheckbox {
+    margin-bottom: 1rem
+}
+
+.policy-acknowledgement_acceptanceOfTermsAndConditions {
+    display: block;
+    margin-bottom: 1rem
+}
+.policy-checkbox-description-link_checkboxDescription {
+    margin: -1rem 0 1rem 2.3em
+}
+
+html[dir=rtl] .policy-checkbox-description-link_checkboxDescription {
+    margin: -1rem 2.3em 1rem 0
+}
+
+.policy-checkbox-description-link_required {
+    font-family: arial, sans-serif;
+    font-size: 19px;
+    line-height: 1;
+    font-weight: normal;
+    vertical-align: middle
+}

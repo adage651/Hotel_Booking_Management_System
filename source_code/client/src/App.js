@@ -38,13 +38,18 @@ import Staff,{loader as staffLoader} from './pages/Staff.jsx';
 import Maintenance from './pages/Maintenance.jsx';
 import Practice from './Practice.jsx';
 import FoodDetail,{loader as foodLoader,action as actionFood} from './FoodDetail.jsx';
+import ConformationPage from './pages/ConformationPage.jsx'
 
 
         
 
 const router=createBrowserRouter(
   [
-    {path:'/', element:<LandingPage />, loader:userLoader },
+    {path:'/', element:<LandingPage />, loader:userLoader,
+  children:[
+  {path:'/confirmed',element:<ConformationPage />}
+  ]
+  },
     
     {path:'/manager', element:<Manager />,loader:fetchUserData,
     children:[

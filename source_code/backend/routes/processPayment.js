@@ -1,14 +1,18 @@
 import express from 'express'
-import stripe from 'stripe';
-const router=express.Router()
+import Stripe from 'stripe';
 import dotenv from 'dotenv';
-dotenv.config();
-const stripeInstance = stripe(process.env.STRIPE_PRIVATE_KEY);
-router.post('/create-checkout-session', async (req, res) => {
-  try {
-    const { amount } = req.body;
 
-    const session = await stripeInstance.checkout.sessions.create({
+const router=express.Router()
+dotenv.config();
+const stripe = new Stripe(process.env.STRIPE_PRIVATE_KEY);
+
+router.post('/create-checkout-session', async (req, res) => {
+
+    const { amount,userId } = req.body;
+    console.log('userID'+userId)
+
+try {
+    const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       mode: 'payment',
       line_items: [
@@ -16,20 +20,38 @@ router.post('/create-checkout-session', async (req, res) => {
           price_data: {
             currency: 'usd',
             product_data: {
-              name: 'pay with stripe securely',
+              name: 'Pay with Stripe Securely',
             },
             unit_amount: amount * 100, // Convert amount to cents
           },
           quantity: 1,
         },
       ],
-      success_url: `${process.env.SERVER_URL}/success.html`,
-      cancel_url: `${process.env.SERVER_URL}/cancel.html`,
+      success_url: 'http://localhost:3000/',
+      cancel_url: 'http://localhost:3000/',
+      client_reference_id: userId, // Generate a unique reference ID
     });
 
-    res.json({ url: session.url });
-  } catch (e) {
-    res.status(500).json({ error: e.message });
+    res.json({ sessionId: session.id });
+    
+  } catch (error) {
+    res.status(500).json({ error: 'Error creating payment session' });
+  }
+});
+
+
+router.post('/status', async (req, res) => {
+ const { sessionId } = req.body;
+//  const { sessionId } = req.query;
+  console.log('request accepted '+sessionId)
+  try {
+    const payment = await stripe.checkout.sessions.retrieve(sessionId);
+    // console.log('Payment object:', payment);
+    const paymentStatus = payment.payment_status || 'unknown';
+console.log('the payment status for this is ',paymentStatus)
+    res.json({ paymentStatus });
+  } catch (error) {
+    res.status(500).json({ error: 'Error retrieving payment status' });
   }
 });
 export default router;

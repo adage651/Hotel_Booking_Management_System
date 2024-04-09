@@ -53,7 +53,7 @@ import images from './routes/images.js'
 import upload from './middleware/multerMidlware.js'
 import foods from './routes/foods.js';
 import processPayment from './routes/processPayment.js';
-
+import reservation from './routes/reservation.js';
 app.use('/public/uploads',images)
 app.use('/pages',pages)
 app.use('/auth',auth)
@@ -61,6 +61,7 @@ app.use('/users',users)
 app.use('/rooms',rooms)
 app.use('/foods',foods)
 app.use('/payment',processPayment)
+app.use('/reservation',reservation)
 
 const io = new Server(server)
 io.on('connection',(socket)=>{
