@@ -1,0 +1,102 @@
+       .indicator-text {
+           color: var(--primary-color);
+       }
+
+       .custom-galleria .fullscreen {
+           display: flex;
+           flex-direction: column;
+
+
+       }
+
+       .p-galleria-content {
+           flex-grow: 1;
+           align-items: center;
+           height: 45%;
+       }
+
+       .indicator-text {
+           color: #e9ecef;
+           cursor: pointer;
+       }
+
+       .p-galleria-content {
+           position: relative;
+       }
+
+       .p-galleria-thumbnail-wrapper {
+           position: absolute;
+           bottom: 0;
+           left: 0;
+           z-index: -1;
+           width: 100%;
+       }
+
+
+
+       .p-galleria-thumbnail-items-container {
+           width: 100%;
+           height: 44%;
+       }
+
+       .availability-form {
+           margin-top: -50px;
+           z-index: 2;
+           position: relative;
+       }
+
+
+       @media screen and (max-width: 575px) {
+           .availability-form {
+               margin-top: 25px;
+               padding: 0 35px;
+           }
+
+           .custom-bg {
+               background-color: var(--teal);
+               border: 1px solid var(--teal);
+           }
+
+           .custom-bg:hover {
+               background-color: var(--teal-hover);
+               border-color: var(--teal-hover);
+           }
+
+           .h-line {
+               width: 150px;
+               margin: 0 auto;
+               height: 1.7px;
+           }
+       }
+
+       .custom-galleria-footer {
+           display: flex;
+           align-items: center;
+           background-color: rgba(0, 0, 0, .9);
+           color: #ffffff;
+       }
+
+       .p-carousel .p-carousel-content .p-carousel-item img {
+           width: 100vw;
+       }
+
+       .custom-carousel {
+           position: relative;
+       }
+
+       .custom-carousel .p-carousel-content .p-carousel-item {
+           display: flex;
+           justify-content: center;
+       }
+
+       .custom-carousel .p-carousel-content .p-carousel-item img {
+           width: 100%;
+           height: auto;
+           object-fit: cover;
+       }
+
+       .custom-carousel .p-carousel-header {
+           position: absolute;
+           top: 50%;
+           transform: translateY(-50%);
+       }

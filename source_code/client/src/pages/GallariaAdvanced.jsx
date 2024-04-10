@@ -1,18 +1,18 @@
-import {useRef,useState,useEffect} from 'react'
+
+import React, { useState, useEffect, useRef } from 'react';
+import { Button } from 'primereact/button';
 import { Galleria } from 'primereact/galleria';
 import { classNames } from 'primereact/utils';
 import { PhotoService } from '../service/PhotoService';
-import MyGalleria from './MyGallaria'
-import {Button} from 'primereact/button'
-import './GalleriaAdvancedDemo.css';
+import './Gallaria.css';
 
- function GallariaAdvanced() {
+export default function GallariaAdvanced() {
     const [images, setImages] = useState(null);
     const [activeIndex, setActiveIndex] = useState(0);
     const [showThumbnails, setShowThumbnails] = useState(false);
     const [isAutoPlayActive, setAutoPlayActive] = useState(true);
     const [isFullScreen, setFullScreen] = useState(false);
-
+    
     const galleria = useRef(null)
 
     const responsiveOptions = [
@@ -172,51 +172,8 @@ import './GalleriaAdvancedDemo.css';
                 showThumbnails={showThumbnails} showItemNavigators showItemNavigatorsOnHover
                 numVisible={5} circular autoPlay transitionInterval={3000} responsiveOptions={responsiveOptions}
                 item={itemTemplate} thumbnail={thumbnailTemplate} footer={footer}
-                style={{ maxWidth: '640px' }} className={galleriaClassName} />
+                style={{ minWidth: '640px',width:'100vw' }} className={galleriaClassName} />
         </div>
     )
 }
-export default GallariaAdvanced
-
-
-
-
-
-//  function Gallaria() {
-//     const [images, setImages] = useState(null);
-//     const responsiveOptions = [
-//         {
-//             breakpoint: '991px',
-//             numVisible: 4
-//         },
-//         {
-//             breakpoint: '767px',
-//             numVisible: 3
-//         },
-//         {
-//             breakpoint: '575px',
-//             numVisible: 1
-//         }
-//     ];
-
-//     useEffect(() => {
-//         PhotoService.getImages().then(data => setImages(data));
-//     }, []);
-
-//     const itemTemplate = (item) => {
-//         return <img src={item.itemImageSrc} alt={item.alt} style={{ height:'90%',width: '100%', display: 'block', }} />;
-//     }
-
-//     const thumbnailTemplate = (item) => {
-//         return <img src={item.thumbnailImageSrc} alt={item.alt} style={{ display: 'block' }} />;
-//     }
-
-//     return (
-//         <div className="card" style={{flexDirection:'row'}}>
-//             <Galleria value={images} responsiveOptions={responsiveOptions} numVisible={5} style={{alignSelf:'stretch', maxWidth: '100%'}} 
-//   item={itemTemplate}  circular autoPlay transitionInterval={2000}   showIndicators
-//                 showThumbnails={false} />
-
-//         </div>
-//     )
-// }
+        

@@ -39,7 +39,8 @@ import Maintenance from './pages/Maintenance.jsx';
 import Practice from './Practice.jsx';
 import FoodDetail,{loader as foodLoader,action as actionFood} from './FoodDetail.jsx';
 import ConformationPage from './pages/ConformationPage.jsx'
-
+import ReservationStatus from './pages/ReservationDetail.jsx'
+import ReservationDetail,{loader as reservationLoader} from './pages/ReservationDetail.jsx';
 
         
 
@@ -47,15 +48,19 @@ const router=createBrowserRouter(
   [
     {path:'/', element:<LandingPage />, loader:userLoader,
   children:[
-  {path:'/confirmed',element:<ConformationPage />}
+
   ]
   },
+  {path:'/ReservationStatus',element:<ReservationDetail />},
+
     
     {path:'/manager', element:<Manager />,loader:fetchUserData,
     children:[
       // {path:'view-account', element:<UserPage /> ,loader:userFetchAll},
       {path:'rooms', element:<RoomDetail />, loader:roomLoader,action:actionRoom},
       {path:'view-account', element:<UserPage />,loader:userFetchAll },
+      {path:'reservation', element:<ReservationDetail /> ,loader:reservationLoader},
+      {path:'managefood', element:<FoodDetail />,loader:foodLoader,action:actionFood},
       {path:'', element:<DashbordData />},
         ],
       // errorElement:<LoginError />
