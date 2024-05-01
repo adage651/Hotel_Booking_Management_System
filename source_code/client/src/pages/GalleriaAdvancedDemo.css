@@ -1124,7 +1124,13 @@ img.flag {
       margin-left: -.5rem;
       margin-right: -.5rem
   }
-
+label[data-shrink=false]+.MuiInputBase-formControl .css-nxo287-MuiInputBase-input-MuiOutlinedInput-input{
+    margin:14px;
+  
+}
+.css-1xs60sr-MuiFormControl-root-MuiTextField-root .MuiInputBase-input{
+    box-sizing: content-box !important;
+}
   .app_col-lg-1,
   .app_col-lg-10,
   .app_col-lg-11,

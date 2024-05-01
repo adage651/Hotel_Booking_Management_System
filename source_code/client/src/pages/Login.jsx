@@ -81,7 +81,7 @@ export const action = async({request,parms}) => {
     userName:data.get('userName'),
     password:data.get('password')
     }
-    const response =await fetch('http://localhost:8000/auth',{
+    const response =await fetch(`http://${process.env.REACT_APP_SERVERURL}/auth`,{
         method:'POST',
         headers:{
             'Content-Type':'application/json'
@@ -92,7 +92,7 @@ export const action = async({request,parms}) => {
     const resData=await response.json();
     if(resData.isLogin){
     if(resData.user.user_type==='guest'){
-     return redirect('/guest')
+     return redirect('/')
     }else if(resData.user.user_type==='receptionist'){
      return redirect('/receptionist')
     }else if(resData.user.user_type==='staff'){
@@ -110,9 +110,8 @@ return resData
     
 }
 
-
 export const loader = async( )=>{
-const response=await fetch('http://localhost:8000/auth/legal',{method:'GET',   credentials: 'include'})
+const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/auth/legal`,{method:'GET',   credentials: 'include'})
 
 const resData=await response.json();
 

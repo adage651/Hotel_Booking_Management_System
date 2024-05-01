@@ -112,7 +112,7 @@ export default function RoomDatail() {
     const deleteProduct = async() => {
         let _rooms = rooms.filter((val) => val.id !== room.id);
         console.log(room.id)
-        const response=await fetch(`http://localhost:8000/rooms/deleteroom:${[room.id]}`,{
+        const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/rooms/deleteroom:${[room.id]}`,{
             method:'DELETE'
         })
         const resValue=await response.json();
@@ -139,7 +139,7 @@ export default function RoomDatail() {
             return room.id
         })
         
-        const response=await fetch(`http://localhost:8000/rooms/deleteroom:${[id]}`,{
+        const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/rooms/deleteroom:${[id]}`,{
             method:'DELETE'
         })
         const resValue=await response.json();
@@ -189,7 +189,7 @@ export default function RoomDatail() {
     };
 
     const imageBodyTemplate = (rowData) => {
-        return <img src={`http://localhost:8000/public/uploads/${rowData.roomImage}`} alt='first roomimage' className="shadow-2 border-round" style={{ width: '64px' }} />;
+        return <img src={`http://${process.env.REACT_APP_SERVERURL}/public/uploads/${rowData.roomImage}`} alt='first roomimage' className="shadow-2 border-round" style={{ width: '64px' }} />;
     };
 
     const priceBodyTemplate = (rowData) => {
@@ -278,7 +278,7 @@ room.roomImage.forEach((roomimg,index)=>{
 formData.append(`image${index}`, roomimg);
 })
 
-const response=await fetch('http://localhost:8000/rooms/save',{
+const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/rooms/save`,{
   method:'post',
 body:formData
 })
@@ -557,7 +557,7 @@ const data= await request.formData()
 return data;
 }
 export const loader =async ()=>{
-    const response = await fetch('http://localhost:8000/rooms/fetchall')
+    const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/rooms/fetchall`)
     const resData=await response.json()
     return resData
 }

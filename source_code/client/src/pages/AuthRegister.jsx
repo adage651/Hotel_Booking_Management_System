@@ -271,7 +271,7 @@ const registerData={
   password:data.get('password')
   
 }
-const response=await fetch('http://localhost:8000/auth/register',{
+const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}//auth/register`,{
   method:'post',
   headers:{
     "Content-Type":"application/json"

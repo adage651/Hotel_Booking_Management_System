@@ -3,10 +3,11 @@ import DashboardLayout from "../layout/dashboard/index.jsx";
 // import UserPage ,{ loader as userFetchAll } from './userTabel/view/user-view.js';
 import UserContext from "../context/userContext.js";
 import { ControlOutlined } from "@ant-design/icons";
+import socket from './socket.js';
 
 const Maintenance =() =>{
     const userData=useLoaderData()
-    console.log(userData.permissions)
+  socket.emit('userName',userData.userName+userData.id)
     return (
 <UserContext.Provider value={{
 profilePicture:userData.profilePicture,
@@ -27,7 +28,7 @@ user_type:userData.user_type
 
 export const loader = async()=>{
     console.log('the error is in manager loader')
-const response= await fetch('http://localhost:8000/users/userdata' ,{
+const response= await fetch(`http://${process.env.REACT_APP_SERVERURL}/users/userdata` ,{
   method: 'GET',
   credentials: 'include',
 });

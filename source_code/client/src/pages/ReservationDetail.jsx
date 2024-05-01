@@ -76,7 +76,7 @@ export default function ReservationDetail() {
                     },activity,
                     roomNumber:oneRes.roomNumber,
                     reservationId:oneRes.id,
-                    status:'Confirmed',
+                    status:oneRes.status,
 
                 }
                 })
@@ -113,11 +113,32 @@ export default function ReservationDetail() {
             </div>
         );
     };
+    // const cellEditor = (options) => {
+    //     return textEditor(options);
+    // }
+    //     const textEditor = (options) => {
+    //     return <Dropdown value={options.value} options={statuses} onChange={(e) => options.editorCallback(e.target.value)} itemTemplate={statusItemTemplate} onKeyDown={(e) => e.stopPropagation()} placeholder="Select One" className="p-column-filter" showClear style={{ minWidth: '12rem' }} />
+    //     // <InputText type="text" value={options.value} onChange={(e) => options.editorCallback(e.target.value)} onKeyDown={(e) => e.stopPropagation()} />;
+    // };
+
+
+//    const onCellEditComplete = (e) => {
+//         let { rowData, newValue, field, originalEvent: event } = e;
+
+
+//                 rowData[field] = newValue;
+//                 // else event.preventDefault();
+       
+//         }
+  
+
+
+
 
     const guestBodyTemplate = (rowData) => {
         return (
             <div className="flex align-items-center gap-2">
-                <img alt="flag" src={`http://localhost:8000/public/uploads/${rowData.guest.image}`} className="shadow-2 border-round" style={{ width: '24px' }} />
+                <img alt="flag" src={`http://${process.env.REACT_APP_SERVERURL}/public/uploads/${rowData.guest.image}`} className="shadow-2 border-round" style={{ width: '24px' }} />
                 <span>{rowData.guest.name}</span>
             </div>
         );
@@ -149,7 +170,7 @@ const [date,setDate]=useState()
     };
 
     const header = renderHeader();
-
+//editor={(options) => cellEditor(options)} onCellEditComplete={onCellEditComplete}
     return (
         <div className="card">
             <DataTable value={customers} paginator rows={10} dataKey="id" filters={filters} filterDisplay="row" loading={loading}
@@ -158,7 +179,7 @@ const [date,setDate]=useState()
                 <Column field="roomNumber" filterField='roomNumber' header="Room" filter filterPlaceholder="Search by Book Number" style={{ minWidth: '12rem' }} />
                 <Column header="Guest" filterField="guest.name" style={{ minWidth: '12rem' }} body={guestBodyTemplate} filter filterPlaceholder="Search by Guest Name" />
                 <Column header="Checkin Date" field='activity' showFilterMenu={false}   dataType="date" style={{ minWidth: '16rem' }}  filter filterElement={activityRowFilterTemplate} />    
-                <Column field="status" header="Status" showFilterMenu={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusRowFilterTemplate} />
+                <Column field="status" header="Status" showFilterMenu={false} filterMenuStyle={{ width: '14rem' }} style={{ minWidth: '12rem' }} body={statusBodyTemplate} filter filterElement={statusRowFilterTemplate}   />
             </DataTable>
         </div>
     );
@@ -167,8 +188,9 @@ const [date,setDate]=useState()
 
 
 export const loader = async()=>{
-const response=await fetch('http://localhost:8000/reservation/fetchall')
+const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/reservation/fetchall`)
 const resData=await response.json();
 
 return resData;
 }
+

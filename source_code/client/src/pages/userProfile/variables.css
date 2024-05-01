@@ -1,0 +1,174 @@
+:root {
+  --change-password-popup-height: 190px;
+}
+
+.dx-theme-generic {
+  --change-password-popup-height: 190px;
+}
+
+.dx-theme-material {
+  --change-password-popup-height: 260px;
+}
+
+.h-separator {
+  height: 1px;
+  width: auto;
+  background: var(--border-color);
+}
+
+.separator {
+  height: 24px;
+  width: 1px;
+  background: var(--border-color);
+}
+
+.dx-toolbar-menu-section .separator {
+  height: 1px;
+  width: auto;
+}
+
+.separator {
+  height: 24px;
+  width: 1px;
+  background: var(--border-color);
+}
+
+.dx-toolbar-menu-section .separator {
+  height: 1px;
+  width: auto;
+}
+
+.user-info {
+  margin-bottom: 20px;
+  display: flex;
+}
+
+.user-info .photo {
+  width: 124px;
+  height: 124px;
+  margin-right: 20px;
+  border-radius: 8px;
+  background-repeat: no-repeat;
+  background-size: cover;
+  box-shadow: 0 2px 8px 0 #00000014;
+  border: 1px solid #e0e0e0;
+}
+
+.user-info .title {
+  font-size: 12px;
+  color: var(--texteditor-label-color);
+}
+
+.user-info .title:not(:first-child) {
+  padding-top: 10px;
+}
+
+.user-info .value {
+  font-size: 16px;
+  color: var(--accent-color);
+}
+
+.user-info .value.black {
+  color: var(--base-text-color);
+}
+
+.user-info .value.small {
+  font-size: 12px;
+}
+
+.user-info .value .dx-icon {
+  vertical-align: bottom;
+  padding: 10px 12px 0 0;
+}
+
+.message-title {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  font-size: 12px;
+  color: var(--texteditor-label-color);
+}
+
+.message-text {
+  padding-top: 5px;
+  line-height: 21px;
+}
+
+.dx-texteditor input[statuseditorinput][readonly] {
+  padding-left: 0;
+}
+
+.status-contact {
+  color: var(--status-color);
+}
+
+.status-contact.dx-texteditor,
+.status-contact.dx-texteditor.dx-editor-filled {
+  color: var(--status-color);
+}
+
+.status-contact span::before {
+  background-color: var(--status-color);
+}
+
+.calendar-items-text {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.description-text {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 18px;
+  opacity: 1;
+}
+
+.h1-header-text {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 16px;
+  line-height: 18px;
+}
+
+.h2-header-text {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.subtext {
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  line-height: 16px;
+  opacity: 1;
+}
+
+.card-shadow {
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.04);
+}
+
+.toolbar-panel {
+  background-color: var(--base-bg);
+  padding: 5px var(--content-padding);
+  border-radius: 8px;
+  box-shadow: 0 4px 20px 0 rgba(0, 0, 0, 0.04);
+}
+
+.change-profile-password-popup.form-popup .dx-form {
+  height: var(--change-password-popup-height, auto);
+}
+
+.change-profile-password-popup.form-popup .dx-popup-normal {
+  border-radius: 8px;
+  padding: 8px 0;
+}

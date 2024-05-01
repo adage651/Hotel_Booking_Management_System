@@ -1,0 +1,773 @@
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6 {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    color: rgb(33, 43, 54);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-image: none;
+    overflow: hidden;
+    position: relative;
+    box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
+    border-radius: 16px;
+    z-index: 0;
+    margin-bottom: 24px;
+    height: 290px;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiBox-root.css-1xqfr0f {
+
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    box-sizing: border-box;
+    height: 100%;
+    color: rgb(255, 255, 255);
+    background: linear-gradient(rgba(0, 75, 80, 0.8), rgba(0, 75, 80, 0.8)) center center / cover no-repeat, url("https://api-prod-minimal-v510.vercel.app/assets/images/cover/cover_4.jpg");
+    background-position: center center;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiBox-root.css-1xqfr0f>div {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    left: 24px;
+    bottom: 24px;
+    z-index: 10;
+    padding-top: 0px;
+    position: absolute;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiBox-root.css-1xqfr0f>div>div.MuiAvatar-root.MuiAvatar-circular.css-btmpc1 {
+
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    font-weight: 400;
+    color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    position: relative;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-family: "Public Sans", sans-serif;
+    font-size: 1.25rem;
+    line-height: 1;
+    border-radius: 50%;
+    overflow: hidden;
+    user-select: none;
+    margin-left: auto;
+    margin-right: auto;
+    border: 2px solid rgb(255, 255, 255);
+    width: 128px;
+    height: 128px;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiBox-root.css-1xqfr0f>div>div.MuiAvatar-root.MuiAvatar-circular.css-btmpc1>img {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    font-weight: 400;
+    font-family: "Public Sans", sans-serif;
+    font-size: 1.25rem;
+    line-height: 1;
+    user-select: none;
+    box-sizing: border-box;
+    max-width: 100%;
+    display: inline-block;
+    vertical-align: bottom;
+    width: 100%;
+    height: 100%;
+    text-align: center;
+    object-fit: cover;
+    color: transparent;
+    text-indent: 10000px;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiBox-root.css-1xqfr0f>div>div.MuiListItemText-root.MuiListItemText-multiline.css-mjofsa {
+
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    color: rgb(255, 255, 255);
+    box-sizing: border-box;
+    flex: 1 1 auto;
+    min-width: 0px;
+    margin: 24px 0px 0px;
+    margin-left: 24px;
+    text-align: unset;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiBox-root.css-1xqfr0f>div>div.MuiListItemText-root.MuiListItemText-multiline.css-mjofsa>span.MuiTypography-root.MuiTypography-body1.MuiListItemText-primary.css-o8vyvo {
+
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    color: rgb(255, 255, 255);
+    text-align: unset;
+    box-sizing: border-box;
+    margin: 0px;
+    display: block;
+    font-weight: 700;
+    line-height: 1.5;
+    font-family: "Public Sans", sans-serif;
+    font-size: 1.5rem;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiBox-root.css-1xqfr0f>div>div.MuiListItemText-root.MuiListItemText-multiline.css-mjofsa>span.MuiTypography-root.MuiTypography-body2.MuiListItemText-secondary.css-ad49p8 {
+
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    text-align: unset;
+    box-sizing: border-box;
+    margin: 4px 0px 0px;
+    color: inherit;
+    display: block;
+    line-height: 1.57143;
+    font-size: 0.875rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    opacity: 0.48;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiTabs-root.css-193cqlv {
+
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    color: rgb(33, 43, 54);
+    box-sizing: border-box;
+    overflow: hidden;
+    min-height: 48px;
+    display: flex;
+    width: 100%;
+    bottom: 0px;
+    z-index: 9;
+    position: absolute;
+    background-color: rgb(255, 255, 255);
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiTabs-root.css-193cqlv>div.MuiTabs-scrollableX.MuiTabs-hideScrollbar.css-oqr85h {
+
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    color: rgb(33, 43, 54);
+    box-sizing: border-box;
+    scrollbar-width: none;
+    width: 99px;
+    height: 99px;
+    position: absolute;
+    top: -9999px;
+    overflow: scroll;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiTabs-root.css-193cqlv>div.MuiTabs-scroller.MuiTabs-hideScrollbar.MuiTabs-scrollableX.css-1t0s2fz {
+
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    color: rgb(33, 43, 54);
+    box-sizing: border-box;
+    position: relative;
+    display: inline-block;
+    flex: 1 1 auto;
+    white-space: nowrap;
+    scrollbar-width: none;
+    overflow: auto hidden;
+    margin-bottom: 0px;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiTabs-root.css-193cqlv>div.MuiTabs-scroller.MuiTabs-hideScrollbar.MuiTabs-scrollableX.css-1t0s2fz>div {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    color: rgb(33, 43, 54);
+    white-space: nowrap;
+    box-sizing: border-box;
+    display: flex;
+    padding-right: 24px;
+    -webkit-box-pack: end;
+    justify-content: flex-end;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiTabs-root.css-193cqlv>div.MuiTabs-scroller.MuiTabs-hideScrollbar.MuiTabs-scrollableX.css-1t0s2fz>div>button.MuiButtonBase-root.MuiTab-root.MuiTab-labelIcon.MuiTab-textColorInherit.Mui-selected.css-ik3mm4 {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    outline: 0px;
+    border: 0px;
+    margin: 0px;
+    border-radius: 0px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    line-height: 1.25;
+    font-size: 0.875rem;
+    text-transform: unset;
+    font-family: "Public Sans", sans-serif;
+    max-width: 360px;
+    position: relative;
+    flex-shrink: 0;
+    overflow: hidden;
+    white-space: normal;
+    text-align: center;
+    flex-direction: row;
+    color: inherit;
+    padding: 0px;
+    min-width: 48px;
+    min-height: 48px;
+    font-weight: 600;
+    opacity: 1;
+    margin-right: 40px;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiTabs-root.css-193cqlv>div.MuiTabs-scroller.MuiTabs-hideScrollbar.MuiTabs-scrollableX.css-1t0s2fz>div>button.MuiButtonBase-root.MuiTab-root.MuiTab-labelIcon.MuiTab-textColorInherit.Mui-selected.css-ik3mm4>svg {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    line-height: 1.25;
+    font-size: 0.875rem;
+    text-transform: unset;
+    font-family: "Public Sans", sans-serif;
+    white-space: normal;
+    text-align: center;
+    color: inherit;
+    font-weight: 600;
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+    margin-right: 8px;
+}
+
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiTabs-root.css-193cqlv>div.MuiTabs-scroller.MuiTabs-hideScrollbar.MuiTabs-scrollableX.css-1t0s2fz>div>button.MuiButtonBase-root.MuiTab-root.MuiTab-labelIcon.MuiTab-textColorInherit.Mui-selected.css-ik3mm4>svg>path {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+    cursor: pointer;
+    user-select: none;
+    line-height: 1.25;
+    font-size: 0.875rem;
+    text-transform: unset;
+    font-family: "Public Sans", sans-serif;
+    white-space: normal;
+    text-align: center;
+    color: inherit;
+    font-weight: 600;
+    fill: currentcolor;
+    fill-rule: evenodd;
+    d: path("M 10 4 h 4 c 3.771 0 5.657 0 6.828 1.172 C 22 6.343 22 8.229 22 12 c 0 3.771 0 5.657 -1.172 6.828 C 19.657 20 17.771 20 14 20 h -4 c -3.771 0 -5.657 0 -6.828 -1.172 C 2 17.657 2 15.771 2 12 c 0 -3.771 0 -5.657 1.172 -6.828 C 4.343 4 6.229 4 10 4 m 3.25 5 a 0.75 0.75 0 0 1 0.75 -0.75 h 5 a 0.75 0.75 0 0 1 0 1.5 h -5 a 0.75 0.75 0 0 1 -0.75 -0.75 m 1 3 a 0.75 0.75 0 0 1 0.75 -0.75 h 4 a 0.75 0.75 0 0 1 0 1.5 h -4 a 0.75 0.75 0 0 1 -0.75 -0.75 m 1 3 a 0.75 0.75 0 0 1 0.75 -0.75 h 3 a 0.75 0.75 0 0 1 0 1.5 h -3 a 0.75 0.75 0 0 1 -0.75 -0.75 M 11 9 a 2 2 0 1 1 -4 0 a 2 2 0 0 1 4 0 m -2 8 c 4 0 4 -0.895 4 -2 s -1.79 -2 -4 -2 s -4 0.895 -4 2 s 0 2 4 2");
+    clip-rule: evenodd;
+    box-sizing: border-box;
+}
+
+/* div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiTabs-root.css-193cqlv>div.MuiTabs-scroller.MuiTabs-hideScrollbar.MuiTabs-scrollableX.css-1t0s2fz>span{
+
+        -webkit-font-smoothing: antialiased;
+            text-size-adjust: 100%;
+            line-height: 1.5;
+            font-size: 1rem;
+            font-family: "Public Sans", sans-serif;
+            font-weight: 400;
+            color: rgb(33, 43, 54);
+            white-space: nowrap;
+            box-sizing: border-box;
+            position: absolute;
+            height: 2px;
+            bottom: 0px;
+            transition: all 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+            background-color: rgb(33, 43, 54);
+            left: 176.328px;
+            width: 75.625px;
+} */
+/* div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiTabs-root.css-193cqlv>div.MuiTabs-scroller.MuiTabs-hideScrollbar.MuiTabs-scrollableX.css-1t0s2fz>div>button.MuiButtonBase-root.MuiTab-root.MuiTab-labelIcon.MuiTab-textColorInherit.Mui-selected.css-ik3mm4{
+    -webkit-font-smoothing: antialiased;
+        text-size-adjust: 100%;
+        --darkreader-neutral-background: #212222;
+        --darkreader-neutral-text: #eae3d9;
+        --darkreader-selection-background: #165aaa;
+        --darkreader-selection-text: #fbf5ec;
+        display: inline-flex;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        background-color: transparent;
+        outline: 0px;
+        border: 0px;
+        margin: 0px;
+        border-radius: 0px;
+        cursor: pointer;
+        user-select: none;
+        vertical-align: middle;
+        appearance: none;
+        text-decoration: none;
+        line-height: 1.25;
+        font-size: 0.875rem;
+        text-transform: unset;
+        font-family: "Public Sans", sans-serif;
+        max-width: 360px;
+        position: relative;
+        flex-shrink: 0;
+        overflow: hidden;
+        white-space: normal;
+        text-align: center;
+        flex-direction: row;
+        color: inherit;
+        padding: 0px;
+        min-width: 48px;
+        min-height: 48px;
+        font-weight: 600;
+        opacity: 1;
+        margin-right: 40px;
+} */
+/* div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiTabs-root.css-193cqlv>div.MuiTabs-scroller.MuiTabs-hideScrollbar.MuiTabs-scrollableX.css-1t0s2fz>div>button:nth-child(3){
+    -webkit-font-smoothing: antialiased;
+        text-size-adjust: 100%;
+        --darkreader-neutral-background: #212222;
+        --darkreader-neutral-text: #eae3d9;
+        --darkreader-selection-background: #165aaa;
+        --darkreader-selection-text: #fbf5ec;
+        display: inline-flex;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        justify-content: center;
+        box-sizing: border-box;
+        -webkit-tap-highlight-color: transparent;
+        background-color: transparent;
+        outline: 0px;
+        border: 0px;
+        margin: 0px;
+        border-radius: 0px;
+        cursor: pointer;
+        user-select: none;
+        vertical-align: middle;
+        appearance: none;
+        text-decoration: none;
+        line-height: 1.25;
+        font-size: 0.875rem;
+        text-transform: unset;
+        font-family: "Public Sans", sans-serif;
+        max-width: 360px;
+        position: relative;
+        flex-shrink: 0;
+        overflow: hidden;
+        white-space: normal;
+        text-align: center;
+        flex-direction: row;
+        padding: 0px;
+        opacity: 1;
+        min-width: 48px;
+        min-height: 48px;
+        font-weight: 600;
+        margin-right: 40px;
+        color: rgb(99, 115, 129);
+} */
+div.MuiPaper-root.MuiPaper-elevation.MuiPaper-rounded.MuiPaper-elevation0.MuiCard-root.css-1qjv8e6>div.MuiTabs-root.css-193cqlv>div.MuiTabs-scroller.MuiTabs-hideScrollbar.MuiTabs-scrollableX.css-1t0s2fz>div>button {
+
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    display: inline-flex;
+    -webkit-box-align: center;
+    align-items: center;
+    -webkit-box-pack: center;
+    justify-content: center;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+    background-color: transparent;
+    outline: 0px;
+    border: 0px;
+    margin: 0px;
+    border-radius: 0px;
+    cursor: pointer;
+    user-select: none;
+    vertical-align: middle;
+    appearance: none;
+    text-decoration: none;
+    line-height: 1.25;
+    font-size: 0.875rem;
+    text-transform: unset;
+    font-family: "Public Sans", sans-serif;
+    max-width: 360px;
+    position: relative;
+    flex-shrink: 0;
+    overflow: hidden;
+    white-space: normal;
+    text-align: center;
+    flex-direction: row;
+    padding: 0px;
+    opacity: 1;
+    min-width: 48px;
+    min-height: 48px;
+    font-weight: 600;
+    color: rgb(99, 115, 129);
+}
+.css-1xs60sr-MuiFormControl-root-MuiTextField-root{
+    height:64px;
+}
+div.css-1oqqzyl-MuiContainer-root {
+    margin-left: 0px;
+    padding-right: 0px;
+    padding: 0px;
+    border-radius: unset;
+}
+
+header.css-s8w4tc-MuiPaper-root-MuiAppBar-root,
+header.css-11o1pbk-MuiPaper-root-MuiAppBar-root {
+    margin-top: 0px;
+    border-radius: unset;
+    padding-left: 0px;
+    padding-right: 0px;
+    padding: 0px;
+}
+
+div.css-1oin8qm-MuiToolbar-root {
+    border-radius: 0px;
+    border-radius: unset;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div> {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    color: rgb(33, 43, 54);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-image: none;
+    overflow: hidden;
+    position: relative;
+    box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
+    border-radius: 16px;
+    z-index: 0;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div>div.MuiCardHeader-root.css-15x3obx {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    color: rgb(33, 43, 54);
+    box-sizing: border-box;
+    display: flex;
+    -webkit-box-align: center;
+    align-items: center;
+    padding: 24px 24px 0px;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div>div.MuiCardHeader-root.css-15x3obx>div {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    color: rgb(33, 43, 54);
+    box-sizing: border-box;
+    flex: 1 1 auto;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div>div.MuiCardHeader-root.css-15x3obx>div>span {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    color: rgb(33, 43, 54);
+    box-sizing: border-box;
+    margin: 0px;
+    font-weight: 700;
+    line-height: 1.55556;
+    font-size: 1.0625rem;
+    font-family: "Public Sans", sans-serif;
+    display: block;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div>div.MuiStack-root.css-u3gl1n {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    color: rgb(33, 43, 54);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 24px;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div>div.MuiStack-root.css-u3gl1n>div.MuiBox-root.css-zelatz {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    color: rgb(33, 43, 54);
+    box-sizing: border-box;
+    line-height: 1.57143;
+    font-size: 0.875rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div>div.MuiStack-root.css-u3gl1n>div:nth-child(2) {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    color: rgb(33, 43, 54);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: row;
+    gap: 16px;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div>div.MuiStack-root.css-u3gl1n>div:nth-child(2)>svg {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    color: rgb(33, 43, 54);
+    box-sizing: border-box;
+    width: 24px;
+    height: 24px;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div>div.MuiStack-root.css-u3gl1n>div:nth-child(2)>svg>g {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    color: rgb(33, 43, 54);
+    fill: none;
+    box-sizing: border-box;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div>div.MuiStack-root.css-u3gl1n>div:nth-child(2)>svg>g>path:nth-child(1) {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    color: rgb(33, 43, 54);
+    d: path("M 24 0 v 24 H 0 V 0 Z M 12.593 23.258 l -0.011 0.002 l -0.071 0.035 l -0.02 0.004 l -0.014 -0.004 l -0.071 -0.035 c -0.01 -0.004 -0.019 -0.001 -0.024 0.005 l -0.004 0.01 l -0.017 0.428 l 0.005 0.02 l 0.01 0.013 l 0.104 0.074 l 0.015 0.004 l 0.012 -0.004 l 0.104 -0.074 l 0.012 -0.016 l 0.004 -0.017 l -0.017 -0.427 c -0.002 -0.01 -0.009 -0.017 -0.017 -0.018 m 0.265 -0.113 l -0.013 0.002 l -0.185 0.093 l -0.01 0.01 l -0.003 0.011 l 0.018 0.43 l 0.005 0.012 l 0.008 0.007 l 0.201 0.093 c 0.012 0.004 0.023 0 0.029 -0.008 l 0.004 -0.014 l -0.034 -0.614 c -0.003 -0.012 -0.01 -0.02 -0.02 -0.022 m -0.715 0.002 a 0.023 0.023 0 0 0 -0.027 0.006 l -0.006 0.014 l -0.034 0.614 c 0 0.012 0.007 0.02 0.017 0.024 l 0.015 -0.002 l 0.201 -0.093 l 0.01 -0.008 l 0.004 -0.011 l 0.017 -0.43 l -0.003 -0.012 l -0.01 -0.01 Z");
+    box-sizing: border-box;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div>div.MuiStack-root.css-u3gl1n>div:nth-child(2)>div {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    color: rgb(33, 43, 54);
+    box-sizing: border-box;
+    line-height: 1.57143;
+    font-size: 0.875rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div>div.MuiStack-root.css-u3gl1n>div:nth-child(2)>div>a {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    box-sizing: border-box;
+    margin: 0px;
+    font-weight: 600;
+    line-height: 1.57143;
+    font-size: 0.875rem;
+    font-family: "Public Sans", sans-serif;
+    text-decoration: none;
+    color: inherit;
+}
+
+div.MuiGrid2-root.MuiGrid2-container.MuiGrid2-direction-xs-row.MuiGrid2-spacing-xs-3.css-v57kt1>div.MuiGrid2-root.MuiGrid2-direction-xs-row.MuiGrid2-grid-xs-12.MuiGrid2-grid-md-4.css-grry9j>div>div {
+    -webkit-font-smoothing: antialiased;
+    text-size-adjust: 100%;
+    --darkreader-neutral-background: #212222;
+    --darkreader-neutral-text: #eae3d9;
+    --darkreader-selection-background: #165aaa;
+    --darkreader-selection-text: #fbf5ec;
+    line-height: 1.5;
+    font-size: 1rem;
+    font-family: "Public Sans", sans-serif;
+    font-weight: 400;
+    --Grid-columns: 12;
+    --Grid-columnSpacing: 24px;
+    --Grid-rowSpacing: 24px;
+    box-sizing: border-box;
+    background-color: rgb(255, 255, 255);
+    color: rgb(33, 43, 54);
+    transition: box-shadow 300ms cubic-bezier(0.4, 0, 0.2, 1) 0ms;
+    background-image: none;
+    overflow: hidden;
+    position: relative;
+    box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
+    border-radius: 16px;
+    z-index: 0;
+}
+
+#root>div.layout-content>div>div.flex-1.card.p-0>div>div.p-card-header {
+    padding-left: 10px;
+    padding-top: 10px;
+}
+
+.css-1nmz0rr-MuiPaper-root-MuiAppBar-root {
+    margin-top: 0px;
+    margin-left: 0px;
+    width: 100vw;
+    padding-left: 0px;
+    padding-top: 0px;
+}
+
+div.css-1oin8qm-MuiToolbar-root {
+    margin-left: 0px;
+    width: 100vw;
+    padding-left: 0px;
+    padding-top: 0px;
+    margin-top: 0px !important;
+
+}
+
+.css-1oqqzyl-MuiContainer-root {
+    margin: 0% 0% auto 0%;
+}
+.css-1nmz0rr-MuiPaper-root-MuiAppBar-root{
+    margin-top:0px !important;
+}

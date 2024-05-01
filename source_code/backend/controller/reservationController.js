@@ -30,9 +30,9 @@ export const createReservation = async(req, res) => {
       }
 
       // If no conflicting reservations, proceed with creating the reservation
-      const reservationQuery = `INSERT INTO reservation (roomId, guestId, checkinDate, checkoutDate, 	withBreackfast, price, identificationCardPic)
-        VALUES (?, ?, ?, ?, ?, ?, ?);`;
-      console.log(roomId, guestId, checkinDate, checkoutDate, withBreakfast, price, identificationCardPic.filename)
+      const reservationQuery = `INSERT INTO reservation (roomId, guestId, checkinDate, checkoutDate, 	withBreackfast, price, identificationCardPic,status)
+        VALUES (?, ?, ?, ?, ?, ?, ?,?);`;
+      console.log(roomId, guestId, checkinDate, checkoutDate, withBreakfast, price, identificationCardPic.filename,"CONFIRMED")
       db.query(
         reservationQuery,
         [roomId, guestId, checkinDate, checkoutDate, withBreakfast, price, identificationCardPic.filename],
@@ -49,7 +49,7 @@ export const createReservation = async(req, res) => {
 }
 
 export const fetchAll=(req,res)=>{
-const quryString=`select rv.id,r.roomNumber,g.firstName,g.lastName,rv.identificationCardPic,rv.checkinDate,rv.checkoutDate
+const quryString=`select rv.id,r.roomNumber,g.firstName,g.lastName,rv.identificationCardPic,rv.checkinDate,rv.checkoutDate ,rv.status
 from reservation rv ,guest g,rooms r 
 where rv.guestId=g.id and rv.roomId=r.id `
 db.query(quryString,[],(error,result)=>{
@@ -58,4 +58,96 @@ db.query(quryString,[],(error,result)=>{
   }
   return res.status(200).json(result)
 })
+}
+export const changeStatus=(req,res)=>{
+  console.log(req.body)
+  const query=`UPDATE reservation SET status=? WHERE id=?`
+  db.query(query,[req.body.status,req.body.id],(error,result)=>{
+    if(error){
+    return  res.status(500).json({message:'there is an error while changing the status',error:true})
+    }
+    return res.status(200).json({error:false,data:result})
+  })
+}
+
+
+
+export const fetchAllForCheckout=(req,res)=>{
+  const query=`
+  SELECT rv.id, r.roomNumber, g.firstName, g.lastName, rv.identificationCardPic, rv.checkinDate, rv.checkoutDate,
+  rv.status AS reservationStatus,
+  COALESCE(mc.status, 'UNQUALIFIED') AS managecheckoutStatus,
+  s.id AS staffId, s.userName, s.profilePicture
+FROM reservation rv
+INNER JOIN guest g ON rv.guestId = g.id
+INNER JOIN rooms r ON rv.roomId = r.id
+LEFT JOIN managecheckout mc ON rv.id = mc.reservationId
+LEFT JOIN staff s ON mc.staffId = s.id;
+`
+/*
+SELECT rv.id, r.roomNumber, g.firstName, g.lastName, rv.identificationCardPic, rv.checkinDate, rv.checkoutDate,
+  rv.status AS reservationStatus,
+  COALESCE(mc.status, 'UNQUALIFIED') AS managecheckoutStatus,
+  s.id AS staffId, s.userName, s.profilePicture
+FROM reservation rv
+INNER JOIN guest g ON rv.guestId = g.id
+INNER JOIN rooms r ON rv.roomId = r.id
+INNER JOIN managecheckout mc ON rv.id = mc.reservationId
+INNER JOIN staff s ON mc.staffId = s.id;
+
+*/
+db.query(query,[],(error,result)=>{
+  if(error){
+  return  res.status(500).json({message:'there is an error while geting the reservations',error:true})
+  }
+  return res.status(200).json({error:false,data:result})
+})
+}
+export const checkoutStaffTable=(req,res)=>{
+  const id = req.body
+  console.log('65',id)
+  const query =` SELECT rv.id, r.roomNumber, g.firstName, g.lastName, rv.identificationCardPic, rv.checkinDate, rv.checkoutDate, mc.status
+FROM managecheckout mc
+INNER JOIN reservation rv ON mc.reservationId = rv.id
+INNER JOIN guest g ON rv.guestId = g.id
+INNER JOIN rooms r ON rv.roomId = r.id
+WHERE mc.staffId = ?`
+
+db.query(query,[id.id],(error,result)=>{
+  if(error){
+  return  res.status(500).json({message:'there is an eror while get the reservations'})
+  }
+  return res.status(200).json(result)
+})
+}
+
+export const staffStatusChange=(req,res)=>{
+  const data=req.body
+  console.log('77',data.rowData)
+  const query =`update managecheckout set status =? where reservationId =? and staffId =?`;
+  db.query(query,[data.rowData.status,data.rowData.reservationId,data.staffId],(error,result)=>{
+    if(error){
+    return  res.status(500).json({message:'there is an eror while get the reservations',error:true})
+    }
+    console.log('88',result)
+    return res.status(200).json({error:false,message:'Status changed'})
+  })
+}
+
+
+
+
+
+
+export const staffCheckout = async (req, res) => {
+  const quryString=`insert into managecheckout(staffId,reservarionId) VALUES (?,?)`;
+  db.query(quryString,[req.body.guestId,req.body.reservationId,req.body.status],(error,result)=>{
+    if(error){
+    return  res.status(500).json({message:'there is an eror while get the reservations'})
+    }
+    return res.status(200).json(result)
+  })
+}
+export const qualifyGuest =(req,res)=>{
+
 }

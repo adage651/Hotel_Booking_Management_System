@@ -27,8 +27,8 @@ try {
           quantity: 1,
         },
       ],
-      success_url: 'http://localhost:3000/',
-      cancel_url: 'http://localhost:3000/',
+      success_url: 'http://10.194.112.14:3000/',
+      cancel_url: 'http://10.194.112.14:3000/',
       client_reference_id: userId, // Generate a unique reference ID
     });
 

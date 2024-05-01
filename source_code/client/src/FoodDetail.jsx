@@ -100,7 +100,7 @@ export default function FoodDetail() {
     const deleteProduct = async() => {
         let _rooms = foods.filter((val) => val.id !== food.id);
         console.log(food.id)
-        const response=await fetch(`http://localhost:8000/foods/deleteroom:${[food.id]}`,{
+        const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}foods/deleteroom:${[food.id]}`,{
             method:'DELETE'
         })
         const resValue=await response.json();
@@ -127,7 +127,7 @@ export default function FoodDetail() {
             return food.id
         })
         
-        const response=await fetch(`http://localhost:8000/foods/deletefood:${[id]}`,{
+        const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/foods/deletefood:${[id]}`,{
             method:'DELETE'
         })
         const resValue=await response.json();
@@ -177,7 +177,7 @@ export default function FoodDetail() {
     };
 
     const imageBodyTemplate = (rowData) => {
-        return <img src={`http://localhost:8000/public/uploads/${rowData.foodImage}`} alt='first roomimage' className="shadow-2 border-round" style={{ width: '64px' }} />;
+        return <img src={`http://${process.env.REACT_APP_SERVERURL}/public/uploads/${rowData.foodImage}`} alt='first roomimage' className="shadow-2 border-round" style={{ width: '64px' }} />;
     };
 
     const priceBodyTemplate = (rowData) => {
@@ -263,7 +263,7 @@ food.foodImage.forEach((roomimg,index)=>{
 formData.append(`image${index}`, roomimg);
 })
 
-const response=await fetch('http://localhost:8000/foods/save',{
+const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/foods/save`,{
   method:'post',
 body:formData
 })
@@ -514,7 +514,7 @@ const data= await request.formData()
 return data;
 }
 export const loader =async ()=>{
-    const response = await fetch('http://localhost:8000/foods/fetchall')
+    const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/foods/fetchall`)
     const resData=await response.json()
     return resData
 }

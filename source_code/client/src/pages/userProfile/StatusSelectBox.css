@@ -1,0 +1,27 @@
+/* @import "../../../variables.scss"; */
+
+.dx-texteditor-with-floating-label .status-editor-field .status-indicator {
+    align-self: flex-end;
+}
+
+.dx-texteditor-with-floating-label .status-editor-field .status-indicator .status {
+    display: inline;
+}
+
+.status-editor-field {
+    display: flex;
+}
+
+.status-editor-field .status-indicator {
+    display: flex;
+    align-self: center;
+    padding-left: var(--list-padding-left);
+}
+
+.status-editor-field .status {
+    display: flex;
+}
+
+.status-editor-field .status-input[statuseditorinput][readonly] {
+    padding-left: 0;
+}

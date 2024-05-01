@@ -39,6 +39,9 @@ import {Chips} from 'primereact/chips'
 import {InputMask} from 'primereact/inputmask'
 import GallariaAdvanced from './GallariaAdvanced.jsx'
 
+import SvgColor from '../components/svg-color';
+
+
 import TemplateDemo from './TemplateDemo';
 import { Toast } from 'primereact/toast';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
@@ -47,7 +50,7 @@ import { BugTwoTone } from '@ant-design/icons';
 import { Checkbox } from 'primereact/checkbox';
 const stripePromise = loadStripe('pk_test_51Ojz3qKilyE0iH1nwO0Vh8H9rf7CIb2TRqCJniXrrn2MgdhOVP8MUd6AX42YCEc4MD8SOFFxXlzR5RHfzLWj7S4Z00vzuRkWC5');
 const LandingPage = () => {
-  const [activeItem, setActiveItem] = useState('Home');
+  const [activeItem, setActiveItem] = useState('search');
     const [activeStep, setActiveStep] = React.useState(0);
   const [skipped, setSkipped] = React.useState(new Set());
 const navigate=useNavigate();
@@ -119,7 +122,6 @@ const [acceptTheRoom,setAcceptTheRoom]=useState(false)
 useEffect(() => {
   //handleCheckStatus()
   const roomIsSet=localStorage.getItem('selectedRoom')
-  console.log(paymentStat)
 if(roomIsSet&&paymentStat==='paid'){
   successPaid();
   return;
@@ -128,6 +130,7 @@ if(roomIsSet&&paymentStat==='paid'){
    return;
 }else if(roomIsSet){
     const selecByUserRoom=JSON.parse(roomIsSet)
+    if(activeStep===3)return
   confirm1(`Do you want to continue booking the selected room :" ${selecByUserRoom.roomName} " room number ${selecByUserRoom.roomNumber}`)
 }
 
@@ -172,19 +175,20 @@ const checkoutDate=checkout.format('YYYY-MM-DD');
   formData.append('price',selectedRoom.price)
   formData.append('withBreackFast', selectedRoom.withSpaAndFood);
 
-  const fileUploadresponse=await fetch(userDataFinal.idCardPic[0].objectURL)
+  const fileUploadresponse= await fetch(userDataFinal.idCardPic[0].objectURL)
     const blob = await fileUploadresponse.blob();
     const file = new File([blob], 'image.jpg', { type: blob.type });
   formData.append('identificationCardPic',file)
   try {
-    const response = await fetch('http://localhost:8000/reservation/create', {
+    const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/reservation/create`, {
   method: 'POST',
   body: formData,
 });
+const res= await response.json();
+console.log(res)
 
     if (response.ok) {
-const res=await response.json();
-console.log(res)
+
       setActiveItem('search');
       setStepFailed([]);
       setActiveStep(3);
@@ -325,7 +329,9 @@ const shouldDisableDate = (day) => {
   const [checkinDate, setCheckinDate] = useState(null);
   const [checkoutDate, setCheckoutDate] = useState(null);
 
-
+const icon = (name) => (
+  <img src={`/assets/icons/navbar/${name}`} sx={{ width: 1, height: 1 }} />
+);
 
 
   const items = [
@@ -337,7 +343,7 @@ const shouldDisableDate = (day) => {
     },
     {
       label: 'Rooms',
-      icon: 'pi pi-room',
+      icon: (<img src='/assets/icons/navbar/room.png' sx={{ width: 1, height: 1 }} />),
       template: itemRenderer
     },
     {
@@ -414,7 +420,7 @@ const searchRoomHandler=async(e)=>{
 e.preventDefault();
 
 const searchRoom = {adult ,children ,date ,floor,roomType};
-const response= await fetch('http://localhost:8000/rooms/searchroom',{
+const response= await fetch(`http://${process.env.REACT_APP_SERVERURL}/rooms/searchroom`,{
   method:'POST',
   headers:{
   'Content-Type':'application/json'
@@ -513,7 +519,7 @@ const [sessionIds,setSessionId]=useState()
  const handlePayment = async () => {
     try {
       const stripe = await stripePromise;
-      const response = await fetch('http://localhost:8000/payment/create-checkout-session', {
+      const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/payment/create-checkout-session`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ amount,userId:userData.id }),
@@ -535,7 +541,7 @@ console.log(sessionId)
   try {
     const userSession = localStorage.getItem('sessionId');
     if(userSession){
-    const response = await fetch('http://localhost:8000/payment/status', {
+    const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/payment/status`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ sessionId: userSession }), // Corrected line
@@ -636,14 +642,14 @@ const uploads=(imageFile)=>{
             </div>
           </Card>
         </div>;
-
+break;
       case 'Rooms':
         return <div>Features Page Content</div>;
 
 
 
       case 'search':
-        return <div className='app_row'>
+        return (<div className='app_row'>
           <main id="mainContent" className="app_col-sm-12 app_col-md-12 app_col-lg-8">
           <form onSubmit={searchRoomHandler} method='post' >
             <div className="search-bar-container_top" style={{ border: "1px solid #333" }}>
@@ -1002,7 +1008,7 @@ Please note that any modifications may be subject to rate differences, and the g
                       </MaterialButton>
                     )}
 
-                    <Button onClick={handlePayment}
+                    <Button onClick={successPaid}
                      label={activeStep === steps.length - 1 ? 'Finish' : 'Procced to payment'}
                      severity="info" outlined
                     />
@@ -1105,7 +1111,8 @@ Please note that any modifications may be subject to rate differences, and the g
             </div>
           </aside>
 
-        </div>
+        </div>)
+        break;
       case 'Blocks':
         return <div>Blocks Page Content</div>;
       case 'UI Kit':
@@ -1130,20 +1137,19 @@ Please note that any modifications may be subject to rate differences, and the g
       <div>
         {renderContent()}
       </div>
-      <div className='card' style={{display:'flex', alignItems:'center',justifyContent:'center'}}><h2>Our Rooms</h2></div>
-<GallariaAdvanced />
+
     </div>
   )
 }
 export default LandingPage
 
 export const loader = async () => {
-  const response = await fetch('http://localhost:8000/users/userdata', {
+  const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/users/userdata`, {
     method: 'GET',
     credentials: 'include',
   });
   let resData = await response.json();
-  const reservedRoom = await fetch('http://localhost:8000/rooms/searchreservedroom')
+  const reservedRoom = await fetch(`http://${process.env.REACT_APP_SERVERURL}/rooms/searchreservedroom`)
 const reservedData = await reservedRoom.json();
 //console.log(reservedData)
 const finalResult = {...resData,reservedData}

@@ -1,0 +1,20 @@
+/* @import "../../../variables.scss"; */
+
+.status-contact span {
+    font-size: 13px;
+}
+
+.status-contact span::before {
+    --diameter: 10px;
+    content: " ";
+    width: var(--diameter);
+    height: var(--diameter);
+    border-radius: calc(var(--diameter) / 2);
+    margin-right: calc(var(--diameter) / 2);
+    display: inline-block;
+}
+
+.status-contact span.input {
+    display: block;
+    padding: 15px 16px 14px;
+}

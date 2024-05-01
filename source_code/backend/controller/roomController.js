@@ -142,3 +142,14 @@ export const reservedRoom = (req, res) => {
     res.status(200).json(result);
   });
 };
+export const changeRoomStatus=(req,res)=>{
+  const roomData=req.body
+   try {
+     db.query('UPDATE reservation SET status = ? WHERE id = ?', [roomData.status, roomData.reservationId]);
+
+    console.log('Room status updated successfully.');
+  } catch (error) {
+    console.error('Error updating room status:', error);
+  }
+}
+//sgp_a0d7ccb4f752ea73_05a7cd8435b13be18720c1245bc3e0355d85eaa6

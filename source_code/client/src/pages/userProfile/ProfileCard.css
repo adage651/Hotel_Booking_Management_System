@@ -1,0 +1,37 @@
+.profile-card-panel {
+  width: 100%;
+  padding: 0 0 var(--content-padding) 0;
+  border-radius: 8px;
+  background-color: var(--card-background);
+  box-shadow: var(--shadow);
+
+}
+
+.profile-card-panel .profile-card-panel-header {
+  padding: 12px var(--content-padding);
+  border-bottom: 1px solid var(--border-color);
+}
+
+.profile-card-panel .top-item-wrapper {
+  display: flex;
+}
+
+.profile-card-panel .profile-card-top-item {
+  display: flex;
+  min-height: 50px;
+}
+
+.profile-card-panel .profile-card-top-item>div {
+  display: flex;
+  flex-flow: column;
+  gap: 5px;
+}
+
+.profile-card-panel .form-container .dx-form .dx-field-item {
+  padding-top: calc(var(--content-padding) / 2);
+  padding-right: 0;
+}
+
+.profile-card-panel .form-container {
+  margin: calc(var(--content-padding) * 2) var(--content-padding) 0;
+}

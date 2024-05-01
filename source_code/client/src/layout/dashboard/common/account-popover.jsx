@@ -11,7 +11,8 @@ import IconButton from '@mui/material/IconButton';
 
 import { account } from '../../../_mock/account';
 import UserContext from '../../../context/userContext';
-
+// import { redirect } from 'next/dist/server/api-utils';
+import {redirect ,useNavigate, Outlet } from'react-router-dom';
 // ----------------------------------------------------------------------
 
 const MENU_OPTIONS = [
@@ -31,7 +32,15 @@ const MENU_OPTIONS = [
 
 // ----------------------------------------------------------------------
 
-export default function AccountPopover() {
+export default function AccountPopover({profile}) {
+  // const navigate = useNavigate();
+  const handleClick = label=>{
+switch(label){
+  case 'Profile':
+  profile();  
+  break;
+}
+  }
   const [open, setOpen] = useState(null);
   const ctx=useContext(UserContext);
 
@@ -39,7 +48,16 @@ export default function AccountPopover() {
     setOpen(event.currentTarget);
   };
 
-  const handleClose = () => {
+  const handleClose = async() => {
+    setOpen(null);
+  };
+const handleLogout= async() => {
+    const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/users/logout`)
+    const result = await response.json()
+    console.log(result)
+    if(result.logout){
+      redirect('/')
+    }
     setOpen(null);
   };
 
@@ -97,7 +115,7 @@ export default function AccountPopover() {
         <Divider sx={{ borderStyle: 'dashed' }} />
 
         {MENU_OPTIONS.map((option) => (
-          <MenuItem key={option.label} onClick={handleClose}>
+          <MenuItem key={option.label} onClick={()=>{handleClose();handleClick(option.label)}}>
             {option.label}
           </MenuItem>
         ))}
@@ -107,7 +125,7 @@ export default function AccountPopover() {
         <MenuItem
           disableRipple
           disableTouchRipple
-          onClick={handleClose}
+          onClick={handleLogout}
           sx={{ typography: 'body2', color: 'error.main', py: 1.5 }}
         >
           Logout

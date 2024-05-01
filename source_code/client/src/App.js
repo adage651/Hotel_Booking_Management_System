@@ -1,5 +1,5 @@
+ import 'devextreme/dist/css/dx.light.css';
 import './App.css';
-
 import "primereact/resources/themes/lara-light-cyan/theme.css";
 
 import Login , {action as loginAction ,loader as loginLoader} from './pages/Login.jsx'
@@ -9,7 +9,7 @@ import AuthRegister, {action as authAction ,loader as userFetch} from './pages/A
 import Manager,{ loader as fetchUserData} from './pages/Manager.jsx'
 import './global.css';
 import { useScrollToTop } from './hooks/use-scroll-to-top.js';
-
+import CheckoutStaffTable, { loader as checkoutLoader } from './pages/ChckoutStaffTable.jsx'
 // const router=createBrowserRouter([
 //   {path:'/',element:<Home />, loader:homeLoader},
 //   {path:'/manager' ,element:<Manager />},
@@ -36,24 +36,27 @@ import LandingPage, {loader as userLoader} from './pages/LandingPage.jsx';
 import Receptionist ,{loader as receptionstLoader} from './pages/Receptionist.jsx';
 import Staff,{loader as staffLoader} from './pages/Staff.jsx';
 import Maintenance from './pages/Maintenance.jsx';
-import Practice from './Practice.jsx';
+import Contact,{loader as contactLoader} from './pages/Contact.jsx';
 import FoodDetail,{loader as foodLoader,action as actionFood} from './FoodDetail.jsx';
 import ConformationPage from './pages/ConformationPage.jsx'
-import ReservationStatus from './pages/ReservationDetail.jsx'
+// import ReservationStatus from './pages/ReservationDetail.jsx'
 import ReservationDetail,{loader as reservationLoader} from './pages/ReservationDetail.jsx';
-
-        
-
+import HomePage,{loader as homeLoader} from './pages/HomePage.jsx';
+import Profile from './pages/Profile.jsx'       
+import  socket  from './pages/socket';
+import { UserProfile } from './pages/userProfile/userProfile';
+import ReceptionistDataTable,{ loader as receptionstLoaders } from './pages/ReceptionistDataTable.jsx'
+import CheckoutDataTable ,{ loader as checkoutDataTableLoader } from './pages/CheckoutDataTable';
 const router=createBrowserRouter(
   [
-    {path:'/', element:<LandingPage />, loader:userLoader,
-  children:[
+    // {path:'/', element:<LandingPage />, loader:userLoader},
+  // {path:'/ReservationStatus',element:<ReservationDetail />},
+{path:'/', element:<HomePage />, loader:homeLoader},
+// {path:'/table',element:<CheckoutDataTable /> ,loader:checkoutDataTableLoader },
+// }},
+    {path:'/landing', element:<LandingPage />, loader:userLoader},
+    {path:'/edit-profile',element:<UserProfile />},
 
-  ]
-  },
-  {path:'/ReservationStatus',element:<ReservationDetail />},
-
-    
     {path:'/manager', element:<Manager />,loader:fetchUserData,
     children:[
       // {path:'view-account', element:<UserPage /> ,loader:userFetchAll},
@@ -61,6 +64,8 @@ const router=createBrowserRouter(
       {path:'view-account', element:<UserPage />,loader:userFetchAll },
       {path:'reservation', element:<ReservationDetail /> ,loader:reservationLoader},
       {path:'managefood', element:<FoodDetail />,loader:foodLoader,action:actionFood},
+      // {path:'user',element:<Practice />},
+      {path:'notifications',element:<Contact /> ,loader:contactLoader},
       {path:'', element:<DashbordData />},
         ],
       // errorElement:<LoginError />
@@ -69,12 +74,19 @@ const router=createBrowserRouter(
     
 
     {path:'/receptionist', element:<Receptionist />,loader:receptionstLoader
-     ,errorElement:<LoginError /> },
+    ,children:[
+      {path:'checkin',element:<ReceptionistDataTable />,loader:receptionstLoaders},
+      {path:'checkout', element:<CheckoutDataTable /> ,loader:checkoutDataTableLoader}
+
+
+      
+    ]
+     ,errorElement:<LoginError />},
 
 
     {path:'/staff_member', element:<Staff />,loader:staffLoader,
     children:[
-      {path:'user', element:<UserPage /> ,loader:userFetchAll},
+      {path:'checkout', element:<CheckoutStaffTable /> ,loader:checkoutLoader},
       {path:'rooms', element:<RoomDetail />}
     ] 
   ,errorElement:<LoginError /> },
@@ -85,9 +97,12 @@ const router=createBrowserRouter(
       
     ]  
   ,errorElement:<LoginError />},
-     {path:'/guest', element:<LandingPage /> ,loader:userLoader,errorElement:<LoginError />
+     {path:'/guest', element:<HomePage /> ,loader:homeLoader,errorElement:<LoginError />
+     , children:[
+      {path:'profile' ,element:<Profile /> },
+     ]
     },
-
+{path:'/profile' ,element:<Profile /> },
   {path:'/login' ,element:<Login />,action:loginAction ,loader:loginLoader },
   {path:'/loginError' ,element:<LoginError />},
   {path:'/register' ,element:<Register /> ,loader:loginLoader,children:[
@@ -101,7 +116,6 @@ const router=createBrowserRouter(
 
 
 function App() {
-  
   return (
   <RouterProvider router={router} />
   );

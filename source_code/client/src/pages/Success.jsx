@@ -8,7 +8,7 @@ export const loader =async()=>{
     try {
 const userSession=localStorage.getItem('sessionId')
 console.log(userSession)
-      const response = await fetch(`http://localhost:8000/payment/status` ,{
+      const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/payment/status` ,{
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({userSession})

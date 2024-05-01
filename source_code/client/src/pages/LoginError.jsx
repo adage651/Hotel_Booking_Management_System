@@ -24,7 +24,7 @@ const navigate=useNavigate();
                         <h1 className="text-900 font-bold text-5xl mb-2">Access Denied</h1>
                         <div className="text-600 mb-5">You do not have the necessary permisions try after 3 hours.</div>
                         <img src={AccessError} alt="Error" className="mb-5" width="80%" />
-                        <Button icon="pi pi-arrow-left" label="Try loging again" text onClick={() => navigate('/')} />
+                        <Button icon="pi pi-arrow-left" label="Try loging again" text onClick={() => navigate('/login')} />
                     </div>
                 </div>
             </div>

@@ -15,7 +15,7 @@ welcome back ...
 }
 export default Home
 export const loader = async() => {
-   const response=await fetch('http://localhost:8000/pages/guesthome',{
+   const response=await fetch(`http://${process.env.REACT_APP_serverUrl}/pages/guesthome`,{
   method: 'GET',
   credentials: 'include'
 })
