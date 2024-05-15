@@ -1,185 +1,205 @@
-import {io} from "socket.io-client"
-const Practice =()=>{
-const socket=io();
-socket.on('connet',()=>{
-    console.log("connected sucess")
-})
-    return(
-         <div class="flex flex-column md:flex-row gap-5" style={{minHeight: "81vh;"}}>
-        <div class="md:w-25rem card p-0">
-            <div class="flex flex-column align-items-center border-bottom-1 surface-border p-6">
-                <img
-                    src="/assets/images/avatars/avatar_4.jpg" class="w-6rem h-6rem border-circle shadow-4"
-                    alt="Asiya Javayant" />
-            <span class="text-900 text-xl font-semibold mt-4">Asiya Javayant</span>
-            </div>
-            <div class="w-full flex row-gap-4 flex-column surface-border p-4"><span class="p-input-icon-left w-full"><i
-                        class="pi pi-search"></i>
-                        <input class="p-inputtext p-component w-full w-full" id="search"
-                        placeholder="Search" data-pc-name="inputtext" data-pc-section="root" type="text"
-                        value="" />
-                    </span>
-                <div class="flex flex-row gap-4 md:flex-column overflow-auto">
-                    <div class="flex flex-nowrap justify-content-between align-items-center border-1 surface-border border-round p-3 cursor-pointer select-none hover:surface-hover transition-colors transition-duration-150"
-                        tabindex="0">
-                        <div class="flex align-items-center">
-                            <div class="relative md:mr-3"><img src="/assets/images/avatars/avatar_3.jpg"
-                                    alt="props.user" class="w-3rem h-3rem border-circle shadow-4" />
-                                        <span
-                                    class="w-1rem h-1rem border-circle border-2 surface-border absolute bg-green-400 bg-yellow-400"
-                                    style={{bottom: "2px;", right: "2px;"}}>
-                                        </span></div>
-                            <div class="flex-column hidden md:flex"><span class="text-900 font-semibold block">Ioni
-                                    Bowcher</span><span
-                                    class="block text-600 text-overflow-ellipsis overflow-hidden white-space-nowrap w-10rem text-sm">Sed
-                                    do eiusmod tempor incididunt ut labore et dolore magna aliqua</span></div>
-                        </div><span class="text-700 font-semibold ml-auto hidden md:inline">2d</span>
-                    </div>
-                    <div class="flex flex-nowrap justify-content-between align-items-center border-1 surface-border border-round p-3 cursor-pointer select-none hover:surface-hover transition-colors transition-duration-150"
-                        tabindex="0">
-                        <div class="flex align-items-center">
-                            <div class="relative md:mr-3">
-                                <img src="/assets/images/avatars/avatar_2.jpg"
-                                    alt="props.user" class="w-3rem h-3rem border-circle shadow-4" /><span
-                                    class="w-1rem h-1rem border-circle border-2 surface-border absolute bg-yellow-400"
-                                    style={{bottom: "2px;" ,right: "2px;"}}></span></div>
-                            <div class="flex-column hidden md:flex"><span class="text-900 font-semibold block">Stephen
-                                    Shaw</span><span
-                                    class="block text-600 text-overflow-ellipsis overflow-hidden white-space-nowrap w-10rem text-sm">Consequat
-                                    mauris nunc congue nisi vitae suscipit.</span></div>
-                        </div><span class="text-700 font-semibold ml-auto hidden md:inline">2d</span>
-                    </div>
-                    <div class="flex flex-nowrap justify-content-between align-items-center border-1 surface-border border-round p-3 cursor-pointer select-none hover:surface-hover transition-colors transition-duration-150"
-                        tabindex="0">
-                        <div class="flex align-items-center">
-                            <div class="relative md:mr-3"><img src="/assets/images/avatars/avatar_1.jpg" alt="props.user"
-                                    class="w-3rem h-3rem border-circle shadow-4" /><span
-                                    class="w-1rem h-1rem border-circle border-2 surface-border absolute bg-red-400 bg-yellow-400"
-                                    style={{bottom:"2px;", right: "2px;"}}></span></div>
-                            <div class="flex-column hidden md:flex"><span class="text-900 font-semibold block">Xuxue
-                                    Feng</span><span
-                                    class="block text-600 text-overflow-ellipsis overflow-hidden white-space-nowrap w-10rem text-sm">Adipiscing
-                                    tristique risus nec feugiat in fermentum posuere urna nec.</span></div>
-                        </div><span class="text-700 font-semibold ml-auto hidden md:inline">2d</span>
-                    </div>
-                    <div class="flex flex-nowrap justify-content-between align-items-center border-1 surface-border border-round p-3 cursor-pointer select-none hover:surface-hover transition-colors transition-duration-150"
-                        tabindex="0">
-                        <div class="flex align-items-center">
-                            <div class="relative md:mr-3"><img src="/assets/images/avatars/avatar_6.jpg"
-                                    alt="props.user" class="w-3rem h-3rem border-circle shadow-4" /><span
-                                    class="w-1rem h-1rem border-circle border-2 surface-border absolute bg-green-400 bg-yellow-400"
-                                    style={{bottom: "2px;" ,right: "2px;"}}></span></div>
-                            <div class="flex-column hidden md:flex"><span class="text-900 font-semibold block">Ivan
-                                    Magalhaes</span><span
-                                    class="block text-600 text-overflow-ellipsis overflow-hidden white-space-nowrap w-10rem text-sm">Quis
-                                    nostrud exercitation ullamco laboris nisi ut</span></div>
-                        </div><span class="text-700 font-semibold ml-auto hidden md:inline">2d</span>
-                    </div>
-                    <div class="flex flex-nowrap justify-content-between align-items-center border-1 surface-border border-round p-3 cursor-pointer select-none hover:surface-hover transition-colors transition-duration-150"
-                        tabindex="0">
-                        <div class="flex align-items-center">
-                            <div class="relative md:mr-3"><img src="/assets/images/avatars/avatar_7.jpg"
-                                    alt="props.user" class="w-3rem h-3rem border-circle shadow-4" /><span
-                                    class="w-1rem h-1rem border-circle border-2 surface-border absolute bg-red-400 bg-yellow-400"
-                                    style={{bottom: "2px;" ,right: "2px;"}}></span></div>
-                            <div class="flex-column hidden md:flex"><span class="text-900 font-semibold block">Onyama
-                                    Limba</span><span
-                                    class="block text-600 text-overflow-ellipsis overflow-hidden white-space-nowrap w-10rem text-sm">Excepteur
-                                    sint occaecat cupidatat non proident</span></div>
-                        </div><span class="text-700 font-semibold ml-auto hidden md:inline">2d</span>
-                    </div>
+import { useRef ,useState,useEffect} from 'react'; 
+import { Panel } from 'primereact/panel';
+import  Avatar from '@mui/material/Avatar';
+import { Menu } from 'primereact/menu';
+import { Button } from 'primereact/button';
+
+import { Password } from 'primereact/password';
+ import { FloatLabel } from 'primereact/floatlabel';       
+
+const practice = () => {
+  const [data,setData]=useState([])
+  const [value, setValue] = useState('');
+
+ 
+
+useEffect(()=>{
+
+  fetch(`http://${process.env.REACT_APP_SERVERURL}/feedback/getFeedBack`, {
+    method: 'GET',
+    credentials: 'include',
+  }).then(response=> response.json())
+    .then(result=>{console.log(result); setData(result)});
+  
+},[])
+    const configMenu = useRef(null);
+    const items = [
+        {
+            label: 'Refresh',
+            icon: 'pi pi-refresh'
+        },
+        {
+            label: 'Search',
+            icon: 'pi pi-search'
+        },
+        {
+            separator: true
+        },
+        {
+            label: 'Delete',
+            icon: 'pi pi-times'
+        }
+    ];
+  console.log(data)
+    const headerTemplate = (options,{firstName,lastName,profilePicture}) => {
+        const className = `${options.className} justify-content-space-between`;
+console.log(options,firstName,lastName,profilePicture)   
+        return (
+            <div className={className}>
+                <div className="flex align-items-center gap-2">
+                    <Avatar image={`http://${process.env.REACT_APP_SERVERURL}/uploads/${profilePicture}`} size="large" shape="circle" />
+                    <span className="font-bold">{firstName} {lastName}</span>
+                </div>
+                <div>
+                    <Menu model={items} popup ref={configMenu} id="config_menu" />
+                    <button className="p-panel-header-icon p-link mr-2" onClick={(e) => configMenu?.current?.toggle(e)}>
+                        <span className="pi pi-cog"></span>
+                    </button>
+                    {options.togglerElement}
                 </div>
             </div>
-        </div>
+        );
+    };
+
+    const footerTemplate = (options,{timestamp}) => {
+
+const currentDate = new Date();
+const retrievedDate = new Date(timestamp);
+const absoluteDifference = Math.abs(retrievedDate.getTime() - currentDate.getTime());
 
 
+const hours = Math.floor(absoluteDifference / (60 * 60 * 1000));
+const minutes = Math.floor((absoluteDifference % (60 * 60 * 1000)) / (60 * 1000));
 
-        <div class="flex-1 card p-0">
-            <div class="flex flex-column h-full">
-                <div class="flex align-items-center border-bottom-1 surface-border p-3 lg:p-6">
-                    <div class="relative flex align-items-center mr-3"><img src="/assets/images/avatars/avatar_8.jpg"
-                            alt="Ioni Bowcher" class="w-4rem h-4rem border-circle shadow-4" /><span
-                            class="w-1rem h-1rem border-circle border-2 surface-border absolute bottom-0 right-0 bg-green-400"></span>
-                    </div>
-                    <div class="mr-2"><span class="text-900 font-semibold block">Ioni Bowcher</span><span
-                            class="text-700">Last active 1 hour ago</span></div>
-                    <div class="flex align-items-center ml-auto"><button
-                            class="mr-3 p-button p-component p-button-icon-only p-button-outlined p-button-rounded p-button-secondary"
-                            type="button" data-pc-name="button" data-pc-section="root"><span
-                                class="p-button-icon p-c pi pi-phone" data-pc-section="icon"></span><span
-                                class="p-button-label p-c" data-pc-section="label">&nbsp;</span><span
-                                role="presentation" aria-hidden="true" class="p-ink" data-pc-name="ripple"
-                                data-pc-section="root"
-                                style={{height: "32.9844px;" ,width: "32.9844px;"}}></span></button><button
-                            class="p-button p-component p-button-icon-only p-button-outlined p-button-rounded p-button-secondary"
-                            type="button" data-pc-name="button" data-pc-section="root"><span
-                                class="p-button-icon p-c pi pi-ellipsis-v" data-pc-section="icon"></span><span
-                                class="p-button-label p-c" data-pc-section="label">&nbsp;</span><span
-                                role="presentation" aria-hidden="true" class="p-ink" data-pc-name="ripple"
-                                data-pc-section="root" style={{height: "32.9844px;", width: "32.9844px;"}}></span></button>
-                    </div>
-                </div>
-                <div class="p-3 md:px-4 lg:px-6 lg:py-4 mt-2 overflow-y-auto" style={{maxHeight: "53vh;"}}>
-                    <div>
-                        <div class="grid grid-nogutter mb-4">
-                            <div class="mr-3 mt-1"><img src="/assets/images/avatars/avatar_8.jpg" alt="Ioni Bowcher"
-                                    class="w-3rem h-3rem border-circle shadow-4" /></div>
-                            <div class="col mt-3">
-                                <p class="text-900 font-semibold mb-3">Ioni Bowcher</p><span
-                                    class="text-700 inline-block font-medium border-1 surface-border p-3 white-space-normal border-round"
-                                    style={{wordBreak: "break-word;" , maxWidth: "80%;"}}>Lorem ipsum dolor sit amet,
-                                    consectetur adipiscing elit</span>
-                                <p class="text-700 mt-3">23:25<i class="pi pi-check ml-2 text-green-400"></i></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="grid grid-nogutter mb-4">
-                            <div class="mr-3 mt-1"><img src="/assets/images/avatars/avatar_8.jpg" alt="Ioni Bowcher"
-                                    class="w-3rem h-3rem border-circle shadow-4" /></div>
-                            <div class="col mt-3">
-                                <p class="text-900 font-semibold mb-3">Ioni Bowcher</p><span
-                                    class="text-700 inline-block font-medium border-1 surface-border p-3 white-space-normal border-round"
-                                    style={{wordBreak: "break-word", maxWidth: "80%;"}}>Sed do eiusmod tempor incididunt ut
-                                    labore et dolore magna aliqua</span>
-                                <p class="text-700 mt-3">23:26<i class="pi pi-check ml-2 text-green-400"></i></p>
-                            </div>
-                        </div>
-                    </div>
-                    <div>
-                        <div class="grid grid-nogutter mb-4">
-                            <div class="col mt-3 text-right"><span
-                                    class="inline-block text-left font-medium border-1 surface-border bg-primary-100 text-primary-900 p-3 white-space-normal border-round"
-                                    style={{wordBreak: "break-word; ", maxWidth: "80%;"}}>Sed do eiusmod tempor incididunt ut
-                                    labore et dolore magna aliqua</span>
-                                <p class="text-700 mt-3">23:26 <i class="pi pi-check ml-2 text-green-400"></i></p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div
-                    class="p-3 md:p-4 lg:p-6 flex flex-column sm:flex-row align-items-center mt-auto border-top-1 surface-border gap-3">
-                    <input
-                        class="p-inputtext p-component flex-1 w-full sm:w-auto border-round flex-1 w-full sm:w-auto border-round"
-                        id="message" placeholder="Type a message" data-pc-name="inputtext" data-pc-section="root"
-                        type="text" value="" />
-                    <div class="flex w-full sm:w-auto gap-3"><button
-                            class="w-full sm:w-auto justify-content-center text-xl p-button p-component p-button-secondary"
-                            data-pc-name="button" data-pc-section="root">😀<span role="presentation" aria-hidden="true"
-                                class="p-ink" data-pc-name="ripple" data-pc-section="root"
-                                style={{height: "52px;", width: "52px;"}}></span></button><button aria-label="Send"
-                            class="w-full sm:w-auto p-button p-component" data-pc-name="button"
-                            data-pc-section="root"><span class="p-button-icon p-c p-button-icon-left pi pi-send"
-                                data-pc-section="icon"></span><span class="p-button-label p-c"
-                                data-pc-section="label">Send</span><span role="presentation" aria-hidden="true"
-                                class="p-ink" data-pc-name="ripple" data-pc-section="root"
-                                style={{height: "83.125px;" ,width: "83.125px;"}}></span>
-                            </button>
-                            </div>
-                </div>
-            </div>
-        </div>
-         </div>
-)
+let updateString;
+
+if (hours > 0) {
+  updateString = `Updated ${hours} hour${hours > 1 ? 's' : ''} ago`;
+} else if (minutes > 0) {
+  updateString = `Updated ${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+} else {
+  updateString = 'Just now';
 }
-export default Practice
+
+
+        const className = `${options.className} flex flex-wrap align-items-center justify-content-between gap-3`;
+console.log(timestamp)
+        return (
+            <div className={className}>
+                <div className="flex align-items-center gap-2">
+                    <Button icon="pi pi-user" rounded text></Button>
+                    <Button icon="pi pi-bookmark" severity="secondary" rounded text></Button>
+                </div>
+                <span className="p-text-secondary">{updateString}</span>
+            </div>
+        );
+    };
+
+    return (
+   <div>
+     {/* <div class="w-full lg:w-4 h-full text-center px-6 py-6 flex flex-column justify-content-between">
+        <img
+            src="/layout/images/logo-dark.svg" class="h-4rem mt-4" alt="diamond-layout" />
+        <div class="flex flex-column align-items-center gap-4">
+            <div class="mb-3">
+                <h2>Create a new password</h2>
+                <p>Lorem ipsum dolor sit amet</p>
+            </div>
+            <div class="flex flex-column gap-4"><span class="p-input-icon-left w-full"><i class="pi pi-lock z-2"></i>
+                    <div id="password"
+                        class="p-password p-component p-inputwrapper p-inputwrapper-filled p-input-icon-right w-full"
+                        data-pc-name="password" data-pc-section="root">
+        <div className="card flex justify-content-center">
+            <FloatLabel>
+                <Password inputId="password" value={value} onChange={(e) => setValue(e.target.value)} />
+                <label htmlFor="password">New Password</label>
+            </FloatLabel>
+        </div>
+                        </div>
+                </span><span class="p-input-icon-left w-full"><i class="pi pi-lock z-2"></i>
+                    <div id="password" class="p-password p-component p-inputwrapper p-input-icon-right w-full"
+                        data-pc-name="password" data-pc-section="root">
+                          <div className="card flex justify-content-center">
+            <FloatLabel>
+                <Password inputId="password" value={value} onChange={(e) => setValue(e.target.value)} />
+                <label htmlFor="password">Rewrite new password</label>
+            </FloatLabel>
+        </div>
+                            
+                            </div>
+                </span>
+                <div class="flex flex-wrap gap-2 justify-content-between"><button aria-label="Cancel"
+                        class="flex-auto justify-content-center p-button p-component p-button-outlined"
+                        data-pc-name="button" data-pc-section="root"><span class="p-button-label p-c"
+                            data-pc-section="label">Cancel</span><span role="presentation" aria-hidden="true"
+                            class="p-ink" data-pc-name="ripple" data-pc-section="root"
+                            style={{height: "170.172px;", width: "170.172px;"}}></span></button><button aria-label="Submit"
+                        class="flex-auto justify-content-center p-button p-component" data-pc-name="button"
+                        data-pc-section="root"><span class="p-button-label p-c"
+                            data-pc-section="label">Submit</span><span role="presentation" aria-hidden="true"
+                            class="p-ink" data-pc-name="ripple" data-pc-section="root"
+                            style={{height: "172.828px;", width: "172.828px;"}} ></span></button></div>
+            </div>
+        </div>
+        <p class="text-color-secondary font-semibold">A problem? <a
+                class="text-primary hover:underline cursor-pointer font-medium">Click here</a> and let us help you.</p>
+    </div> */}
+
+
+
+
+      <div class="flex align-items-center justify-content-between flex-column h-screen">     
+    <div class="flex flex-column align-items-center justify-content-center w-full md:w-4 h-full text-center py-6 px-4">
+        <a class="mb-6" style={{cursor: "pointer;"}}><svg height="56" viewBox="0 0 17 20" fill="none">
+                <path
+                    d="M0 0H6.00019V3.82345L17 1.66667V6.66667L6.00019 8.82345V10.4901L17 8.33333V13.3333L6.00019 15.4901V20H0V0Z"
+                    fill="url(#paint0_linear)"></path>
+                <defs>
+                    <linearGradient id="paint0_linear" x1="3.33335" y1="3.08442e-08" x2="8.49995" y2="20"
+                        gradientUnits="userSpaceOnUse">
+                        <stop stop-color="var(--primary-400)"></stop>
+                        <stop offset="1" stop-color="var(--primary-700)"></stop>
+                    </linearGradient>
+                </defs>
+            </svg></a>
+        <div class="mb-4">
+            <div class="text-900 text-xl font-bold mb-2">New Password</div><span class="text-600 font-medium">Enter your
+                new password</span>
+        </div>
+        <div class="flex flex-column"><span class="p-input-icon-left w-full mb-4"><i class="pi pi-lock z-2"></i>
+                <div id="password" class="p-password p-component p-inputwrapper p-input-icon-right w-full"
+                    data-pc-name="password" data-pc-section="root">
+                          <div className="card flex justify-content-center">
+            <FloatLabel>
+                <Password inputId="password" value={value} onChange={(e) => setValue(e.target.value)} />
+                <label htmlFor="password">New Password</label>
+            </FloatLabel>
+        </div>
+        </div>
+            </span><span class="p-input-icon-left w-full mb-4"><i class="pi pi-lock z-2"></i>
+                <div id="repeatpassword" class="p-password p-component p-inputwrapper p-input-icon-right w-full"
+                    data-pc-name="password" data-pc-section="root">
+                          <div className="card flex justify-content-center">
+            <FloatLabel>
+                <Password inputId="password" value={value} onChange={(e) => setValue(e.target.value)} />
+                <label htmlFor="password">Retype Password</label>
+            </FloatLabel>
+        </div>
+                        </div>
+            </span>
+            <div class="flex flex-wrap gap-2 justify-content-between"><button aria-label="Cancel"
+                    class="flex-auto p-button-outlined p-button p-component" data-pc-name="button"
+                    data-pc-section="root"><span class="p-button-label p-c"
+                        data-pc-section="label">Cancel</span></button><button aria-label="Submit"
+                    class="flex-auto p-button p-component" data-pc-name="button" data-pc-section="root"><span
+                        class="p-button-label p-c" data-pc-section="label">Submit</span></button></div>
+        </div>
+    </div>
+    </div>
+    </div>
+  
+
+    )
+
+};
+export default practice;

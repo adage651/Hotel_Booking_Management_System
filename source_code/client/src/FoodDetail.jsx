@@ -30,6 +30,7 @@ export default function FoodDetail() {
                     description: '',
                     foodImage: [],
                     price: 0,
+                    amount:0
                 };
 
                 const resData=useLoaderData()
@@ -37,12 +38,11 @@ export default function FoodDetail() {
                const data= resData.map((food)=>{
                 let imageslice;
                 food.foodImage!=='undefined'?imageslice=JSON.parse(food.foodImage):imageslice='null'
-              // const roomImages=imageslice.split(',')
-            //    console.log(imageslice)     
+ 
             return  {...food ,foodImage:imageslice[0]}
                 })
         
-    const [foods, setRooms] = useState(data);
+    const [foods, setFoods] = useState(data);
     const [productDialog, setProductDialog] = useState(false);
     const [deleteProductDialog, setDeleteProductDialog] = useState(false);
     const [deleteProductsDialog, setDeleteProductsDialog] = useState(false);
@@ -58,8 +58,8 @@ export default function FoodDetail() {
     const submit =useSubmit();
 
     useEffect(() => {
-    //    ProductService.getProducts().then((data) => setRooms(data)); 
-    setRooms(data)
+    //    ProductService.getProducts().then((data) => setFoods(data)); 
+    setFoods(data)
     
     }, []);
 
@@ -100,12 +100,12 @@ export default function FoodDetail() {
     const deleteProduct = async() => {
         let _rooms = foods.filter((val) => val.id !== food.id);
         console.log(food.id)
-        const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}foods/deleteroom:${[food.id]}`,{
+        const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/foods/deletefood:${[food.id]}`,{
             method:'DELETE'
         })
         const resValue=await response.json();
 
-        setRooms(_rooms);
+        setFoods(_rooms);
         setDeleteProductDialog(false);
         setRoom(emptyRoom);
      //   fetch
@@ -132,7 +132,7 @@ export default function FoodDetail() {
         })
         const resValue=await response.json();
 
-        setRooms(_rooms);
+        setFoods(_rooms);
         setDeleteProductsDialog(false);
         setSelectedProducts(null);
         toast.current.show({ severity: 'success', summary: 'Successful', detail: resValue.message, life: 3000 });
@@ -259,6 +259,7 @@ e.preventDefault();
     // formData.append('occupacy', food.occupacy);
     formData.append('description', food.description);
     formData.append('price', food.price);
+    formData.append('amount',food.amount)
 food.foodImage.forEach((roomimg,index)=>{
 formData.append(`image${index}`, roomimg);
 })
@@ -336,6 +337,76 @@ setProductDialog(false);
         );
     };
     
+    const isPositiveInteger = (val) => {
+        let str = String(val);
+
+        str = str.trim();
+
+        if (!str) {
+            return false;
+        }
+
+        str = str.replace(/^0+/, '') || '0';
+        let n = Math.floor(Number(str));
+
+        return n !== Infinity && String(n) === str && n >= 0;
+    };
+
+    const onCellEditComplete = async(e) => {
+        let { rowData, newValue, field, originalEvent: event } = e;
+
+        switch (field) {
+            case 'quantity':
+            case 'price':
+                if (isPositiveInteger(newValue)) {
+                    rowData[field] = newValue;
+                            const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/foods/updateValue`,{
+            method:'POST',
+            headers:{
+                'Content-type':'application/json'
+            },
+            body:JSON.stringify({field,value:newValue,id:rowData['id']})
+        })
+       const result=await response.json();
+       console.log(result)
+                }
+                else event.preventDefault();
+                break;
+
+            default:
+                if (newValue.trim().length > 0) {
+                    
+                    rowData[field] = newValue;
+                            const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/foods/updateValue`,{
+            method:'POST',
+            headers:{
+                'Content-type':'application/json'
+            },
+            body:JSON.stringify({field,value:newValue,id:rowData['id']})
+        })
+       const result=await response.json();
+       console.log(result)
+                }
+                else event.preventDefault();
+                break;
+        }
+
+    };
+
+    const cellEditor = (options) => {
+        if (options.field === 'price') return priceEditor(options);
+        else return textEditor(options);
+    };
+
+    const textEditor = (options) => {
+        return <InputText type="text" value={options.value} onChange={(e) => options.editorCallback(e.target.value)} onKeyDown={(e) => e.stopPropagation()} />;
+    };
+
+    const priceEditor = (options) => {
+        return <InputNumber value={options.value} onValueChange={(e) => options.editorCallback(e.value)} mode="currency" currency="USD" locale="en-US" onKeyDown={(e) => e.stopPropagation()} />;
+    };
+
+
 
     const itemTemplate = (file, props) => {
         return (
@@ -381,14 +452,11 @@ setProductDialog(false);
                         paginatorTemplate="FirstPageLink PrevPageLink PageLinks NextPageLink LastPageLink CurrentPageReport RowsPerPageDropdown"
                         currentPageReportTemplate="Showing {first} to {last} of {totalRecords} foods" globalFilter={globalFilter} header={header}>
                     <Column selectionMode="multiple" exportable={false}></Column>
-                    {/* <Column field="roomNumber" header="Food Number" sortable style={{ minWidth: '10rem' }}></Column> */}
                     <Column field="foodName" header="Food Name" sortable style={{ minWidth: '12rem' }}></Column>
-                    {/* <Column field="floor" header="Floor"  sortable style={{ minWidth: '8rem' }}></Column> */}
-                    {/* <Column field="roomType" header="Food Type" sortable style={{ minWidth: '12rem' }}></Column> */}
                     <Column field="description" header="description" sortable style={{ minWidth: '12rem' }}></Column>
-                    {/* <Column field="features" header="features" sortable style={{ minWidth: '12rem' }}></Column> */}
                     <Column field="foodImage" header="Image" body={imageBodyTemplate}></Column>
-                    <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }}></Column>
+                    <Column field="price" header="Price" body={priceBodyTemplate} sortable style={{ minWidth: '8rem' }} editor={(options) => cellEditor(options)} onCellEditComplete={onCellEditComplete} ></Column>
+                    <Column field="amount" header="How much left"  sortable style={{ minWidth: '12rem' }} editor={(options) => cellEditor(options)} onCellEditComplete={onCellEditComplete}></Column>
                     <Column field="rating" header="Reviews" body={ratingBodyTemplate} sortable style={{ minWidth: '12rem' }}></Column>
                     <Column body={actionBodyTemplate} exportable={false} style={{ minWidth: '12rem' }}></Column>
                 </DataTable>
@@ -405,43 +473,6 @@ setProductDialog(false);
                     {submitted && !food.foodName && <small className="p-error">Name is required.</small>}
                 </div>
 
-            {/* <div className="formgrid grid">
-                    <div className="field col">
-                        <label htmlFor="price" className="font-bold">
-                            Food Type
-                        </label>
-                        
-                <MultiSelect value={selectedValue} name='roomType' onChange={(e) => {food.roomType=e.value;  setSelectedValue(e.value);onInputChange(e, 'roomType')}} options={typeOpetion} optionLabel="name" 
-                filter placeholder="Select Type" maxSelectedLabels={3} className="w-full md:w-20rem" />
-                    </div>
-                    <div className="field col">
-                        <label htmlFor="quantity" className="font-bold">
-                        Floor
-                        </label>
-                <div className="flex-auto">
-                    <InputNumber name='floor' inputId="minmax-buttons" value={floor} onValueChange={(e) => {onInputNumberChange(e,'floor');  setFloor(e.value)}} mode="decimal" showButtons min={0} max={6} />
-                </div>                   
-                 </div>
-            </div>   */}
-
-                {/* <div className="formgrid grid">
-                                        <div className="field col">
-                        <label htmlFor="quantity" className="font-bold">
-                        Max occupacy
-                        </label>
-            <div className="flex-auto">
-                <InputNumber name='occupacy' inputId="minmax-buttons" value={value3} onValueChange={(e) => {onInputNumberChange(e,'occupacy');setValue3(e.value)}} mode="decimal" showButtons min={0} max={6} />
-            </div>
-            
-                    </div>
-                    <div className="field col">
-                        <label htmlFor="roomNum" className="font-bold">
-                            Food No
-                        </label>
-                        <InputNumber name='roomNumber' id="roomNumber" value={food.roomNumber} onValueChange={(e) => onInputNumberChange(e, 'roomNumber')}  />
-                    </div>
-
-                </div>   */}
                 <div className="field">
                     <label htmlFor="description" className="font-bold">
                         Description

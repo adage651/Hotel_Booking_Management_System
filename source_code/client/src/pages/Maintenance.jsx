@@ -8,6 +8,9 @@ import socket from './socket.js';
 const Maintenance =() =>{
     const userData=useLoaderData()
   socket.emit('userName',userData.userName+userData.id)
+  const getNotification =() =>{
+    console.log('notification fetching')
+  }
     return (
 <UserContext.Provider value={{
 profilePicture:userData.profilePicture,
@@ -17,7 +20,7 @@ emailAddress:userData.emailAddress,
 navConfig:JSON.parse(userData.permissions),
 user_type:userData.user_type
 }} >
-    <DashboardLayout>
+    <DashboardLayout getNotification={getNotification}>
         <Outlet />
     </DashboardLayout>
 </UserContext.Provider>

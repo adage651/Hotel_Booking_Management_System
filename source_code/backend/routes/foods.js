@@ -1,8 +1,9 @@
 import express from 'express'
-import {saveFood,fetchAll,deleteFood ,fetchFoodData} from '../controller/foodController.js'
+import {saveFood,fetchAll,deleteFood,changeFoodStatus,fetchOrders,saveOrder ,fetchOwnFoodOrder,updateValue ,availableFood,fetchFoodData} from '../controller/foodController.js'
 import multer from 'multer'
 import path from 'path'
 import upload from '../middleware/multerMidlware.js'
+import { changeRoomStatus } from '../controller/roomController.js'
 const router =express.Router();
 router.post('/save',upload.fields([
   { name: 'image0', maxCount: 1 },
@@ -13,5 +14,11 @@ router.post('/save',upload.fields([
 router.get('/fetchall',fetchAll)
 router.delete('/deletefood:id',deleteFood)
 router.get('/foodData',fetchFoodData)
+router.get('/availableFood',availableFood)
+router.post('/updateValue',updateValue)
+router.post('/fetchOwnFoodOrder',fetchOwnFoodOrder)
+router.post('/saveOrder',saveOrder)
+router.get('/fetchOrders',fetchOrders)
+router.post('/changeFoodStatus',changeFoodStatus)
 
 export default router;

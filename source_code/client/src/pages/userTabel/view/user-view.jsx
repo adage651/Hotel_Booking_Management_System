@@ -196,7 +196,13 @@ const statusChoose = [
         { name: 'Sabbatical', code: 'SB' },
         { name: 'Maternity Leave', code: 'MTL' }
     ];
-
+const userTypes = [
+        { name: 'guest'},
+        { name: 'receptionist'},
+        { name: 'manager'},
+        { name: 'staff' },
+        { name: 'maintainance'}
+    ];
   const [level, setLevel] = useState();
   const [showPassword, setShowPassword] = useState(false);
   const handleClickShowPassword = () => {
@@ -216,6 +222,7 @@ const statusChoose = [
 
 
  const [selectedCountry, setSelectedCountry] = useState(null);
+ const [userTypee, setuserType] = useState(null);
     const countries = [
         { name: 'Australia', code: 'AU' },
         { name: 'Brazil', code: 'BR' },
@@ -258,7 +265,7 @@ const statusChoose = [
           lastName: '',
           emailAddress: '',
           userName:'',
-          userType:'',
+          userType:userTypee,
           nationality:selectedCountry,
           password: '',
           status:status,
@@ -280,7 +287,7 @@ const statusChoose = [
         
       
 });
-//  console.log(values)
+
 
 const formSubmitHandler=async (e)=>{
 e.preventDefault()
@@ -289,7 +296,7 @@ const formData={
   nationality:values.nationality.name,
   status:values.status.name
 }
-const response=await fetch('http://localhost:8000/users/save',{
+const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/users/save`,{
   method:'post',
   headers:{
     "Content-Type":"application/json"
@@ -335,7 +342,7 @@ const deleteConfirm=(id)=>{
             acceptClassName: 'p-button-danger',
             accept:async()=>{
               
-            const response=await fetch(`http://localhost:8000/users/deleteuser${id}`,{
+            const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/deleteuser${id}`,{
                method: 'DELETE',
                 headers: {
                  'Content-Type': 'application/json',
@@ -506,7 +513,7 @@ return user.account_id!==id;
                   <label htmlFor="name" className="font-bold">
                        User Type*
                     </label>
-                  <OutlinedInput
+                  {/* <OutlinedInput
                     fullWidth
                     id="userType"
                      value={values.userType}
@@ -514,7 +521,9 @@ return user.account_id!==id;
                     name="userType"
                     placeholder="Adage651."
                     inputProps={{}}
-                  />
+                  /> */}
+                  <Dropdown  id="userType" name="userType"  value={values.userType} onChange={handleChange} options={userTypes} optionLabel="name" 
+                placeholder="Select User Type" className="w-full md:w-28rem" checkmark={true} highlightOnSelect={false} />
                 </Stack>
               </Grid>
 
@@ -640,7 +649,7 @@ return user.account_id!==id;
 
 
 export const  loader = async() =>{
-const response =await fetch('http://localhost:8000/users/fetchall')
+const response =await fetch(`http://${process.env.REACT_APP_SERVERURL}/users/fetchall`)
 const resData=await response.json()
 console.log(resData);
 return resData;

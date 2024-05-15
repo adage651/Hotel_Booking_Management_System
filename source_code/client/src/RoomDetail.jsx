@@ -23,6 +23,7 @@ import MultiChoose from './MultiChoose';
 import { MultiSelect } from 'primereact/multiselect';
 import { ProgressBar } from 'primereact/progressbar';
 import TemplateDemo from './pages/TemplateDemo';
+import { ConsoleSqlOutlined } from '@ant-design/icons';
 
 export default function RoomDatail() {
     let emptyRoom = {
@@ -87,6 +88,7 @@ export default function RoomDatail() {
     };
 
     const hideDialog = () => {
+
         setSubmitted(false);
         setProductDialog(false);
     };
@@ -258,9 +260,9 @@ export default function RoomDatail() {
     );
 
 
-const formSubmitHandler=async (e)=>{
+const formSubmitHandler= (e)=>{
 e.preventDefault();
-
+   console.log('resData')
 
 
  const formData = new FormData();
@@ -271,6 +273,7 @@ e.preventDefault();
     formData.append('occupacy', room.occupacy);
     formData.append('description', room.description);
     formData.append('price', room.price);
+    formData.append('features',JSON.stringify(selectedFeatures));
     formData.append('adult', room.adult);
     formData.append('children', room.children);
     formData.append('area', room.area);
@@ -278,12 +281,11 @@ room.roomImage.forEach((roomimg,index)=>{
 formData.append(`image${index}`, roomimg);
 })
 
-const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/rooms/save`,{
+fetch(`http://${process.env.REACT_APP_SERVERURL}/rooms/save`,{
   method:'post',
 body:formData
-})
-   hideDialog()
-const resData=await response.json()
+}).then(res=>res.json).then(resData=>{
+    
 if(resData.error){
 toast.current.show({ severity: 'error', summary: 'Unsaved', detail: `${resData.error}`, life: 5000 });
 }else{
@@ -293,7 +295,14 @@ toast.current.show({ severity: 'info', summary: 'Saved', detail: `${resData.mess
         setProductDialog(false);
      
 }
-setProductDialog(false);
+
+}
+)
+  
+//    hideDialog()
+  
+
+// setProductDialog(false);
 }
 
 
@@ -386,6 +395,41 @@ const uploads=(imageFile)=>{
    setRoom((prevRoom) => ({ ...prevRoom, roomImage: imageFile })); 
    toast.current.show({ severity: 'info', summary: 'Success', detail: 'File Uploaded' });
 }
+
+       const [selectedFeatures, setSelectedFeatures] = useState(null);
+    const features = [
+        { name: 'Wi fi'},
+        { name: 'Swim Pool'},
+        { name: 'Spa'},
+        { name: 'Shower'},
+        { name: 'Berenda view'},
+        { name: 'Television' },
+        { name: 'No smoking' },
+        { name: 'Child bed' },
+        { name: 'Gym' },
+        { name: 'etc' }
+    ];
+
+    const featureTemplate = (option) => {
+        return (
+            <div className="flex align-items-center">
+                <img alt={option.name} src="https://primefaces.org/cdn/primereact/images/flag/flag_placeholder.png" style={{ width: '18px' }} />
+                <div>{option.name}</div>
+            </div>
+        );
+    };
+
+    const panelFooterTemplate = () => {
+        const length = selectedFeatures ? selectedFeatures.length : 0;
+
+        return (
+            <div className="py-2 px-3">
+                <b>{length}</b> item{length > 1 ? 's' : ''} selected.
+            </div>
+        );
+    };
+
+
 
 
     return (
@@ -486,6 +530,12 @@ const uploads=(imageFile)=>{
                 </div>
                 <div className="formgrid grid">
                     <div className="field col">
+                                    <MultiSelect value={selectedFeatures} options={features} onChange={(e) => setSelectedFeatures(e.value)} optionLabel="name" 
+                placeholder="Select Features" itemTemplate={featureTemplate} panelFooterTemplate={panelFooterTemplate} className="w-full md:w-50rem" display="chip" />
+                </div>
+                </div>
+   <div className="formgrid grid">
+                <div className="field col">
                         <label htmlFor="price" className="font-bold">
                             Price
                         </label>
@@ -495,7 +545,7 @@ const uploads=(imageFile)=>{
                         <label htmlFor="roomNum" className="font-bold">
                             area
                         </label>
-                        <InputNumber name='roomNumber' id="roomNumber" value={room.area} onValueChange={(e) => onInputNumberChange(e, 'roomNumber')}  />
+                        <InputNumber name='roomNumber' id="roomNumber" value={room.area} onValueChange={(e) => onInputNumberChange(e, 'area')}  />
                     </div>
                 </div>  
                  <label htmlFor="photo" className="font-bold">

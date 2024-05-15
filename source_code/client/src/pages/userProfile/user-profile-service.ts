@@ -14,13 +14,17 @@ export const service = {
       //     items: ['UI/UX', 'Backend Developers'],
       //   }
       // },
-      {
-        dataField: 'position',
-        editorType: 'dxSelectBox',
+      // {
+      //   dataField: 'position',
+      //   editorType: 'dxSelectBox',
+      //   colSpan: 2,
+      //   editorOptions: {
+      //     items: ['receptionist','guest','manager','staff','maintainance'],
+      //   }
+      // },
+            {
+        dataField: 'domainUsername',
         colSpan: 2,
-        editorOptions: {
-          items: ['Designer', 'Developer', 'Technical Writer'],
-        }
       },
       // {
       //   dataField: 'hiredDate',
@@ -38,30 +42,30 @@ export const service = {
           max: new Date(),
         }
       },
+
     ];
   },
   getContactItems(supervisorsList): ProfileCardItem[] {
     return [
       {
         dataField: 'phone',
+        colSpan: 2,
         editorOptions: {
           mask: '+1(000)000-0000',
         }
       },
       {
         dataField: 'email',
+        colSpan: 2,
         validators: [
           { type: 'email' }
         ] as ValidationRule[]
       },
-      {
-        dataField: 'domainUsername',
-        colSpan: 2,
-      },
-      {
-        dataField: 'status',
-        colSpan: 2,
-      },
+
+      // {
+      //   dataField: 'status',
+      //   colSpan: 2,
+      // },
       // {
       //   dataField: 'supervisor',
       //   label: 'Supervisor',
@@ -82,15 +86,6 @@ export const service = {
         editorOptions: {
           label: 'State/province/area',
         }
-      },
-      {
-        dataField: 'address',
-        colSpan: 2,
-      },
-      {
-        dataField: 'zipCode',
-        editorType: 'dxNumberBox',
-        colSpan: 2,
       },
     ];
   }

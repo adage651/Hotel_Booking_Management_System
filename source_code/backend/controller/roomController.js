@@ -152,4 +152,25 @@ export const changeRoomStatus=(req,res)=>{
     console.error('Error updating room status:', error);
   }
 }
+
+export const freeToday =(req,res)=>{
+  const query = `SELECT r.*,
+       (CASE WHEN MIN(res.checkinDate) IS NULL THEN 
+                DATEDIFF(CURDATE(), MAX(res.checkoutDate)) + 1 
+            ELSE 
+                DATEDIFF(CURDATE(), MIN(res.checkinDate)) - 1 
+       END) AS available_today
+FROM rooms r
+LEFT JOIN reservation res ON r.id = res.roomId
+GROUP BY r.id
+ORDER BY r.roomNumber;
+`
+db.query(query,(error,results)=>{
+  if(error){
+    return res.status(500).json({error:'Error fetching Rooms'})
+  }
+res.status(200).json({error:false,rooms:results})
+})
+}
+
 //sgp_a0d7ccb4f752ea73_05a7cd8435b13be18720c1245bc3e0355d85eaa6

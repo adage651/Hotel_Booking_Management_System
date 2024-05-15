@@ -2,6 +2,7 @@ import bcrypt from 'bcryptjs'
 import jwt from 'jsonwebtoken'
 import db from '../database/db.js'
 
+
 export  const login=(req,res) =>{
 const {userName,password}=req.body
 
@@ -46,7 +47,7 @@ if (results.length === 0) {
 
 
 req.session.user = user
-console.log(req.session.user.user_type)
+console.log(req.session.user.id)
 return res.status(200).json({isLogin:true,user:req.session.user})
 
   //res.status(200).json({path:'/'})
@@ -183,7 +184,8 @@ export const register = (req, res) => {
 export const legal =(req,res) =>{
   if(req.session.user){
   console.log(req.session.user)
-  return res.status(200).json({valid:true,user:req.session.user})}
+  return res.status(200).json({valid:false,user:req.session.user})
+}
 else
 return res.json({valid:false, user:null})
 }

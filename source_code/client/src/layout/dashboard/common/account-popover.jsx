@@ -56,7 +56,7 @@ const handleLogout= async() => {
     const result = await response.json()
     console.log(result)
     if(result.logout){
-      redirect('/')
+       window.location.href = '/login';
     }
     setOpen(null);
   };

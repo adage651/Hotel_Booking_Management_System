@@ -1,4 +1,4 @@
-import React, { useContext, useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState,useRef } from 'react';
 import { Checkbox } from 'primereact/checkbox';
 import { Button } from 'primereact/button';
 import { Password } from 'primereact/password';
@@ -9,26 +9,66 @@ import "primereact/resources/themes/lara-light-indigo/theme.css"; //theme
 import "primereact/resources/primereact.min.css"; //core css
 import "primeicons/primeicons.css"; //icons
 import "primeflex/primeflex.css";
+import { OverlayPanel } from 'primereact/overlaypanel';
 import {Redirect, Route, useLoaderData, useNavigate,useLocation} from 'react-router-dom'
 import { Form, redirect, useSubmit } from "react-router-dom"
 import AuthWrapper from './AuthWrapper';
-
+import emailjs from "emailjs-com";
+import socket from './socket';
 const Login = () => {
       
     const [password, setPassword] = useState('');
     const [checked, setChecked] = useState(false);
+const [resetEmail,setRestEmail]=useState('');
+ const handleForgot=async ()=>{
+const response=await fetch(`http://${process.env.REACT_APP_SERVERURL}/users/forgot`,{
+    method: 'POST',
+    headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+            emailAddress:resetEmail
+        })
+    });
 
- 
+   const data=await response.json();
+   if(!data.error){
+    
+    sendEmail(resetEmail,data)
+   }
+ }
     // useEffect(()=>{
-
-    // },[])
-   
+ const sendEmail = (data,userData) => {
+    emailjs
+      .send(
+        "service_kmh9iad",
+        "template_5z2zxrc",
+        {
+        //    to_name: data.name,
+          to_email: data,
+          from_name: "Yejoka Hotel",
+          from_email: "addisuagerie544@gmail.com",
+          reply_to: "addisuagerie544@gmail.com",
+        },
+        "ZD22_SHsZzzBOaH6v"
+      )
+      .then((response) => {
+        console.log("Email sent successfully!", response.text);
+        op.current.hide();
+   localStorage.setItem('user',JSON.stringify(userData))
+      })
+      .catch((error) => {
+        console.error("Error sending email:", error);
+      });
+  };
+  
+   const op = useRef(null);
     return (        
         <Form method='post'>
     
         <div className='surface-ground flex align-items-center justify-content-center min-h-screen min-w-screen overflow-hidden'>
             <div className="flex flex-column align-items-center justify-content-center">
-                <img src='https://sakai.primereact.org/layout/images/logo-dark.svg' alt="Sakai logo" className="mb-5 w-6rem flex-shrink-0" />
+                {/* <img src='https://sakai.primereact.org/layout/images/logo-dark.svg' alt="Sakai logo" className="mb-5 w-6rem flex-shrink-0" /> */}
                 <div
                     style={{
                         borderRadius: '56px',
@@ -59,9 +99,23 @@ const Login = () => {
                                     <Checkbox inputId="rememberme1" checked={checked} onChange={(e) => setChecked(e.checked ?? false)} className="mr-2"></Checkbox>
                                     <label htmlFor="rememberme1">Remember me</label>
                                 </div>
-                                <a className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
+                                <a onClick={(e)=>{op.current.toggle(e)}} className="font-medium no-underline ml-2 text-right cursor-pointer" style={{ color: 'var(--primary-color)' }}>
                                     Forgot password?
                                 </a>
+            <OverlayPanel ref={op}>
+                       <div className="card flex justify-content-center" style={{display:'flex', flexDirection:'row', alignItems:'center'}}>
+            <div className="flex flex-column gap-2">
+                <label htmlFor="username">Email Address</label>
+                <InputText value={resetEmail} onChange={(e)=>{ setRestEmail(e.target.value)}} id="username" aria-describedby="username-help" />
+                <small id="username-help">
+                    Enter your email to reset your password.
+                </small>
+            </div>
+            <Button label="Send" severity="help" onClick={handleForgot} text raised />
+        </div>
+
+            </OverlayPanel>
+                                
                             </div>
                             <Button type='submit' label="Sign In" className="w-full p-3 text-xl" ></Button>
                         </div>

@@ -5,7 +5,7 @@ import { query } from 'express'
 import { error } from 'console'
 
 export const createReservation = async(req, res) => {
-  const {roomId,guestId,checkinDate,checkoutDate,withBreakfast,price}=req.body
+  const {roomId,guestId,checkinDate,checkoutDate,withBreakfast,price,sessionId}=req.body
   const identificationCardPic = req.file;
   const checkConflictQuery = `SELECT COUNT(*) as count FROM reservation
     WHERE roomId = ? AND
@@ -30,12 +30,12 @@ export const createReservation = async(req, res) => {
       }
 
       // If no conflicting reservations, proceed with creating the reservation
-      const reservationQuery = `INSERT INTO reservation (roomId, guestId, checkinDate, checkoutDate, 	withBreackfast, price, identificationCardPic,status)
+      const reservationQuery = `INSERT INTO reservation (roomId, guestId, checkinDate, checkoutDate, price, identificationCardPic,status,sessionId)
         VALUES (?, ?, ?, ?, ?, ?, ?,?);`;
-      console.log(roomId, guestId, checkinDate, checkoutDate, withBreakfast, price, identificationCardPic.filename,"CONFIRMED")
+      console.log(roomId, guestId, checkinDate, checkoutDate, price, identificationCardPic.filename,"CONFIRMED",sessionId)
       db.query(
         reservationQuery,
-        [roomId, guestId, checkinDate, checkoutDate, withBreakfast, price, identificationCardPic.filename],
+        [roomId, guestId, checkinDate, checkoutDate, price, identificationCardPic.filename,"CONFIRMED",sessionId],
         (error, result) => {
           if (error) {
             console.log('Reservation is not successful');
@@ -150,4 +150,51 @@ export const staffCheckout = async (req, res) => {
 }
 export const qualifyGuest =(req,res)=>{
 
+}
+
+
+export const fetchUsersReservation = async (req,res) =>{
+  const data=req.body
+  console.log('158',req.body)
+  const query = 'SELECT rooms.roomName, rv.id as reservationId, rooms.roomImage, rv.status, rooms.price,rooms.id,rooms.roomNumber, rv.checkinDate FROM rooms INNER JOIN reservation rv ON rooms.id = rv.roomID WHERE rv.guestId=?'
+db.query(query,[data.id],(error,results)=>{
+  return res.status(200).json({selectedRoom:results})
+})
+
+}
+export const getReservation=(req,res)=>{
+const query=`SELECT g.firstName,g.lastName,g.profilePicture,
+            rv.checkinDate,rv.checkoutDate,r.adult + r.children AS numberOfPeople,
+            r.roomImage,r.price ,rv.id
+            FROM reservation rv 
+            INNER JOIN rooms r ON rv.roomId = r.id
+            INNER JOIN guest g ON rv.guestId = g.id       
+`
+db.query(query,(error,results)=>{
+if(error){
+  return res.status(500).json({error:'Internal Server Error while fetching the reservations'})
+
+}
+return res.status(200).json({reservation:results})
+
+})
+}
+
+export const report = (req,res) =>{
+  const query=`WITH reservation_counts AS (
+  SELECT
+    COUNT(*) AS totalNumOfReservation,
+    SUM(CASE WHEN status = 'Checked In' THEN 1 ELSE 0 END) AS checkedIn,
+    SUM(CASE WHEN status = 'Checked Out' THEN 1 ELSE 0 END) AS checkedOut,
+    SUM(CASE WHEN status = 'CONFIRMED' THEN 1 ELSE 0 END) AS confirmed
+  FROM reservation
+)
+SELECT * FROM reservation_counts;
+`
+db.query(query,(error,results)=>{
+  if(error){
+    return res.status(500).json({error:'Error Internal Server Error'})
+  }
+  return res.status(200).json({data:results})
+})
 }

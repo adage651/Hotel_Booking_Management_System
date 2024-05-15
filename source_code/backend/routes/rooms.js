@@ -1,5 +1,5 @@
 import express from 'express'
-import {saveRoom,fetchAll,deleteRoom ,fetchRoomData,searchRoom,reservedRoom,changeRoomStatus} from '../controller/roomController.js'
+import {saveRoom,fetchAll, freeToday,deleteRoom ,fetchRoomData,searchRoom,reservedRoom,changeRoomStatus} from '../controller/roomController.js'
 import multer from 'multer'
 import path from 'path'
 import upload from '../middleware/multerMidlware.js'
@@ -16,5 +16,5 @@ router.delete('/deleteroom:id',deleteRoom)
 router.get('/userdata',fetchRoomData)
 router.get('/searchreservedroom',reservedRoom)
 router.post('/changeRoomStatus',changeRoomStatus)
-
+router.get('/freeToday',freeToday);
 export default router;

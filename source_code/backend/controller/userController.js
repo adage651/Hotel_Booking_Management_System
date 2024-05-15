@@ -6,10 +6,10 @@ export const saveUser =(req,res)=>{
   if (!firstName || !lastName || !emailAddress || !userName || !userType || !password) {
     return res.status(400).json({ error: 'Missing required fields' });
   }
-
+console.log(userType)
   let tableName;
   let permissions='[{"title":"dashboard","path":"/","icon":"ic_analytics"},{"title":"Reservation","path":"user","icon":"reservation1"},{"title":"Manage rooms","path":"products","icon":"ic_cart"},{"title":"Analytics","path":"blog","icon":"ic_blog"},{"title":"Reports","path":"login","icon":"ic_lock"},{"title":"Guest review","path":"404","icon":"ic_disabled"},{"title":"Notification","path":"404","icon":"ic_disabled"},{"title":"Compliments","path":"404","icon":"ic_disabled"}]'
-  switch (userType) {
+  switch (userType.name) {
     case 'guest':
       tableName = 'guest';
       permissions='[{"title":"Reservation","path":"user","icon":"reservation1"},{"title":"Make Reservation","path":"make-reservation","icon":"ic_add"},{"title":"Update Reservation","path":"update-reservation","icon":"ic_edit"},{"title":"Request Checkout","path":"request-checkout","icon":"ic_exit_to_app"},{"title":"Order Food","path":"order-food","icon":"ic_restaurant"},{"title":"Contact","path":"contact","icon":"ic_contact_mail"},{"title":"Check Room Availability","path":"check-availability","icon":"ic_calendar_today"},{"title":"View Own Booking","path":"view-booking","icon":"ic_search"},{"title":"Track Hotel Location","path":"track-location","icon":"ic_place"}]'
@@ -20,7 +20,7 @@ export const saveUser =(req,res)=>{
       break;
     case 'staff':
       tableName = 'staff';
-      permissions='[{"title":"Request Maintenance","path":"maintenance-request","icon":"ic_build"},{"title":"Process Checkout","path":"checkout","icon":"ic_exit_to_app"},{"title":"Mark Room Status","path":"mark-room-status","icon":"ic_check_box"},{"title":"View User Account","path":"view-account","icon":"ic_account_circle"},{"title":"Notified By Guest","path":"notifications","icon":"ic_notifications"},{"title":"Contact","path":"contact","icon":"ic_contact_mail"}]'
+      permissions='[{"title":"Manage Food Order","path":"manageFoodOrder","icon":"foodorder"},{"title":"Request Maintenance","path":"maintenance-request","icon":"ic_build"},{"title":"Process Checkout","path":"checkout","icon":"ic_exit_to_app"},{"title":"Mark Room Status","path":"mark-room-status","icon":"ic_check_box"},{"title":"View User Account","path":"view-account","icon":"ic_account_circle"},{"title":"Notified By Guest","path":"notifications","icon":"ic_notifications"},{"title":"Contact","path":"contact","icon":"ic_contact_mail"}]'
       break;
     case 'maintenance':
       tableName = 'maintenance';
@@ -30,7 +30,7 @@ export const saveUser =(req,res)=>{
       tableName = 'manager';
       break;
     default:
-      return res.status(400).json({ error: 'Invalid userType' });
+      return res.status(403).json({ error: 'Invalid userType' });
   }
 
   db.beginTransaction((err) => {
@@ -59,7 +59,7 @@ export const saveUser =(req,res)=>{
         }
 
         const accountQuery = 'INSERT INTO account (userName, emailAddress, password,user_type,status) VALUES (?, ?, ?, ?,? )';
-        const accountValues = [userName, emailAddress, hashedPassword,userType,status]
+        const accountValues = [userName, emailAddress, hashedPassword,userType.name,status]
 
         db.query(accountQuery, accountValues, (accountErr, accountResult) => {
           if (accountErr) {
@@ -149,7 +149,21 @@ db.query(accountQuery, (error, results) => {
 
 
 
+export const handleForgot =(req,res)=>{
+  console.log('dersual')
+  const { emailAddress } = req.body;
+  const accountQuery = 'SELECT id, user_type FROM account WHERE emailAddress = ?';
+  db.query(accountQuery, [emailAddress], (error, results) => {
+    if (error) {
+      return res.status(500).send({ error: 'Failed to fetch account data' });
+    }
+    if (results.length === 0) {
+      return res.status(404).send({ error: 'Account not found' });
+    }
+    return res.status(200).send(results[0]);
 
+})
+}
 export const deleteUser=(req,res)=>{
 const accountId=req.params.id
   const accountQuery = `SELECT user_type FROM account WHERE id = ${accountId}`;
@@ -187,6 +201,84 @@ db.query(accountQuery, (error, results) => {
 });
 }
 
+export const updateUser=(req,res)=>{
+ console.log('191  works',req.body);
+  const {id,email,firstName,lastName,identificationCardNum,identificationCardPic,
+  image,country,permissions,status,domainUsername,user_type} = req.body;
+
+ 
+  const query= `UPDATE ${user_type}
+SET
+  emailAddress = ?,
+  firstName = ?,
+  lastName = ?,
+  profilePicture=?,
+  nationality = ?,
+  userName = ?
+WHERE id = ?;
+`
+
+db.query(query,[email,firstName,lastName,image,country,domainUsername,id], (error, result) => {
+ if(error){
+  console.log('Error 208',error);
+  return res.status(500).json({ error: 'Failed to fetch user data' });
+ }
+ return res.status(200).json({ user: result[0] });
+
+}) 
+}
+
+export const getNotifications = async (req, res) => {
+  const {userName,userType}=req.body;
+   const query=`SELECT * FROM notifications WHERE receiver=?`;
+   db.query(query,[userName],(error,result)=>{
+    if(error){
+      return res.status(500).json({ error: 'Internal Server Error', notifications: null });
+    }
+    if(!result || result.length === 0){
+      const data=result.map(notification=>{
+if(notification.type!=='Message From System'){
+        const queryString=`SELECT u.firstName,u.lastName,u.profilePicture from ${userType} u where u.userName=${notification.receiver}`;
+        db.query(queryString,(error,results)=>{
+          if(error){
+          console.log(error)
+          }
+         else notification.userData=results[0]
+        })
+}
+      })
+      return res.status(500).json({ error: 'Internal Server Error: No notifications found', notifications: null });
+    }
+    console.log(data)
+          const data=result.map(notification=>{
+if(notification.type!=='Message From System'){
+        const queryString=`SELECT u.firstName,u.lastName,u.profilePicture from ${userType} u where u.userName=${notification.receiver}`;
+        db.query(queryString,(error,results)=>{
+          if(error){
+          console.log(error)
+          }
+         else notification.userData=results[0]
+        })
+}
+      })
+    return res.status(200).json({ notifications: data });
+   })
+
+}
+
+export const setNotifications = async (req, res) => {
+const {sender,receiver,message,description,type}=req.body;
+  const query=`INSERT INTO Notification (sender,receiver,message,description,type) VALUES (?,?,?,?,?)`;
+  db.query(query,[sender,receiver,message,description,type],(error,result)=>{
+    if(error){
+      return res.status(500).json({ error: 'Internal Server Error'});
+    }
+    return res.status(200).json({ message: 'Notification sent successfully'});
+  })
+
+}
+
+
 
 export const fetchUserData = async (req, res) => {
   if (!req.session.user) {
@@ -209,3 +301,45 @@ export const fetchUserData = async (req, res) => {
     }
   );
 };
+
+export const resetPassword = async (req, res) => {
+  console.log(req.body.newPassword,req.body.userToReset.id)
+const query=`UPDATE account SET password =? WHERE id =?`;
+db.query(query,[req.body.newPassword,req.body.userToReset.id],(error,result)=>{
+  if(error){
+    console.log('error',error)
+    return res.status(500).json({ error: 'Internal Server Error'});
+  }
+  return res.status(200).json({ message: 'Password reset successfully'});
+})
+
+}
+
+
+export const getUser =(req,res)=>{
+  const {userName} =req.body;
+  const queryFirst=`SELECT user_type FROM account WHERE userName =?`;
+  let userType;
+  db.query(queryFirst,[userName],(error,result)=>{
+    if(error){
+      return res.status(500).json({ error: 'Internal Server Error'});
+    }
+    if(!result || result.length === 0){
+       res.status(500).json({ error: 'Internal Server Error: No user found'});
+
+  }
+  userType=result[0].user_type;
+})
+  const query =`SELECT u.firstName,u.lastName,u.id,u.profilePicture from ${userType} `
+  db.query(query,(error,result)=>{
+    if(error){
+      return res.status(500).json({ error: 'Internal Server Error'});
+    }
+    if(!result || result.length === 0){
+       res.status(500).json({ error: 'Internal Server Error: No user found'});
+    }
+    return res.status(200).json({ error:false, user: result });
+  })
+
+
+}

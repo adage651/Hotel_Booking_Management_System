@@ -13,6 +13,7 @@ import { InputNumber } from 'primereact/inputnumber';
 import {Calendar} from 'primereact/calendar'
 import dayjs from 'dayjs';
 import { useLoaderData } from 'react-router-dom';
+import { Avatar } from '@mui/material';
 // The rule argument should be a string in the format "custom_[field]".
 FilterService.register('custom_activity', (value, filters) => {
     //console.log('filter is '+filters,'value is '+value)
@@ -58,9 +59,6 @@ export default function ReservationDetail() {
 
             case 'Due In':
                 return 'warning';
-
-            case 'renewal':
-                return null;
         }
     };
 
@@ -136,9 +134,10 @@ export default function ReservationDetail() {
 
 
     const guestBodyTemplate = (rowData) => {
+        console.log(rowData)
         return (
             <div className="flex align-items-center gap-2">
-                <img alt="flag" src={`http://${process.env.REACT_APP_SERVERURL}/public/uploads/${rowData.guest.image}`} className="shadow-2 border-round" style={{ width: '24px' }} />
+                <Avatar alt={rowData.guest.name} src={`http://${process.env.REACT_APP_SERVERURL}/public/uploads/${rowData.guest.image}`} className="shadow-2 border-round" style={{ width: '24px' }} />
                 <span>{rowData.guest.name}</span>
             </div>
         );

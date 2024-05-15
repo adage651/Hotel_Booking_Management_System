@@ -1,7 +1,7 @@
 import React, { useState, useRef } from 'react';
 import { ConfirmDialog, confirmDialog } from 'primereact/confirmdialog';
 import { Toast } from 'primereact/toast';
-import { Outlet, Route, Routes, useLoaderData } from "react-router-dom";
+import { Outlet,redirect, Route, Routes, useLoaderData, useNavigate } from "react-router-dom";
 import DashboardLayout from "../layout/dashboard/index.jsx";
 // import UserPage ,{ loader as userFetchAll } from './userTabel/view/user-view.js';
 import UserContext from "../context/userContext.js";
@@ -17,6 +17,11 @@ import SettingsIcon from '@mui/icons-material/Settings';
 
 const Receptionist =() =>{
         const userData=useLoaderData()
+       const navigate=useNavigate();
+        if(userData.user_type!=="receptionist"){
+           
+            return  navigate('/login');
+        }    
         const  [staffRoomData,setStaffRoomData]=useState();
     const toast = useRef(null);
     const [selectedStaff, setSelectedStaff] = useState(null);
@@ -39,7 +44,7 @@ const Receptionist =() =>{
     }
 
     const reject = () => {
-        toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+        // toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
     }
         const showTemplate = (messages) => {
             // console.log(messages)
@@ -57,7 +62,7 @@ const Receptionist =() =>{
             accept:() => {
         socket.emit('getOnlineStaff',{userName:userData.userName});
 console.log('inside')
- toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
+//  toast.current.show({ severity: 'warn', summary: 'Rejected', detail: 'You have rejected', life: 3000 });
         socket.on('onlineStaff', (data) => {
           
             setOnlineStaff(data)
@@ -112,10 +117,10 @@ console.log('inside')
        console.log({staffRoomData})
        socket.emit('staffToManageRoom',{staffRoom:staffRoomData,staffId:e.data.id,staffUserName:e.data.userName})
 
-        toast.current.show({ severity: 'info', summary: 'Staff Selected', detail:`You have Selected ${e.data.userName}`, life: 3000 }); 
+        // toast.current.show({ severity: 'info', summary: 'Staff Selected', detail:`You have Selected ${e.data.userName}`, life: 3000 }); 
     };
         const imageBody = (rowData) => {
-        return <img src={`https://primefaces.org/cdn/primereact/images/product/${rowData.image}`} alt={rowData.image} className="w-4rem shadow-1" />
+        return <Avatar src={`https://primefaces.org/cdn/primereact/images/product/${rowData.image}`} alt={rowData.image} className="w-4rem shadow-1" />
     };
 
 socket.emit('userName',[userData.userName,userData.user_type])
@@ -129,11 +134,16 @@ confirm('top-right',JSON.parse(secondParse));
         console.log('data',data)
            setOnlineStaff(await data)
             });
+            const getNotification =() =>{
+                console.log('featching notification')
+            }
     return (
         
 <UserContext.Provider value={{
 profilePicture:userData.profilePicture,
 firstName:userData.firstName,
+userName:userData.userName,
+userId:userData.id,
 lastName:userData.lastName,
 emailAddress:userData.emailAddress,
 navConfig:JSON.parse(userData.permissions),
@@ -151,7 +161,7 @@ user_type:userData.user_type
                         <Column header="profilePicture" body={imageBody} />
                     </DataTable>
             </OverlayPanel>
-    <DashboardLayout>
+    <DashboardLayout getNotification={getNotification}>
         <Outlet />
     </DashboardLayout>
 </UserContext.Provider>
@@ -161,7 +171,6 @@ user_type:userData.user_type
 }
 
 export const loader = async()=>{
-    console.log('the error is in manager loader')
 const response= await fetch(`http://${process.env.REACT_APP_SERVERURL}/users/userdata` ,{
   method: 'GET',
   credentials: 'include',

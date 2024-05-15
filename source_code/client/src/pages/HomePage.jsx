@@ -56,11 +56,17 @@ import { ConsoleSqlOutlined } from '@ant-design/icons';
 import Profile from './Profile.jsx';
 import {Dialog} from 'primereact/dialog'; 
 import Avatar from '@mui/material/Avatar';
+// import 'leaflet/dist/leaflet.css';
+// import 'leaflet-routing-machine/dist/leaflet-routing-machine.css';
+// import L from 'leaflet';
+// import 'leaflet-routing-machine';
 import { IconButton } from '@mui/material';
 import SettingsIcon from '@mui/icons-material/Settings';
- 
-const stripePromise = loadStripe('pk_test_51Ojz3qKilyE0iH1nwO0Vh8H9rf7CIb2TRqCJniXrrn2MgdhOVP8MUd6AX42YCEc4MD8SOFFxXlzR5RHfzLWj7S4Z00vzuRkWC5');
 
+import Conformation from './Conformation.jsx'
+import  DataView from './RoomDataView.jsx';
+import MapComponent from './MapComponent.jsx';
+const stripePromise = loadStripe(process.env.REACT_APP_STRIPEKEY);
 
 function ToggleCustomTheme({ showCustomTheme, toggleCustomTheme }) {
 
@@ -122,6 +128,20 @@ const secondDate=currentDate.add(2,'day').format('YYYY-MM-DD');
   const op = useRef(null);
     const [activeStep, setActiveStep] = React.useState(0);
       const steps = ['Rooms', 'Gust Details', 'Payment', 'Confirmation'];
+      const steps1 = [
+  'Confirmed',
+  'Check In',
+  'Qualification',
+  'Checkout'
+];
+
+  const handleNotification = (userRoomDetail) => {
+    
+   setUserRoomData(userRoomDetail)
+    setShowNotification(true);
+     confirm('bottom-right')
+  };
+      socket.on('checkoutApproaching', handleNotification);
         const [skipped, setSkipped] = React.useState(new Set());
   
   const [failedStep,setStepFailed]=useState([]);
@@ -147,10 +167,11 @@ const [selectRoom,setSelectRoom]=useState()
 const [userRoomData,setUserRoomData]=useState()
 const [acceptTheRoom,setAcceptTheRoom]=useState(false)
 const goToProfile=()=>{
+  console.log('redirected but not working')
 navigate('/profile')
 }
 
-
+    
   const accept = () => {
           setActiveStep(1);
     setActiveItem('search');
@@ -213,15 +234,24 @@ const response= await fetch(`http://${process.env.REACT_APP_SERVERURL}/rooms/sea
   body:JSON.stringify(searchRoom)
 })
 const resData=await response.json()
+console.log(resData)
 if(resData.noRoom){
   setFeatchedRoom((prvValue)=>{
   return {rooms:resData.rooms,noRoom:true}
 })
+
 }
 else{
 setFeatchedRoom((prvValue)=>{
   return {noRoom:false,rooms:resData.rooms}})
 }
+
+// featchedRoom.rooms.forEach(room=>{
+//   if(room.feature!=null)
+//   JSON.parse(room.features).forEach(feature=>{
+//     console.log(feature)
+//   })
+// })
 }
 
 
@@ -229,6 +259,12 @@ setFeatchedRoom((prvValue)=>{
 
 
   const toggleCustomTheme = () => {
+//     featchedRoom.rooms.map(room=>{
+//   if(room.feature!=null)
+//   JSON.parse(room.features).map(feature=>{
+//     console.log(feature)
+//   })
+// })
     setShowCustomTheme((prev) => !prev);
   };
   const images = [
@@ -291,6 +327,7 @@ const disabledRanges=resData.reservedData.map(range => ({
       checkoutDate: dayjs(range.checkoutDate)
     }));
 const gotoNext=(selectedRoom=null,withSpaAndFood=false)=>{
+  console.log(selectedRoom)
 if(resData.error){
  localStorage.setItem('selectedRoom', JSON.stringify({...selectedRoom,withSpaAndFood}));
 console.log(localStorage.getItem('selectedRoom'))
@@ -302,6 +339,7 @@ localStorage.setItem('selectedRoom', JSON.stringify(selectedRoom));
   
  }
 const handleNext = (wheatherToNext=false) => {
+  console.log('Called')
     let newSkipped = skipped;
     if(wheatherToNext){
     if (isStepSkipped(activeStep)) {
@@ -346,8 +384,41 @@ const uploads=(imageFile)=>{
 }
 const [amount, setAmount] = useState(30);
 const [userData, setUserData] = useState({firstName:'',lastName:''});
-
+const [isCheckoutApproching,setCheckoutApproching]=useState(false);
 useEffect(() => {
+
+
+  // let currentUserLocation;
+  //   if (navigator.geolocation) {
+  //     navigator.geolocation.getCurrentPosition((position) => {
+  //       let lat = position.coords.latitude;
+  //       let lon = position.coords.longitude;
+  //       currentUserLocation = [lat, lon];
+
+  //       var map = L.map('map').setView(currentUserLocation, 13);
+
+  //       L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  //         maxZoom: 19
+  //       }).addTo(map);
+
+  //       var endPoint = [8.5373522, 37.9556175]; // Example end point (Los Angeles)
+
+  //       L.Routing.control({
+  //         waypoints: [
+  //           L.latLng(currentUserLocation),
+  //           L.latLng(endPoint)
+  //         ],
+  //         serviceUrl: 'https://router.project-osrm.org/route/v1'
+  //       }).addTo(map);
+  //     });
+  //   }
+
+
+
+
+
+
+
   handleCheckStatus()
 
   const roomIsSet=localStorage.getItem('selectedRoom')
@@ -363,12 +434,16 @@ if(roomIsSet&&paymentStat==='paid'){
 }
 
 
+
 if(resData.error){
 setLogin(false)
 }
   
 
 }, [login,paymentStat]);
+
+
+
   if (!resData.error) {
 
     if(userData.firstName===''){
@@ -444,30 +519,18 @@ setLogin(false)
     };
     
 
-    confirm('top-right')
-
-  const handleNotification = (userRoomDetail) => {
-    console.log(userRoomDetail)
-   setUserRoomData(userRoomDetail)
-    setShowNotification(true);
-     confirm('bottom-right')
-    // toast.current.show({
-    //   severity: 'info',
-    //   summary: 'Checkout Notification',
-    //   detail: message,
-    //   life: 5000, // Adjust the timeout duration as needed
-    // });
-  };
-  socket.on('checkoutApproaching', handleNotification);
+  // console.log(featchedRoom)
+  // socket.on('checkoutApproaching', handleNotification);
 const successPaid = async () => {
 const selectedRoom=JSON.parse( localStorage.getItem('selectedRoom'))
   const userDataFinal = JSON.parse(localStorage.getItem('guestData'));
-  localStorage.removeItem('selectedRoom');
+
   setSelectRoom(selectedRoom)
-  localStorage.removeItem('sessionId');
+  const sessionId=localStorage.getItem('sessionId');
   const [checkin,checkout]=date;
 const checkinDate=checkin.format('YYYY-MM-DD');
 const checkoutDate=checkout.format('YYYY-MM-DD');
+console.log(selectedRoom)
   const reservationData = {
     guestId: userData.id,
     roomId: selectedRoom.id,
@@ -481,7 +544,8 @@ console.log(userData)
   formData.append('roomId', selectedRoom.id);
   formData.append('checkinDate', checkinDate);
   formData.append('checkoutDate', checkoutDate);
-  formData.append('price',selectedRoom.price)
+  formData.append('price',selectedRoom.price);
+  formData.append('sessionId',sessionId)
   formData.append('withBreackFast', selectedRoom.withSpaAndFood);
 
   const fileUploadresponse= await fetch(userDataFinal.idCardPic[0])
@@ -537,6 +601,7 @@ console.log(sessionId)
     }
   };
 
+
     const handleCheckStatus = async () => {
   try {
     const userSession = localStorage.getItem('sessionId');
@@ -554,6 +619,38 @@ setPaymentStatus(paymentStatus);
     console.error('Error checking payment status:', error);
   }
 };
+
+
+const handleBook=(room)=>{
+const withSpaAndFood =false;
+  if(resData.error){
+ localStorage.setItem('selectedRoom', JSON.stringify({...room.selectedRoom,withSpaAndFood}));
+const selectedRoom=localStorage.getItem('selectedRoom')
+  return  navigate('/login',selectedRoom)
+}
+localStorage.setItem('selectedRoom', JSON.stringify(room.selectedRoom));
+setDate(room.date)
+setActiveItem('search')
+  setActiveStep(1)
+    
+
+}
+const getNotification= async()=>{
+    const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/users/getNotifications`,{
+    method: 'POST',
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ userName:resData.user.userName })
+  })
+  const result = await response.json()
+  console.log(result)
+  return result;
+}
+const [agreement,setAgreement]=useState();
+
+
     const renderContent=()=>{
       switch (activeItem) {
       case 'Home':
@@ -563,7 +660,7 @@ setPaymentStatus(paymentStatus);
             autoplayInterval={3000} numScroll={1} responsiveOptions={[{ '1024px': { numVisible: 2, numScroll: 1 } }]}>
             ref={carouselRef}
           </Carousel>
-          <Card style={{ position: 'relative', top: '-130px', margin: '30px' }} title="Check Room Availability">
+          <Card style={{ position: 'relative', top: '-130px', margin: '30px 30px 0px 30px' }} title="Check Room Availability">
            <CardContent>
             <div className="card flex  gap-3 p-fluid">
               <div className="flex-auto">
@@ -622,16 +719,20 @@ setPaymentStatus(paymentStatus);
         toggleCustomTheme={toggleCustomTheme}
       />
         </div>
-      {/* <Hero /> */}
-      <Box sx={{ bgcolor: 'background.default' }}>
+    
+      <div >
+        <DataView handleBook={handleBook} />
+        <Divider />
         <Features />
         <Divider />
         <Testimonials />
         <Divider />
         <FAQ />
         <Divider />
+      <MapComponent />
+        <Divider />
         <Footer />
-      </Box>
+      </div>
       </div>
       break;  
       case 'search':
@@ -794,6 +895,7 @@ setPaymentStatus(paymentStatus);
                 :activeStep===0&&(
                 <div className='card'>  
           {featchedRoom.rooms.map(element => (
+
             <div>
           <div className="thumb-cards_groupedCards app_col-sm-12 app_col-md-12 app_col-lg-12" id="auto-parent-card-0">
               <div className="thumb-cards_cardSplit thumb-cards_byRoom" data-room-code="A2T">
@@ -801,7 +903,7 @@ setPaymentStatus(paymentStatus);
                       <div className="thumb-cards_extraDetails app_col-sm-12 app_col-md-4 app_col-lg-4">
                           <div className="thumb-cards_imgWrapper thumb-cards_hasMultipleImages">
                               <img
-                                  src="/assets/images/room.jpg"
+                                  src={`http://${process.env.REACT_APP_SERVERURL}/uploads/${JSON.parse(element.roomImage)[0]}`}
                                   alt="Petit Room" />
                           </div>
                           <div className="thumb-cards_amenitiesList">
@@ -809,12 +911,19 @@ setPaymentStatus(paymentStatus);
                               {element.features?(
                                 
                                  <ul className="product-icons_iconList">
-                                  {features.forEach((feature)=>{
-                                  <li className="product-icons_deskLamp"><span aria-hidden="true"></span><span>Desk or
-                                          {feature}</span></li>
-                                  })}
+                                  {  JSON.parse(element.features).map((feature)=>{
+                                     return (
+                                  <li className="product-icons_deskLamp">
+                                    <span aria-hidden="true"></span>
+                                        <span>
+                                          {feature.name}
+                                          </span>
+                                          </li>
+                                  )})}
 
-                                  {/* <li className="product-icons_wifi"><span aria-hidden="true"></span><span>Free
+                                  {
+                                 
+                                  /* <li className="product-icons_wifi"><span aria-hidden="true"></span><span>Free
                                           Wifi</span></li>
                                   <li className="product-icons_hairDryer"><span aria-hidden="true"></span><span>Hair
                                           Dryer</span></li>
@@ -986,7 +1095,7 @@ setPaymentStatus(paymentStatus);
                           handleNext(true)
                     }} />
                   </div> */}
-                                     <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+                  <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                     <Button
                       color="inherit"
                       disabled={activeStep === 0}
@@ -1038,12 +1147,23 @@ Please note that any modifications may be subject to rate differences, and the g
 
 
 </div></section>
- <section class="policy-acknowledgement_container" style={{paddingLeft:'10px'}}>><h2 class="app_heading1"><span>Acknowledgement</span></h2><b class="policy-acknowledgement_acceptanceOfTermsAndConditions"><span>By completing this booking, I agree with the Booking Conditions.</span></b><div class="policy-acknowledgement_privacyCheckbox"><Checkbox aria-required="true" aria-labelledby="privacyPolicy_labelled-by" data-error="false" id="privacyPolicy" type="checkbox"  ></Checkbox><label for="privacyPolicy"><b><span class="policy-checkbox-description-link_required" aria-hidden="true">* </span><span>I agree with the Privacy Terms.</span></b></label><div role="alert"></div></div></section>
+ <section class="policy-acknowledgement_container" style={{paddingLeft:'10px'}}>><h2 class="app_heading1"><span>Acknowledgement</span></h2><b class="policy-acknowledgement_acceptanceOfTermsAndConditions">
+  <span>By completing this booking, I agree with the Booking Conditions.</span>
+  </b><div class="policy-acknowledgement_privacyCheckbox">
+    <Checkbox aria-required="true" aria-labelledby="privacyPolicy_labelled-by" data-error="false" id="privacyPolicy" type="checkbox" value={agreement}  ></Checkbox><
+      label for="privacyPolicy"><b>
+        <span class="policy-checkbox-description-link_required" aria-hidden="true">
+          * </span><span>I agree with the Privacy Terms.</span>
+          </b>
+          </label>
+          <div role="alert"></div>
+          </div>
+          </section>
 
                 <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
                     <Button
                       color="inherit"
-                      disabled={activeStep === 0}
+                      disabled={agreement}
                       onClick={handleBack}
                       sx={{ mr: 1 }}
                       label='Back'
@@ -1057,7 +1177,7 @@ Please note that any modifications may be subject to rate differences, and the g
                       </MaterialButton>
                     )}
 
-                    <Button onClick={successPaid}
+                    <Button onClick={handlePayment}
                      label={activeStep === steps.length - 1 ? 'Finish' : 'Procced to payment'}
                      severity="info" outlined
                     />
@@ -1075,7 +1195,69 @@ Please note that any modifications may be subject to rate differences, and the g
 
                {activeStep ===3 &&(
                <div>
+                <div class="card">
+        <div class="flex flex-column sm:flex-row sm:justify-content-between sm:align-items-center">
+          <span
+                class="text-2xl font-medium text-900">Thanks for your Booking!
+                </span>
+            <div class="flex mt-3 sm:mt-0">
+                <div class="flex flex-column align-items-center"><span class="text-900 font-medium mb-2">Reservation
+                        ID</span>
+                        <span class="text-700">451234</span>
+                        </div>
+                <div class="flex flex-column align-items-center ml-6 md:ml-8"><span
+                        class="text-900 font-medium mb-2">Reservation Date</span><span class="text-700">7 Feb 2023</span>
+                </div>
+            </div>
+        </div>
+        <div class="flex flex-column md:flex-row md:align-items-center border-bottom-1 surface-border py-5"><img
+                src={`http://${process.env.REACT_APP_SERVERURL}/uploads/${JSON.parse(selectRoom.roomImage)}`} class="w-15rem flex-shrink-0 md:mr-6"
+                alt="summary-1-2" />
+            <div class="flex-auto mt-3 md:mt-0">
+              <span class="text-xl text-900">{selectRoom.roomName}</span>
+                <div class="font-medium text-2xl text-900 mt-3 mb-5">Booking Processing</div>
+                <div class="border-round overflow-hidden surface-300 mb-3" style={{height: "7px;"}}>
+                    <div class="bg-primary border-round w-4 h-full"></div>
+                </div>
+                <div class="flex w-full justify-content-between">
+                  {/* <span
+                        class="text-900 text-xs sm:text-base">Ordered</span><span
+                        class="text-900 font-medium text-xs sm:text-base">Processing</span><span
+                        class="text-500 text-xs sm:text-base">Shipping</span><span
+                        class="text-500 text-xs sm:text-base">Delivered</span> */}
+                            <Box sx={{ width: '100%' }}>
+      <Stepper activeStep={4} alternativeLabel>
+        {steps1.map((label) => (
+          <Step key={label}>
+            <StepLabel>{label}</StepLabel>
+          </Step>
+        ))}
+      </Stepper>
+    </Box>
+                        </div>
+            </div>
+        </div>
+        <div class="py-5 flex justify-content-between flex-wrap">
+            <div class="flex sm:mr-5 mb-5"><span class="font-medium text-900 text-xl mr-8">{selectRoom.roomName}</span><span
+                    class="text-900 text-xl">{selectRoom.price}</span>
+                    </div>
+            <div class="flex flex-column sm:mr-5 mb-5"><span class="font-medium text-900 text-xl">Hotel
+                    Address</span>
+                <div class="flex flex-column text-900 mt-3"><span class="mb-1">Celeste Slater</span><span
+                        class="mb-1">606-3727 Ullamcorper. Roseville NH 11523</span><span>(786) 713-8616</span></div>
+            </div>
+            <div class="flex flex-column"><span class="font-medium text-900 text-xl">Payment</span>
+                <div class="flex align-items-center mt-3">
+                  <img src="assets/images/visa.png"
+                        class="w-4rem mr-3" alt="visa-2" />
+                    <div class="flex flex-column"><span class="text-900 mb-1">Visa Debit Card</span><span
+                            class="text-900 font-medium">**** **** **** 1234</span></div>
+                </div>
+            </div>
+        </div>
+         </div>
                                 <Box sx={{ display: 'flex', flexDirection: 'row', pt: 2 }}>
+
                     <Button
                       color="inherit"
                       disabled={activeStep === 0}
@@ -1168,7 +1350,7 @@ Please note that any modifications may be subject to rate differences, and the g
       <CssBaseline />
         <Toast ref={toast} />
        <ConfirmDialog/>
-      <AppAppBar profile={goToProfile} mode={mode} login={login} profilePicture={userData.profilePicture}  toggleColorMode={toggleColorMode} />
+      <AppAppBar getNotification={getNotification} profile={goToProfile} mode={mode} login={login} profilePicture={userData.profilePicture}  toggleColorMode={toggleColorMode} />
      {renderContent()}
    {/* <Dialog
       visible={showNotification}
@@ -1184,13 +1366,13 @@ Please note that any modifications may be subject to rate differences, and the g
 }
 
 export const loader = async () => {
-  console.log(process.env)
-  console.log(process.env.REACT_APP_SERVERURL);
+
   const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/users/userdata`, {
     method: 'GET',
     credentials: 'include',
   });
   let resData = await response.json();
+
   const reservedRoom = await fetch(`http://${process.env.REACT_APP_SERVERURL}/rooms/searchreservedroom`)
 const reservedData = await reservedRoom.json();
 //console.log(reservedData)

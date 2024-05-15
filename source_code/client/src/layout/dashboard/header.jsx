@@ -22,7 +22,7 @@ import NotificationsPopover from './common/notifications-popover';
 
 // ----------------------------------------------------------------------
 
-export default function Header({ onOpenNav }) {
+export default function Header({ onOpenNav , getNotification }) {
   const theme = useTheme();
 
   const lgUp = useResponsive('up', 'lg');
@@ -41,7 +41,7 @@ export default function Header({ onOpenNav }) {
 
       <Stack direction="row" alignItems="center" spacing={1}>
         <LanguagePopover />
-        <NotificationsPopover />
+        <NotificationsPopover getNotification={getNotification} />
         <AccountPopover />
       </Stack>
     </>

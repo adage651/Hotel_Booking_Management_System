@@ -1,46 +1,67 @@
+import React, { useState, useEffect } from 'react';
+import { Card, CardContent, Typography, Button, Grid } from '@mui/material';
 
-import React, { useState, useEffect, useRef } from 'react';
-import { OverlayPanel } from 'primereact/overlaypanel';
-import { Button } from 'primereact/button';
-import { Toast } from 'primereact/toast';
-import { Column } from 'primereact/column';
-import { DataTable } from 'primereact/datatable';
-import { ProductService } from './service/ProductService';
+const RoomListPage = () => {
+  const [rooms, setRooms] = useState([]);
 
-export default function DataTableDemo() {
-    const [staff, setStaff] = useState(null);
-    const [selectedStaff, setSelectedStaff] = useState(null);
+  useEffect(() => {
+    // Fetch rooms data from your backend API
+    fetchRooms()
+      .then(data => setRooms(data))
+      .catch(error => console.error('Error fetching rooms:', error));
+  }, []);
 
-    const op = useRef(null);
-    const toast = useRef(null);
-    const isMounted = useRef(false);
+  const fetchRooms = () => {
+    // Simulated API call to fetch rooms data
+    return new Promise((resolve, reject) => {
+      setTimeout(() => {
+        // Replace this with your actual API call to fetch rooms data
+        const data = [
+          { id: 1, name: 'Single Room', price: 100 },
+          { id: 2, name: 'Double Room', price: 150 },
+          { id: 3, name: 'Suite', price: 250 },
+        ];
+        resolve(data);
+      }, 1000);
+    });
+  };
 
-    const staffSelect = (e) => {
-        op.current.hide();
-        toast.current.show({ severity: 'info', summary: 'Staff Selected', detail:e.data.userName, life: 3000 }); 
-    };
+  const bookRoom = (room) => {
+    // Handle room booking logic
+    console.log('Booked room:', room);
+    // Redirect or perform any other action as needed
+  };
 
-    useEffect(() => {
-fetch(`http://${process.env.REACT_APP_SERVERURL}/api/v1/staff`)
-    }, []);
+  return (
+    <div>
+      <Typography variant="h4" gutterBottom>
+        Room List
+      </Typography>
+      <Grid container spacing={2}>
+        {rooms.map(room => (
+          <Grid item xs={12} sm={6} md={4} key={room.id}>
+            <Card>
+              <CardContent>
+                <Typography variant="h6" gutterBottom>
+                  {room.name}
+                </Typography>
+                <Typography variant="body1" gutterBottom>
+                  Price: ${room.price}
+                </Typography>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  onClick={() => bookRoom(room)}
+                >
+                  Book
+                </Button>
+              </CardContent>
+            </Card>
+          </Grid>
+        ))}
+      </Grid>
+    </div>
+  );
+};
 
-
-
-
-    const imageBody = (rowData) => {
-        return <img src={`https://primefaces.org/cdn/primereact/images/product/${rowData.image}`} alt={rowData.image} className="w-4rem shadow-1" />
-    };
-
-    return (
-        <div className="card flex flex-column align-items-center gap-3">
-            <OverlayPanel ref={op} showCloseIcon closeOnEscape dismissable={false}>
-                    <DataTable value={staffMembers} selectionMode="single" paginator rows={5} selection={selectedStaff} onSelectionChange={(e) => setSelectedStaff(e.value)} onRowClick={staffSelect}>
-                        <Column field="id" header="ID" sortable  style={{minWidth: '8rem'}} />
-                        <Column field="userName" header="UserName" sortable style={{ minWidth: '12rem' }} />
-                        <Column header="Image" body={imageBody} />
-                    </DataTable>
-            </OverlayPanel>
-        </div>
-    );
-}
-        
+export default RoomListPage;

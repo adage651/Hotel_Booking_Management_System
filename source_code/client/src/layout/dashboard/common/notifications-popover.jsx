@@ -1,8 +1,8 @@
-import { useState } from 'react';
+import { useState,useContext } from 'react';
 import PropTypes from 'prop-types';
 import { set, sub } from 'date-fns';
 import { faker } from '@faker-js/faker';
-
+import { useEffect } from 'react';
 import Box from '@mui/material/Box';
 import List from '@mui/material/List';
 import Badge from '@mui/material/Badge';
@@ -22,19 +22,20 @@ import { fToNow } from '../../../utils/format-time';
 
 import Iconify from '../../../components/iconify';
 import Scrollbar from '../../../components/scrollbar';
-
+import { ConsoleSqlOutlined } from '@ant-design/icons';
+import UserContext from '../../../context/userContext';
 // ----------------------------------------------------------------------
-
+  // {
+  //   id: faker.string.uuid(),
+  //   title: 'Your order is placed',
+  //   description: 'waiting for shipping',
+  //   avatar: null,
+  //   type: 'order_placed',
+  //   createdAt: set(new Date(), { hours: 10, minutes: 30 }),
+  //   isUnRead: true,
+  // },
 const NOTIFICATIONS = [
-  {
-    id: faker.string.uuid(),
-    title: 'Your order is placed',
-    description: 'waiting for shipping',
-    avatar: null,
-    type: 'order_placed',
-    createdAt: set(new Date(), { hours: 10, minutes: 30 }),
-    isUnRead: true,
-  },
+
   {
     id: faker.string.uuid(),
     title: faker.person.fullName(),
@@ -53,31 +54,32 @@ const NOTIFICATIONS = [
     createdAt: sub(new Date(), { days: 1, hours: 3, minutes: 30 }),
     isUnRead: false,
   },
-  {
-    id: faker.string.uuid(),
-    title: 'You have new mail',
-    description: 'sent from Guido Padberg',
-    avatar: null,
-    type: 'mail',
-    createdAt: sub(new Date(), { days: 2, hours: 3, minutes: 30 }),
-    isUnRead: false,
-  },
-  {
-    id: faker.string.uuid(),
-    title: 'Delivery processing',
-    description: 'Your order is being shipped',
-    avatar: null,
-    type: 'order_shipped',
-    createdAt: sub(new Date(), { days: 3, hours: 3, minutes: 30 }),
-    isUnRead: false,
-  },
-];
 
-export default function NotificationsPopover() {
+
+];
+  // {
+  //   id: faker.string.uuid(),
+  //   title: 'Delivery processing',
+  //   description: 'Your order is being shipped',
+  //   avatar: null,
+  //   type: 'order_shipped',
+  //   createdAt: sub(new Date(), { days: 3, hours: 3, minutes: 30 }),
+  //   isUnRead: false,
+  // },
+    // {
+  //   id: faker.string.uuid(),
+  //   title: 'You have new mail',
+  //   description: 'sent from Guido Padberg',
+  //   avatar: null,
+  //   type: 'mail',
+  //   createdAt: sub(new Date(), { days: 2, hours: 3, minutes: 30 }),
+  //   isUnRead: false,
+  // },
+export default function NotificationsPopover({getNotification}) {
   const [notifications, setNotifications] = useState(NOTIFICATIONS);
 
   const totalUnRead = notifications.filter((item) => item.isUnRead === true).length;
-
+  const ctx=useContext(UserContext);
   const [open, setOpen] = useState(null);
 
   const handleOpen = (event) => {
@@ -87,6 +89,41 @@ export default function NotificationsPopover() {
   const handleClose = () => {
     setOpen(null);
   };
+  const getNotifications = async (userName,userType) => {
+   const response = await fetch(`http://${process.env.REACT_APP_SERVERURL}/users/getNotifications`,{
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({ userName,userType })
+  })
+  const result = await response.json()
+  console.log(result)
+  return result;
+  }
+
+useEffect(()=>{
+  if (ctx.firstName!==''){
+    console.log('258',ctx.userName,ctx.user_type)
+getNotifications(ctx.userName,ctx.user_type).then(data=>{
+  if(data.notifications!==null){
+setNotifications(prevValue=>{
+  if(!data.error) return [...prevValue,...data.notifications]
+else {
+  return [...prevValue]
+}
+})
+ 
+}
+
+})
+console.log('261',notifications)
+ 
+  }
+  getNotification&&getNotification()
+},[])
+ 
+
 
   const handleMarkAllAsRead = () => {
     setNotifications(

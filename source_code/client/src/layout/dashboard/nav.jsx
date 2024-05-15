@@ -118,7 +118,7 @@ const icon = (name) => (
 );
 
 
-const navConfig=ctx.navConfig.map((item)=>{ return {...item,icon:icon(item.icon)} })
+const navConfig=ctx.navConfig?ctx.navConfig.map((item)=>{ return {...item,icon:icon(item.icon)} }):[]
 
 
 

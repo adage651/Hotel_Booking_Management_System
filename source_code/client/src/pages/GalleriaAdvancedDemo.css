@@ -7,7 +7,37 @@ span.flag {
 img.flag {
     width: 30px;
 }
-
+div .css-1ezz7o2-MuiPaper-root-MuiAppBar-root{
+    margin-top:0px;
+}
+.css-1d3eh95-MuiToolbar-root{
+    border-radius:unset;
+}
+  div .css-nys16j-MuiToolbar-root{
+    border-radius:unset;
+}
+ div .css-1l6shdo-MuiPaper-root-MuiAppBar-root{
+    margin-top:0px;
+}
+ div .css-p4qkbf-MuiPaper-root-MuiAppBar-root{
+    margin-top: 0px;
+}
+div .css-1oqqzyl-MuiContainer-root{
+    margin:0px;
+}
+div  .css-1d3eh95-MuiToolbar-root{
+        margin: 0px;
+            width: 100%;
+            border-radius: 0px;
+}
+div .css-15bsuaa-MuiToolbar-root{
+    margin:0px;
+    width: 100%;
+    border-radius: 0px;
+}
+div .css-1oqqzyl-MuiContainer-root{
+    width:100%
+}
 .flag {
     background: url(https://primefaces.org/cdn/primereact/images/flag/flags_responsive.png) no-repeat;
     background-size: 44%;

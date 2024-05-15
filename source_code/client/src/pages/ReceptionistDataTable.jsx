@@ -14,6 +14,7 @@ import {Calendar} from 'primereact/calendar'
 import dayjs from 'dayjs';
 import { useLoaderData } from 'react-router-dom';
 import {Toast } from 'primereact/toast'
+import { Avatar } from '@mui/material';
 // The rule argument should be a string in the format "custom_[field]".
 FilterService.register('custom_activity', (value, filters) => {
     //console.log('filter is '+filters,'value is '+value)
@@ -161,7 +162,7 @@ rowData[field] = newValue;
     const guestBodyTemplate = (rowData) => {
         return (
             <div className="flex align-items-center gap-2">
-                <img alt="flag" src={`http://${process.env.REACT_APP_SERVERURL}/public/uploads/${rowData.guest.image}`} className="shadow-2 border-round" style={{ width: '24px' }} />
+                <Avatar alt={rowData.guest.firstName} src={`http://${process.env.REACT_APP_SERVERURL}/public/uploads/${rowData.guest.image}`} className="shadow-2 border-round" style={{ width: '24px' }} />
                 <span>{rowData.guest.name}</span>
             </div>
         );

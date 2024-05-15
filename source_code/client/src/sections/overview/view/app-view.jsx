@@ -1,5 +1,5 @@
 import { faker } from '@faker-js/faker';
-
+import {useState,useEffect} from 'react'
 import Container from '@mui/material/Container';
 import Grid from '@mui/material/Unstable_Grid2';
 import Typography from '@mui/material/Typography';
@@ -19,6 +19,16 @@ import AppDetail from '../app-detail'
 // ----------------------------------------------------------------------
 
 export default function AppView() {
+  const [data,setData]=useState({totalNumOfReservation:8,checkedOut:2,checkedin:3,confirmed:3});
+ 
+   useEffect(()=>{
+     console.log(data)
+fetch(`http://${process.env.REACT_APP_SERVERURL}/reservation/report`).then(response=>response.json())
+.then(fetchedData=>{
+  setData(fetchedData.data[0])
+  console.log(fetchedData)
+})
+   },[])
   return (
     <Container maxWidth="xl">
       <Typography variant="h4" sx={{ mb: 5 }}>
@@ -30,7 +40,7 @@ export default function AppView() {
           {/* <AppDetail title='Reservation Detail' /> */}
        <AppWidgetSummary
             title="Booking"
-            total={50}
+            total={data.totalNumOfReservation}
             color="info"
             icon={<img alt="icon" src="/assets/icons/glass/booking.png" />}
           />
@@ -38,8 +48,8 @@ export default function AppView() {
 
         <Grid xs={12} sm={6} md={6}>
           <AppWidgetSummary
-            title="Check in"
-            total={20}
+            title="Stay Now"
+            total={data.confirmed}
             color="info"
             icon={<img alt="icon" src="/assets/icons/glass/check-in.png" />}
           />
@@ -48,7 +58,7 @@ export default function AppView() {
         <Grid xs={12} sm={6} lg={6}>
           <AppWidgetSummary
             title="Checkout"
-            total={18}
+            total={data.checkedOut}
             color="warning"
             icon={<img alt="icon" src="/assets/icons/glass/check-out.png" />}
           />
@@ -56,8 +66,8 @@ export default function AppView() {
 
         <Grid xs={12} sm={6} lg={6}>
           <AppWidgetSummary
-            title="Stay now"
-            total={32}
+            title="Check in"
+            total={data.checkedin}
             color="error"
             icon={<img alt="icon" src="/assets/icons/glass/hotel.png" />}
           />
@@ -70,33 +80,33 @@ export default function AppView() {
             subheader="(+43%) than last week"
             chart={{
               labels: [
-                '01/01/2003',
-                '02/01/2003',
-                '03/01/2003',
-                '04/01/2003',
-                '05/01/2003',
-                '06/01/2003',
-                '07/01/2003',
-                '08/01/2003',
-                '09/01/2003',
-                '10/01/2003',
-                '11/01/2003',
+                '01/01/2024',
+                '02/01/2024',
+                '03/01/2024',
+                '04/01/2024',
+                '05/01/2024',
+                '06/01/2024',
+                '07/01/2024',
+                '08/01/2024',
+                '09/01/2024',
+                '10/01/2024',
+                '11/01/2024',
               ],
               series: [
                 {
-                  name: 'Team A',
+                  name: 'Local',
                   type: 'column',
                   fill: 'solid',
                   data: [23, 11, 22, 27, 13, 22, 37, 21, 44, 22, 30],
                 },
                 {
-                  name: 'Team B',
+                  name: 'Foreign',
                   type: 'area',
                   fill: 'gradient',
                   data: [44, 55, 41, 67, 22, 43, 21, 41, 56, 27, 43],
                 },
                 {
-                  name: 'Team C',
+                  name: 'Total',
                   type: 'line',
                   fill: 'solid',
                   data: [30, 25, 36, 30, 45, 35, 64, 52, 59, 36, 39],
@@ -111,10 +121,10 @@ export default function AppView() {
             title="Current Visits"
             chart={{
               series: [
-                { label: 'America', value: 4344 },
-                { label: 'Asia', value: 5435 },
-                { label: 'Europe', value: 1443 },
-                { label: 'Africa', value: 4443 },
+                { label: 'America', value: 4 },
+                { label: 'Asia', value: 7 },
+                { label: 'Europe', value: 8 },
+                { label: 'Africa', value: 2 },
               ],
             }}
           />
@@ -186,7 +196,7 @@ export default function AppView() {
           />
         </Grid> */}
 
-        <Grid xs={12} md={6} lg={4}>
+        {/* <Grid xs={12} md={6} lg={4}>
           <AppTrafficBySite
             title="Traffic by Site"
             list={[
@@ -212,9 +222,9 @@ export default function AppView() {
               },
             ]}
           />
-        </Grid>
+        </Grid> */}
 
-        <Grid xs={12} md={6} lg={8}>
+        {/* <Grid xs={12} md={6} lg={8}>
           <AppTasks
             title="Tasks"
             list={[
@@ -225,7 +235,7 @@ export default function AppView() {
               { id: '5', name: 'Sprint Showcase' },
             ]}
           />
-        </Grid>
+        </Grid> */}
       </Grid>
     </Container>
   );

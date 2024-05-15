@@ -67,6 +67,7 @@ import rooms from './routes/rooms.js'
 import images from './routes/images.js'
 import upload from './middleware/multerMidlware.js'
 import foods from './routes/foods.js';
+import feedback from './routes/feedback.js'
 import processPayment from './routes/processPayment.js';
 import reservation from './routes/reservation.js';
 import contactData from './routes/contactData.js';
@@ -76,6 +77,8 @@ import { debuglog } from 'util'
 
 app.use('/public/uploads',images)
 app.use('/pages',pages)
+
+
 app.use('/auth',auth)
 app.use('/users',users)
 app.use('/rooms',rooms)
@@ -83,6 +86,7 @@ app.use('/foods',foods)
 app.use('/payment',processPayment)
 app.use('/reservation',reservation)
 app.use('/contact',contactData)
+app.use('/feedback',feedback)
 
 // Assuming you have the username stored in a variable called 'username'
 
@@ -155,6 +159,28 @@ socket.on('acceptCheckout',userRoom=>{
   })
 
 })
+socket.on('message', (getMessage) => { 
+  const {sender,receiver,message} = JSON.parse(getMessage);
+  const userSocket = userSockets.find(sockets=>{
+    if(sockets.userName===receiver) return sockets;
+  })
+  if (userSocket) {
+    userSocket.socket.emit('newMessage', JSON.stringify({sender,message}));
+  } else {
+    // Handle the case when the user is not found or disconnected
+    console.log('user not found')
+  }
+})
+
+socket.on('wantToCheckout',(userRoom)=>{
+   const receptionsitSockets= userSockets.filter(receptSocket=>{
+    if(receptSocket.userType==='receptionist') return receptSocket;
+  })
+  receptionsitSockets.forEach(receptSocket=>{
+    console.log('user wants to checkout',userRoom)
+    receptSocket.socket.emit('userWantsToLeave',JSON.stringify(userRoom))
+  })
+})
 socket.on('getOnlineStaff',(userName)=>{
   console.log('receptionist request for online staff accepted from ',userName)
   const staffSockets= userSockets.filter(staffSocket=>{
@@ -195,6 +221,7 @@ if(usersocketed.userName===userName.userName) {
 
 
 })
+
 socket.on('staffToManageRoom',staffRoom=>{
   console.log('staff wants to manage room',staffRoom)
   const roomDetail=JSON.parse(staffRoom.staffRoom);
@@ -217,11 +244,6 @@ socket.on('staffToManageRoom',staffRoom=>{
     }
   })
   })
-
-
-
-
-
 })
 
 
@@ -273,7 +295,8 @@ const onlineUserArray=userSockets.filter(onlineUsers=>{
 
 });
 const notifiedUsers = new Set();
-const checkApproachingCheckouts = () => {[0]
+
+const checkApproachingCheckouts = () => {
   const currentDate = moment();
   const approachingCheckoutsQuery = `
 SELECT guestId, checkoutDate,roomId FROM reservation WHERE ABS(TIMESTAMPDIFF(MINUTE, NOW(), checkoutDate)) >569;
@@ -295,23 +318,29 @@ SELECT guestId, checkoutDate,roomId FROM reservation WHERE ABS(TIMESTAMPDIFF(MIN
               console.log('Internal server error', error);
             }else {
                     theUserToLeft.push(userSockets.filter(singleSocket=>{
+                  if(result.length!==0){
                       if(singleSocket.userName===result[0].userName){
                         row.userName=result[0].userName;
                         console.log('123',row)
                          singleSocket.socket.emit('checkoutApproaching', JSON.stringify(row));
                         return singleSocket;
   }
+}
 }))
-       notifiedUsers.add(result[0].guestId);
+
+ notifiedUsers.add(row.guestId);
           }
           })
           
-        } else if (timeDifference >= 1420) {
+        } else  {
 
   // User has more than 1306 minutes left, remove from notified users set if present
-  if (notifiedUsers.has(guestId)) {
-    notifiedUsers.delete(guestId);
+  if (notifiedUsers.has(row.guestId)) {
+    notifiedUsers.delete(row.guestId);
   }
+
+
+
 }
       });
 

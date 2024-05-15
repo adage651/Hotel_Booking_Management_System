@@ -3,7 +3,7 @@ export const contactData =(req,res) => {
     const contactInfo=req.body
 const ownerData =contactInfo.owner
 const onlineUsersData=contactInfo.chatUserData
-
+console.log(req.body)
   // Retrieve messages from the database
   const sender = ownerData.userName;
   const receiverUsers = onlineUsersData.map(user => user.userName);
@@ -54,7 +54,7 @@ const onlineUsersData=contactInfo.chatUserData
     WHERE c.sender = ? AND c.receiver IN (?)
     ORDER BY c.timestamp ASC`;
 console.log(receiverUsers)
-    db.query(query,[sender, receiverUsers], (err, results) => {
+    db.query(query,[sender, ...receiverUsers], (err, results) => {
     if (err) {
       console.error('Error retrieving messages:', err);
       return;
@@ -79,7 +79,7 @@ console.log(receiverUsers)
         const messageType = sender === receiverUserName ? 'sendMessage' : 'receiveMessage';
         messages[receiverUserName][messageType].push({ message, timestamp });
       }
-      users[receiverUserName].profilePicture = profilePicture;
+      // users[receiverUserName].profilePicture = profilePicture;
     }
 if(results.length===0){
   db.query(` SELECT
@@ -137,20 +137,38 @@ WHERE u.userName IN (?);` ,[receiverUsers],(error,resulting)=>{
 }
   });
 }
+
+
+
 export const sendMessage = (req,res)=>{
     const { sender, receiver, message } = req.body;
-
+console.log('142 sendMessage',req.body)
   const query = 'INSERT INTO contact (sender, receiver, message) VALUES (?, ?, ?)';
-  pool.query(query, [sender, receiver, message], (err, results) => {
+  db.query(query, [sender, receiver, message], (err, results) => {
     if (err) {
       console.error('Error sending message:', err);
       res.status(500).json({ error: 'Error sending message' });
       return;
     }
 
-    res.json({ success: true });
+    res.status(200).json({ success: true });
   });
 }
+export const getMessages = (req,res) => {
+   
+    console.log('156 sender',req.body)
+     const { sender, receiver } = req.body;
+  const query = `SELECT c.*, CASE WHEN c.sender = ? THEN 'sent' ELSE 'received' END AS message_type FROM contact AS c WHERE (c.sender = ? AND c.receiver = ? ) OR (c.sender = ? AND c.receiver = ?) ORDER BY timestamp ASC; `;
+  
+  db.query(query,[sender, sender,receiver,receiver,sender],(error,results)=>{
+    if(error){
+      return res.status(500).json({error:error});
+    }
+
+    return res.status(200).json({contactData:results})
+  })
+
+  }
 
 
 // contactInfo.chatUserData.forEach(async user=>{

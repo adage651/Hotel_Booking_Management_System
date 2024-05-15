@@ -90,7 +90,7 @@ const RoomDetail = () => {
 		                            <div class="col-md-6">
 		                                <div class="single-input mb-30">
                                             <label>Your Email</label>
-		                                    <input type="email">
+		                                    <input type="email" />
 		                                </div>
 		                            </div>
 		                            <div class="col-md-12">
@@ -160,5 +160,7 @@ const RoomDetail = () => {
 		            </div>
 		        </div>
 		    </div>
-		</div>)
+		</div>
+        
+        )
 }

@@ -164,7 +164,8 @@ const UserProfileContent = ({
 
 const UserProfileContentWithLoadPanel = withLoadPanel(UserProfileContent);
 
-export const UserProfile = () => {
+export const UserProfile = ({userData}) => {
+  console.log(userData)
   const [profileData, setProfileData] = useState<Record<string, string>>();
   const [savedProfileData, setSavedProfileData] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -188,6 +189,21 @@ export const UserProfile = () => {
   }, []);
 
   const setSavedData = useCallback((data = profileData) => {
+    console.log(data)
+    fetch(`http://${process.env.REACT_APP_SERVERURL}/users/updateUser`,{
+      method: 'POST',
+     headers: {
+  'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(data)
+    }).then((response) => {
+      if (response.ok) {
+        console.log('User data updated successfully');
+      } else {
+        console.error('Error updating user data:', response.status);
+      }})
+    
+    console.log(JSON.parse(JSON.stringify(data)))
     setSavedProfileData(JSON.parse(JSON.stringify(data)));
   }, [profileData]);
 
@@ -213,19 +229,26 @@ export const UserProfile = () => {
 
   useEffect(() => {
     const supervisorsPromise = getSupervisors();
-    const profileDataPromise = getProfile(PROFILE_ID);
+    // const profileDataPromise = getProfile(userData.user.id,userData.user.user_type);
 
     supervisorsPromise.then((data) => {
       setContactItems(service.getContactItems(data));
     });
-    profileDataPromise.then((data) => {
-      setProfileData(data);
-      setSavedData(data);
-    });
+
+    // profileDataPromise.then((data) => {
+    //   setProfileData(data);
+    //   setSavedData(data);
+    // });
+    const preparedData={...userData.user,email:userData.user.emailAddress,
+      image: userData.user.profilePicture,country:userData.user.nationality,
+    
+    domainUsername:userData.user.userName};
+    setProfileData(preparedData)
+    setSavedData(preparedData);
 
     Promise.all([
       supervisorsPromise,
-      profileDataPromise
+      // profileDataPromise
     ]).then(() => {
       setIsLoading(false);
     });

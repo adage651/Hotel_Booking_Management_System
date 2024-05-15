@@ -8,6 +8,7 @@ import {Router,BrowserRouter, Route, RouterProvider ,Routes,createBrowserRouter,
 import AuthRegister, {action as authAction ,loader as userFetch} from './pages/AuthRegister'
 import Manager,{ loader as fetchUserData} from './pages/Manager.jsx'
 import './global.css';
+import StaffFoodManage,{loader as staffMangeLoader} from './pages/StaffFoodManage.jsx'
 import { useScrollToTop } from './hooks/use-scroll-to-top.js';
 import CheckoutStaffTable, { loader as checkoutLoader } from './pages/ChckoutStaffTable.jsx'
 // const router=createBrowserRouter([
@@ -30,8 +31,8 @@ import RoomData from './pages/user.jsx'
 import { Card } from 'primereact/card';
 import UserPage ,{ loader as userFetchAll } from './pages/userTabel/view/user-view.jsx';
 import RoomDetail,{action as actionRoom,loader as roomLoader} from './RoomDetail.jsx';
-import LoginErrorPage from './pages/LoginErrorPage.jsx';
-import LoginError from './pages/LoginError.jsx'
+import LoginError from './pages/LoginError.jsx';
+// import LoginError from './pages/LoginError.jsx'
 import LandingPage, {loader as userLoader} from './pages/LandingPage.jsx';
 import Receptionist ,{loader as receptionstLoader} from './pages/Receptionist.jsx';
 import Staff,{loader as staffLoader} from './pages/Staff.jsx';
@@ -42,74 +43,87 @@ import ConformationPage from './pages/ConformationPage.jsx'
 // import ReservationStatus from './pages/ReservationDetail.jsx'
 import ReservationDetail,{loader as reservationLoader} from './pages/ReservationDetail.jsx';
 import HomePage,{loader as homeLoader} from './pages/HomePage.jsx';
-import Profile from './pages/Profile.jsx'       
+import Profile ,{loader as profileLoader} from './pages/Profile.jsx'       
 import  socket  from './pages/socket';
 import { UserProfile } from './pages/userProfile/userProfile';
 import ReceptionistDataTable,{ loader as receptionstLoaders } from './pages/ReceptionistDataTable.jsx'
 import CheckoutDataTable ,{ loader as checkoutDataTableLoader } from './pages/CheckoutDataTable';
+import Practice from './Practice.jsx'
+import DataView,{loader as dataViewLoader} from './pages/FoodDataView.jsx'
+import TrackReservation,{loader as trackReservaionLoader} from './pages/TrackReservation.jsx'
+import NotFoundPage from './pages/NotFoundPage.jsx';
+import { MapProvider } from './MapContext.js'; 
+import FeedBack from './pages/FeedBack.jsx';
+import ContactReceptionist,{loader as contactReceptionist} from './pages/ContactReceptionist.jsx';
+import ForgotPassword,{loader as forgotPasswordLoader} from './pages/ForgotPassword.jsx';
 const router=createBrowserRouter(
   [
-    // {path:'/', element:<LandingPage />, loader:userLoader},
-  // {path:'/ReservationStatus',element:<ReservationDetail />},
-{path:'/', element:<HomePage />, loader:homeLoader},
-// {path:'/table',element:<CheckoutDataTable /> ,loader:checkoutDataTableLoader },
-// }},
-    {path:'/landing', element:<LandingPage />, loader:userLoader},
-    {path:'/edit-profile',element:<UserProfile />},
 
-    {path:'/manager', element:<Manager />,loader:fetchUserData,
+    {path:'/', element:<HomePage />, loader:homeLoader},
+    {path:'/landing', element:<LandingPage />, loader:userLoader},
+    {path:'/practice' ,element:  <Practice />,},
+    {path:'/dataview',element:<DataView /> , loader:dataViewLoader},
+{path:'/forgotpassword',element:<ForgotPassword />,loader:forgotPasswordLoader},
+    {path:'/manager', element:<Manager />,loader:fetchUserData,errorElement:<LoginError />,
     children:[
       // {path:'view-account', element:<UserPage /> ,loader:userFetchAll},
-      {path:'rooms', element:<RoomDetail />, loader:roomLoader,action:actionRoom},
-      {path:'view-account', element:<UserPage />,loader:userFetchAll },
-      {path:'reservation', element:<ReservationDetail /> ,loader:reservationLoader},
-      {path:'managefood', element:<FoodDetail />,loader:foodLoader,action:actionFood},
-      // {path:'user',element:<Practice />},
-      {path:'notifications',element:<Contact /> ,loader:contactLoader},
-      {path:'', element:<DashbordData />},
+      {path:'rooms', element:<RoomDetail />, loader:roomLoader,action:actionRoom ,errorElement:<LoginError />},
+      {path:'view-account', element:<UserPage />,loader:userFetchAll ,errorElement:<LoginError /> },
+      {path:'reservation', element:<ReservationDetail /> ,loader:reservationLoader ,errorElement:<LoginError />},
+      {path:'managefood', element:<FoodDetail />,loader:foodLoader,action:actionFood ,errorElement:<LoginError />},
+      {path:'feadback',element:<FeedBack />},
+      {path:'notification',element:<Contact /> ,loader:contactLoader,errorElement:<LoginError />},
+      {path:'', element:<DashbordData />,errorElement:<LoginError />},
         ],
       // errorElement:<LoginError />
     },
     
     
 
-    {path:'/receptionist', element:<Receptionist />,loader:receptionstLoader
+    {path:'/receptionist', element:<Receptionist />,loader:receptionstLoader,errorElement:<LoginError />
     ,children:[
-      {path:'checkin',element:<ReceptionistDataTable />,loader:receptionstLoaders},
-      {path:'checkout', element:<CheckoutDataTable /> ,loader:checkoutDataTableLoader}
-
+      {path:'checkin',element:<ReceptionistDataTable />,loader:receptionstLoaders,errorElement:<LoginError />},
+      {path:'checkout', element:<CheckoutDataTable /> ,loader:checkoutDataTableLoader,errorElement:<LoginError />},
+     {path:'notification',element:<Contact /> ,loader:contactLoader,errorElement:<LoginError />},
+      {path:'',element:<TrackReservation /> ,loader:trackReservaionLoader,errorElement:<LoginError />},
 
       
     ]
-     ,errorElement:<LoginError />},
+     ,errorElement:<LoginError /> },
 
 
-    {path:'/staff_member', element:<Staff />,loader:staffLoader,
-    children:[
+    {path:'/staff_member', element:<Staff />,loader:staffLoader,errorElement:<LoginError />
+   ,children:[
       {path:'checkout', element:<CheckoutStaffTable /> ,loader:checkoutLoader},
-      {path:'rooms', element:<RoomDetail />}
+      {path:'rooms', element:<RoomDetail />},
+     {path:'notification',element:<Contact /> ,loader:contactLoader,errorElement:<LoginError />},
+      {path:'',element:<StaffFoodManage /> ,loader:staffMangeLoader}
     ] 
   ,errorElement:<LoginError /> },
-    { path:'/maintenace_team', element:<Maintenance />,
+    { path:'/maintenace_team', element:<Maintenance />,errorElement:<LoginError />,errorElement:<LoginError />,
     children:[
-      {path:'user', element:<UserPage /> ,loader:userFetchAll},
+      {path:'', element:<UserPage /> ,loader:userFetchAll},
+           {path:'notification',element:<Contact /> ,loader:contactLoader,errorElement:<LoginError />},
       {path:'rooms', element:<RoomDetail />}
       
     ]  
   ,errorElement:<LoginError />},
-     {path:'/guest', element:<HomePage /> ,loader:homeLoader,errorElement:<LoginError />
+     {path:'/guest', element:<HomePage /> ,loader:homeLoader,errorElement:<LoginError />,errorElement:<LoginError />
      , children:[
-      {path:'profile' ,element:<Profile /> },
+      {path:'profile' ,element:<Profile /> , loader:profileLoader    },
      ]
     },
-{path:'/profile' ,element:<Profile /> },
+    {path:'/profile' ,element:<Profile /> , loader:profileLoader  , errorElement:<LoginError />,  },
+   
   {path:'/login' ,element:<Login />,action:loginAction ,loader:loginLoader },
   {path:'/loginError' ,element:<LoginError />},
-  {path:'/register' ,element:<Register /> ,loader:loginLoader,children:[
+  {path:'/register' ,element:<Register /> ,loader:loginLoader,
+children:[
   {index:true ,element:<AuthRegister /> ,action:authAction}
   ],errorElement:<LoginError /> 
-}
+},
 
+{ path: '*', element: <NotFoundPage /> },
 ]
 
 )

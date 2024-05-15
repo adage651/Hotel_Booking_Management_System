@@ -1,9 +1,19 @@
-import React from 'react';
+import React,{useState} from 'react';
 
 import './FormPhoto.css';
-import { FileUploader } from 'devextreme-react';
+import FileUploader from 'devextreme-react/file-uploader';
+
 
 export const FormPhoto = ({ link, size, editable = false }: { link: string, size: number, editable?: boolean }) => {
+  const [value, setValue] = useState([]);
+    const changeValue = (e) => {
+        setValue(e.value);
+        link=e.value[0].name;
+    }
+    const getSelectedFiles = () => {
+        return value;
+    }
+    console.log(value);
   return (
     <div className='form-photo-view'>
       <div
@@ -12,16 +22,19 @@ export const FormPhoto = ({ link, size, editable = false }: { link: string, size
           width: size,
           height: size,
           maxHeight: size,
-          backgroundImage: `url('data:image/png;base64,${link}')`
+          backgroundImage: `url('&quot;http://${process.env.REACT_APP_SERVERURL}/uploads/${link}&quot;)`
         }}
       >
-        { editable && <i className='edit-icon dx-icon-photooutline' /> }
+        { <i className='edit-icon dx-icon-photooutline' /> }
       </div>
       { editable &&
         <FileUploader
+        
           dialogTrigger='.edit-icon'
           accept='image/*'
           visible={false}
+          value={value}
+            onValueChanged={changeValue}
         />
       }
     </div>

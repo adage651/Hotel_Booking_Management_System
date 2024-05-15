@@ -10,12 +10,12 @@ import {Outlet} from 'react-router-dom'
 
 // ----------------------------------------------------------------------
 
-export default function DashboardLayout({ children }) {
+export default function DashboardLayout({ children , getNotification }) {
   const [openNav, setOpenNav] = useState(false);
 
   return (
     <>
-      <Header onOpenNav={() => setOpenNav(true)} />
+      <Header onOpenNav={() => setOpenNav(true)} getNotification={getNotification} />
 
       <Box
         sx={{

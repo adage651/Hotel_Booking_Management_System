@@ -14,6 +14,7 @@ const Staff =() =>{
     const userData=useLoaderData()
     console.log('staff user is registered')
   socket.emit('userName',[userData.userName,userData.user_type])
+
   socket.on('staffManageRoom', (data) => {
     const roomInfo=JSON.parse(data)
   confirmDialog({
@@ -38,6 +39,9 @@ const Staff =() =>{
 // toast.current.show({ severity: 'info', summary: 'Guest Checkout', detail:`${roomInfo.userName} Wants To Leave So Please Visit Room Health`, life: 3000 });
 
 })
+const getNotification =()=>{
+    console.log('notification Fetchng')
+}
 console.log('id',userData.id)
     return (
 <UserContext.Provider value={{
@@ -51,7 +55,7 @@ user_type:userData.user_type
 }} >
     <Toast ref={toast} />
     <ConfirmDialog />
-    <DashboardLayout>
+    <DashboardLayout getNotification={getNotification}>
         <Outlet />
     </DashboardLayout>
 </UserContext.Provider>

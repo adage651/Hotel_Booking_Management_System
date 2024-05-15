@@ -2,7 +2,7 @@ import './PicturedItemSelectBox.css';
 import React from 'react';
 import SelectBox from 'devextreme-react/select-box';
 import TextBox from 'devextreme-react/text-box';
-
+import {Avatar } from '@mui/material'
 interface PictureItemSelectBoxProps {
   value: string;
   label?: string;
@@ -13,9 +13,9 @@ interface PictureItemSelectBoxProps {
 const fieldRender = (data) => {
   return <div
     className='pictured-item-select-field'>
-    <img alt={data.name}
+    <Avatar alt={data.name}
       className='pictured-item-image'
-      src={`data:image/png;base64,${data.image}`}
+src={`http://${process.env.REACT_APP_SERVERURL}/uploads/${data.image}`}
     />
     <TextBox
       hoverStateEnabled={false}
@@ -28,16 +28,17 @@ const fieldRender = (data) => {
 
 const ItemRender = (data) => {
   return <>
-    <img alt={data.name}
+    <Avatar alt={data.name}
       className='pictured-item-image'
       height='20px'
-      src={`data:image/png;base64,${data.image}`}
+      src={`http://${process.env.REACT_APP_SERVERURL}/uploads/${data.image}`}
     />
     {data.name}
   </>;
 };
 
 export const PicturedItemSelectBox = ({ value, label = '', items = [], onValueChange }: PictureItemSelectBoxProps) => {
+console.log('PicturedItemSelectBox', value);
   return <SelectBox
     className='pictured-item-select-box'
     value={value}

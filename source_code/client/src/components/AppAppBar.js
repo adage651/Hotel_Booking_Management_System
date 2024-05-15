@@ -29,7 +29,7 @@ const logoStyle = {
   cursor: 'pointer',
 };
 
-function AppAppBar({ mode, toggleColorMode ,login,profilePicture,profile}) {
+function AppAppBar({ mode, toggleColorMode ,login,profilePicture,profile,getNotification}) {
   const [open, setOpen] = React.useState(false);
 
   const toggleDrawer = (newOpen) => () => {
@@ -96,14 +96,14 @@ function AppAppBar({ mode, toggleColorMode ,login,profilePicture,profile}) {
             >
               <img
                 src={
-                  'https://assets-global.website-files.com/61ed56ae9da9fd7e0ef0a967/61f12e6faf73568658154dae_SitemarkDefault.svg'
+                  ``
                 }
                 style={logoStyle}
-                alt="logo of sitemark"
+                alt="logo of Yejoka"
               />
               <Box sx={{ display: { xs: 'none', md: 'flex' } }}>
                 <MenuItem
-                  onClick={() => scrollToSection('our rooms')}
+                  onClick={() => scrollToSection('rooms')}
                   sx={{ py: '6px', px: '12px' }}
                 >
                   <Typography variant="body2" color="text.primary">
@@ -157,7 +157,7 @@ function AppAppBar({ mode, toggleColorMode ,login,profilePicture,profile}) {
     
             <Stack direction="row" alignItems="center" spacing={1}>
         <LanguagePopover />
-        <NotificationsPopover />
+        <NotificationsPopover getNotification={getNotification}/>
         <AccountPopover profile={profile} />
       </Stack>
     </div>):(<div>
@@ -234,7 +234,7 @@ function AppAppBar({ mode, toggleColorMode ,login,profilePicture,profile}) {
     
             <Stack direction="row" alignItems="center" spacing={1}>
         <LanguagePopover />
-        <NotificationsPopover />
+        <NotificationsPopover getNotification={getNotification}/>
         <AccountPopover profile={profile} />
       </Stack>
     </div>):(    <div>
